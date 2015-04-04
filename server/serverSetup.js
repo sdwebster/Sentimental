@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({
 }));
 // app.use(cookieParser());
 // console.log('serving static files from' + __dirname + '/../client');
-app.use(express.static(__dirname + '/../client/app'));
+app.use(express.static(__dirname + '/../client'));
 
 // app.use('/', routes);
 // app.use('/users', users);
