@@ -8,6 +8,10 @@ test/bower_components/
 
 .DS_Store
 
+# Floobit
+.flooignore
+.floo
+
 # From HR thesis repo
 
 ### node etc ###
