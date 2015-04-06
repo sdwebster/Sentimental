@@ -1,20 +1,20 @@
-var /*SomeName*/ = Backbone.View.extend({
+// var /*SomeName*/ = Backbone.View.extend({
 
-  tagName: "li",
+//   tagName: "li",
 
-  className: "document-row",
+//   className: "document-row",
 
-  template: _.template(/*html in here, look at underscore _.template for more info*/);
+//   template: _.template(html in here, look at underscore _.template for more info);
   
-  events: {
-  },
+//   events: {
+//   },
 
-  initialize: function() {
-    this.listenTo(this.model, "change", this.render);
-  },
+//   initialize: function() {
+//     this.listenTo(this.model, "change", this.render);
+//   },
 
-  render: function() {
+//   render: function() {
     
-  }
+//   }
 
-});
+// });

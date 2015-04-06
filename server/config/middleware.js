@@ -4,6 +4,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fs = require('fs');
 
 
 // var exphbs  = require('express-handlebars');
@@ -27,8 +28,20 @@ module.exports = function(app, express){
     }));
     // app.use(cookieParser());
     // console.log('serving static files from' + __dirname + '/../client');
-    app.use(express.static(__dirname + '/../../client'));
+    
+    // Check to see if a production file exists, if so use the production version, if not 
+      // use the development version.  The production or Dist folder is made with Gruntfile.js 
+    fs.exists('/../../config', function (exists) {
+      if (exists){
+        console.log("Serving public/dist folder - production");
+      } else {
+        console.log("Serving client folder - development");
+      }
 
+      
+    });
+    app.use(express.static(__dirname + '/../../client'));
+    if ( express.static)
     // app.use('/', routes);
     // app.use('/users', users);
 
