@@ -1,40 +1,53 @@
-var Bookshelf = require('bookshelf');
-var path = require('path');
-
-var db = Bookshelf.initialize({
-  client: 'sqlite3',
+//var Bookshelf = require('bookshelf');
+var knex = require('knex').initialize({
+  client: 'mysql',
   connection: {
-    host: '127.0.0.1',
-    user: 'your_database_user',
-    password: 'password',
-    database: 'shortlydb',
-    charset: 'utf8',
-    filename: path.join(__dirname, '../db/shortly.sqlite')
+    host     : 'localhost',
+    user     : 'dev',
+    password : 'password',
+    database : 'sentimentalDev',
+    charset  : 'utf8'
   }
 });
 
-db.knex.schema.hasTable('urls').then(function(exists) {
+var path = require('path');
+
+//
+// var db = Bookshelf.initialize({
+//   client: 'mysql',
+//   connection: {
+//     host: '127.0.0.1',
+//     user: 'root',
+//     password: '',
+//     database: 'sentimentaldb',
+//     charset: 'utf8',
+//     filename: path.join(__dirname, '../db/shortly.mysql')
+//   }
+// });
+
+
+var db = require('bookshelf')(knex);
+
+// var User = bookshelf.Model.extend({
+//   tableName: 'users'
+// });
+
+db.knex.schema.hasTable('keywords').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('urls', function (link) {
-      link.increments('id').primary();
-      link.string('url', 255);
-      link.string('base_url', 255);
-      link.string('code', 100);
-      link.string('title', 255);
-      link.integer('visits');
-      link.timestamps();
+    db.knex.schema.createTable('keywords', function (key) {
+      key.increments('id').primary();
+      key.string('word', 255);
     }).then(function (table) {
       console.log('Created Table', table);
     });
   }
 });
 
-db.knex.schema.hasTable('clicks').then(function(exists) {
+db.knex.schema.hasTable('sources').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('clicks', function (click) {
-      click.increments('id').primary();
-      click.integer('link_id');
-      click.timestamps();
+    db.knex.schema.createTable('source', function (source) {
+      source.increments('id').primary();
+      source.string('name', 225)
     }).then(function (table) {
       console.log('Created Table', table);
     });
@@ -45,13 +58,28 @@ db.knex.schema.hasTable('clicks').then(function(exists) {
 // Add additional schema definitions below
 /************************************************************/
 
-db.knex.schema.hasTable('users').then(function(exists) {
+db.knex.schema.hasTable('articles').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('users', function (user) {
-      user.increments('id').primary();
-      user.string('username', 100).unique();
-      user.string('password', 100);
-      user.timestamps();
+    db.knex.schema.createTable('articles', function (article) {
+      article.increments('id').primary();
+      article.integer('source').unsigned().references('id').inTable('sources');
+      article.integer('word').unsigned().references('id').inTable('keywords');
+      article.date('published');
+      article.string('url', 225);
+      article.float('sentiment');
+      article.timestamps();
+
+    }).then(function (table) {
+      console.log('Created Table', table);
+    });
+  }
+});
+
+db.knex.schema.hasTable('keywordSources').then(function(exists) {
+  if (!exists) {
+    db.knex.schema.createTable('keywordSources', function (wordSource) {
+      wordSource.integer('source').unsigned().references('id').inTable('sources');
+      wordSource.integer('words').unsigned().references('id').inTable('words');
     }).then(function (table) {
       console.log('Created Table', table);
     });
