@@ -1,10 +1,15 @@
 //var Bookshelf = require('bookshelf');
+var keys = require('./keys.js');
+
+console.log('user: ', keys.mysqlUser.username);
+console.log('pword: ', keys.mysqlUser.password);
+
 var knex = require('knex').initialize({
   client: 'mysql',
   connection: {
     host     : 'localhost',
-    user     : 'dev',
-    password : 'password',
+    user     : keys.mysqlUser.username,
+    password : keys.mysqlUser.password,
     database : 'sentimentalDev',
     charset  : 'utf8'
   }
@@ -45,7 +50,7 @@ db.knex.schema.hasTable('keywords').then(function(exists) {
 
 db.knex.schema.hasTable('sources').then(function(exists) {
   if (!exists) {
-    db.knex.schema.createTable('source', function (source) {
+    db.knex.schema.createTable('sources', function (source) {
       source.increments('id').primary();
       source.string('name', 225)
     }).then(function (table) {
