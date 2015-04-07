@@ -84,7 +84,7 @@ db.knex.schema.hasTable('keywordSources').then(function(exists) {
   if (!exists) {
     db.knex.schema.createTable('keywordSources', function (wordSource) {
       wordSource.integer('source').unsigned().references('id').inTable('sources');
-      wordSource.integer('words').unsigned().references('id').inTable('words');
+      wordSource.integer('words').unsigned().references('id').inTable('keywords');
     }).then(function (table) {
       console.log('Created Table', table);
     });
