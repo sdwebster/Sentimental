@@ -40,7 +40,7 @@ module.exports = function(app, express){
 
       
     });
-    app.use(express.static(__dirname + '/../../client'));
+    app.use(express.static(__dirname + '/../../public/client'));
     if ( express.static)
     // app.use('/', routes);
     // app.use('/users', users);
