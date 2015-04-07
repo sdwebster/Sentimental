@@ -84,6 +84,14 @@ module.exports = function(grunt) {
         tasks: ['cssmin']
       }
     },
+    copy: {
+      main: {
+        files: [
+          {expand: true, flatten:true , src: 'public/client/*', dest: 'public/dist', filter: 'isFile'}
+        ],
+      },
+    },
+ 
 
     shell: {
       prodServer: {
@@ -105,6 +113,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('server-dev', function (target) {
     // Running nodejs in a different process and displaying output on the main console
@@ -131,7 +140,8 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'concat',
     'uglify',
-    'cssmin'
+    'cssmin', 
+    'copy'
   ]);
 
   grunt.registerTask('upload', function(n) {
@@ -147,6 +157,9 @@ module.exports = function(grunt) {
     'build',
     'upload'
   ]);
+  grunt.registerTask('default', function (){
+    console.log('Your grunt options are "build", "upload", and "deploy" if you are really crazy.');
+  })
 
 
 };

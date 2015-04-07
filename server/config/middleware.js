@@ -30,18 +30,18 @@ module.exports = function(app, express){
     // console.log('serving static files from' + __dirname + '/../client');
     
     // Check to see if a production file exists, if so use the production version, if not 
-      // use the development version.  The production or Dist folder is made with Gruntfile.js 
-    fs.exists('/../../config', function (exists) {
+      // use the development version.  The dist folder is made with Gruntfile.js 
+    fs.exists(__dirname + '/../../public/dist/', function (exists) {
       if (exists){
         console.log("Serving public/dist folder - production");
+        app.use(express.static(__dirname + '/../../public/dist'));
       } else {
         console.log("Serving client folder - development");
+        app.use(express.static(__dirname + '/../../public/client'));
       }
-
       
     });
-    app.use(express.static(__dirname + '/../../public/client'));
-    if ( express.static)
+   
     // app.use('/', routes);
     // app.use('/users', users);
 
