@@ -39,9 +39,12 @@ module.exports = function(app, express){
         console.log("Serving client folder - development");
         app.use(express.static(__dirname + '/../../public/client'));
       }
-      
     });
-   
+    app.engine('.html', require('ejs').renderFile);
+    app.get('/', function (req, res){
+      console.log('app.get ("/".... was called');
+      res.render(__dirname + '/../../public/dist/index.html');
+    });
     // app.use('/', routes);
     // app.use('/users', users);
 
