@@ -1,10 +1,11 @@
 var http = require('http');
+var keys = require('./server/config/keys.js');
 
 var searchTerm = 'BP';
 var beginDate = '20000101';
 var endDate = '20150406';
 var page = 0;
-var apiKey = '';
+var apiKey = keys.sourceApiKeys.nyt;
 var articles = [];
 
 var nytEndpoint = 'http://api.nytimes.com/svc/search/v2/articlesearch.json?fq=headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + endDate + '&page=' + page + '&api-key=' + apiKey;
