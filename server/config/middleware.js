@@ -40,7 +40,7 @@ module.exports = function(app, express){
         app.use(express.static(__dirname + '/../../public/client'));
       }
     });
-    app.engine('.html', require('ejs').renderFile);
+    // app.engine('.html', require('ejs').renderFile);
     app.get('/', function (req, res){
       console.log('app.get ("/".... was called');
       res.render(__dirname + '/../../public/dist/index.html');
