@@ -28,7 +28,7 @@ var getResultsPage = function(page, nextPage){
       
       nytData.docs.forEach(function(obj){
         articles.push(obj);
-        console.log('Articles length: ' + articles.length + 'Hits: ' + nytData.meta.hits);
+        console.log(articles.length + ' of ' + nytData.meta.hits + ' articles imported.');
       });
 
       while (nextPage <= pages){
