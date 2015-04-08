@@ -2,18 +2,18 @@ var http = require('http');
 var keys = require('./server/config/keys.js');
 
 var searchTerm = 'Jeb Bush';
-var beginDate = '20140101';
+var beginDate = '20000101';
 var endDate = '20150406';
 var apiKey = keys.sourceApiKeys.nyt;
 var articles = [];
 
 var setEndpoint = function(page){
-  return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?fq=headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + endDate + '&page=' + page + '&api-key=' + apiKey;
+  return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + endDate + '&page=' + page + '&api-key=' + apiKey;
 };
 
 // Gets first page of results and check metadata for further pages
 
-var getResultsPage = function(page, nextPage, callCount){
+var getResultsPage = function(page, nextPage){
   var nytEndpoint = setEndpoint(page);
   http.get(nytEndpoint, function(res) {
     var body = '';
@@ -32,11 +32,7 @@ var getResultsPage = function(page, nextPage, callCount){
       });
 
       while (nextPage <= pages){
-        if (callCount % 1 === 0) {
-          setTimeout(function(){getResultsPage(nextPage, ++nextPage, ++callCount)}, 1000)
-        } else {
-          getResultsPage(nextPage, ++nextPage, ++callCount);
-        }
+          getResultsPage(nextPage, ++nextPage);
       }
 
     });
@@ -46,4 +42,4 @@ var getResultsPage = function(page, nextPage, callCount){
   });
 };
 
-getResultsPage(0, 1, 1);
+getResultsPage(0, 1);
