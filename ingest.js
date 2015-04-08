@@ -1,8 +1,8 @@
 var http = require('http');
 var keys = require('./server/config/keys.js');
 
-var searchTerm = 'Dolly Parton';
-var beginDate = '20000101';
+var searchTerm = 'Jeb Bush';
+var beginDate = '20140101';
 var endDate = '20150406';
 var apiKey = keys.sourceApiKeys.nyt;
 var articles = [];
@@ -13,7 +13,7 @@ var setEndpoint = function(page){
 
 // Gets first page of results and check metadata for further pages
 
-var getResultsPage = function(page, nextPage){
+var getResultsPage = function(page, nextPage, callCount){
   var nytEndpoint = setEndpoint(page);
   http.get(nytEndpoint, function(res) {
     var body = '';
@@ -28,11 +28,15 @@ var getResultsPage = function(page, nextPage){
       
       nytData.docs.forEach(function(obj){
         articles.push(obj);
-        console.log(articles.length + ' of ' + nytData.meta.hits + ' articles imported.');
+        console.log(articles.length + ' of ' + nytData.meta.hits + ' articles imported: ' + obj.headline.main + ', ' + obj.pub_date);
       });
 
       while (nextPage <= pages){
-        getResultsPage(nextPage, ++nextPage);
+        if (callCount % 1 === 0) {
+          setTimeout(function(){getResultsPage(nextPage, ++nextPage, ++callCount)}, 1000)
+        } else {
+          getResultsPage(nextPage, ++nextPage, ++callCount);
+        }
       }
 
     });
@@ -42,4 +46,4 @@ var getResultsPage = function(page, nextPage){
   });
 };
 
-getResultsPage(0, 1);
+getResultsPage(0, 1, 1);
