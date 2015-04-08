@@ -1,5 +1,10 @@
 var http = require('http');
 var keys = require('./server/config/keys.js');
+// var RateLimiter = require('limiter').RateLimiter;
+var sleep = require('sleep');
+
+
+// var limiter = new RateLimiter(10, 1100);
 
 var searchTerm = 'Jeb Bush';
 var beginDate = '20000101';
@@ -31,7 +36,9 @@ var getResultsPage = function(page, nextPage){
         console.log(articles.length + ' of ' + nytData.meta.hits + ' articles imported: ' + obj.headline.main + ', ' + obj.pub_date);
       });
 
-      while (nextPage <= pages){
+      sleep.usleep(100000);
+
+      if (nextPage <= pages){
           getResultsPage(nextPage, ++nextPage);
       }
 
@@ -43,3 +50,6 @@ var getResultsPage = function(page, nextPage){
 };
 
 getResultsPage(0, 1);
+
+// limiter.removeTokens(1, function(err, remainingRequests) {
+// });
