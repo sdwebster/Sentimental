@@ -91,18 +91,22 @@ module.exports = function(grunt) {
         ],
       },
     },
- 
-
-    shell: {
-      prodServer: {
-        command: 'git push azure master',
-        options: {
-          stdout: true,
-          stderr: true,
-          failOnError: true
-        }
+    shell:{
+      mysql:{
+        command: 'mysql.server start'
       }
-    },
+    }    
+
+    // shell: {
+    //   prodServer: {
+    //     command: 'git push azure master',
+    //     options: {
+    //       stdout: true,
+    //       stderr: true,
+    //       failOnError: true
+    //     }
+    //   }
+    // },
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -146,8 +150,11 @@ module.exports = function(grunt) {
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
+
       grunt.task.run([ 'shell:prodServer' ]);
     } else {
+      // start mysql server
+      grunt.task.run(['shell:mysql']);
       grunt.task.run([ 'server-dev' ]);
     }
   });
