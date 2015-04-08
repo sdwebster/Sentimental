@@ -20,7 +20,6 @@
     "mysql": "^2.6.1",
     "path": "^0.11.14",
     "serve-favicon": "^2.2.0",
-    "sleep": "^2.0.0"
   },
   "devDependencies": {
     "apache-server-configs": "^2.8.0",

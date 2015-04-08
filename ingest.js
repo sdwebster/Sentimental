@@ -1,12 +1,11 @@
 var http = require('http');
 var keys = require('./server/config/keys.js');
-// var RateLimiter = require('limiter').RateLimiter;
-var sleep = require('sleep');
+var RateLimiter = require('limiter').RateLimiter;
 
 
-// var limiter = new RateLimiter(10, 1100);
+var limiter = new RateLimiter(10, 1000);
 
-var searchTerm = 'Jeb Bush';
+var searchTerm = 'Al Gore';
 var beginDate = '20000101';
 var endDate = '20150406';
 var apiKey = keys.sourceApiKeys.nyt;
@@ -36,8 +35,6 @@ var getResultsPage = function(page, nextPage){
         console.log(articles.length + ' of ' + nytData.meta.hits + ' articles imported: ' + obj.headline.main + ', ' + obj.pub_date);
       });
 
-      sleep.usleep(100000);
-
       if (nextPage <= pages){
           getResultsPage(nextPage, ++nextPage);
       }
@@ -49,7 +46,6 @@ var getResultsPage = function(page, nextPage){
   });
 };
 
-getResultsPage(0, 1);
-
-// limiter.removeTokens(1, function(err, remainingRequests) {
-// });
+limiter.removeTokens(1, function(err, remainingRequests) {
+  getResultsPage(0, 1);
+});
