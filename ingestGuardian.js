@@ -1,9 +1,11 @@
+// Guardian initial ingest script
+
 var http = require('http');
 var keys = require('./server/config/keys.js');
 var RateLimiter = require('limiter').RateLimiter;
 
 
-var limiter = new RateLimiter(10, 1000);
+var limiter = new RateLimiter(12, 1000);
 
 var searchTerm = 'Al Gore';
 var beginDate = '20000101';
@@ -12,7 +14,7 @@ var apiKey = keys.sourceApiKeys.nyt;
 var articles = [];
 
 var setEndpoint = function(page){
-  return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + endDate + '&page=' + page + '&api-key=' + apiKey;
+  return 'http://content.guardianapis.com/search\"' + searchTerm + '\"&from-date=' + beginDate + '&to-date=' + endDate + '&page=' + page + '&order-by=oldest&api-key=' + apiKey;
 };
 
 // Gets first page of results and check metadata for further pages
