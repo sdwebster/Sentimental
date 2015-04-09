@@ -71,18 +71,17 @@ module.exports = function(grunt) {
     watch: {
       scripts: {
         files: [
-          'client/**/*.js',
-          'public/lib/**/*.js',
+          // 'client/**/*.js',
+          'public/client/**/*.js',
         ],
         tasks: [
-          'concat',
-          'uglify'
+          'build'
         ]
       },
-      css: {
-        files: 'public/*.css',
-        tasks: ['cssmin']
-      }
+      // css: {
+      //   files: 'public/*.css',
+      //   tasks: ['cssmin']
+      // }
     },
     copy: {
       main: {
@@ -144,7 +143,7 @@ module.exports = function(grunt) {
   grunt.registerTask('build', [
     'concat',
     'uglify',
-    'cssmin', 
+    // 'cssmin', 
     'copy'
   ]);
 
