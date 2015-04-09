@@ -1,7 +1,7 @@
 
 var getData = function (){
 	$.ajax({
-	  url: "localhost:8080/data",
+	  url: "/data",
 	})
   .done(function( data ) {
     console.log(data);
