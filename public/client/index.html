@@ -10,8 +10,8 @@
   <div class="container">
     <svg id="visualisation" width="1000" height="200"></svg>
   </div>
-  <div class="container">
-    <svg id="visualisation2" width="1000" height="200"></svg>
+  <div id="chart-container">
+    <!-- <svg id="visualisation2" width="1000" height="200"></svg> -->
   </div>
   <!-- <button onclick="transition()">Update</button> -->
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -33,10 +33,11 @@
     var chart = new Chart({dataLines: dataLines});
 
     // build a view for the top level of the whole chart
-    var chartView = new ChartView({model: chart});
+    var chartView = new ChartView({el: "#chart-container", model: chart});
 
     // put the view onto the screen
-    $('body').append(chartView.render());
+    chartView.render();
+
   });
   // var n = 20, // number of layers
   //     m = 200, // number of samples per layer

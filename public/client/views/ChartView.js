@@ -1,14 +1,15 @@
 var ChartView = Backbone.View.extend({
 
-  tagName: "svg",
+  // tagName: "svg",
 
   initialize: function(params){
     this.dataLinesView = new DataLinesView({model: this.model.get('dataLines')});
   },
 
   render: function(){
-    var vis = d3.select("#visualisation2"),
-    WIDTH = 1000,
+    console.log('rendering chart');
+    this.svg = d3.select(this.el).append("svg");
+    var WIDTH = 1000,
     HEIGHT = 200,
     MARGINS = {
         top: 20,
@@ -24,17 +25,20 @@ var ChartView = Backbone.View.extend({
     yAxis = d3.svg.axis()
     .scale(yScale);
 
-    // vis.append("svg:g")
+    console.log('this.svg:', this.svg);
+    // this.svg.append("svg:g")
     // .call(xAxis);
-    vis.append("svg:g")
+    this.svg.append("svg:g")
     .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
     .attr('class', 'axis')
     .call(xAxis);
 
+    console.log('this.svg:', this.svg);
+
     yAxis = d3.svg.axis()
     .scale(yScale)
     .orient("left");
-    vis.append("svg:g")
+    this.svg.append("svg:g")
     .attr("transform", "translate(" + (MARGINS.left) + ",0)")
     .attr('class', 'axis')
     .call(yAxis);
@@ -48,25 +52,27 @@ var ChartView = Backbone.View.extend({
     })
     .interpolate("basis");
 
-    vis.append('svg:path')
+    this.svg.append('svg:path')
     .attr('d', lineGen(data))
     .attr('stroke', 'green')
     .attr('stroke-width', 2)
     .attr('fill', 'none');
 
-    vis.append('svg:path')
+    this.svg.append('svg:path')
     .attr('d', lineGen(data2))
     .attr('stroke', 'blue')
     .attr('stroke-width', 2)
     .attr('fill', 'none');
-    return this.$el.html(
 
-    //   [
-    //   this.playerView.$el,
-    //   this.libraryView.$el,
-    //   this.songQueueView.$el
-    // ]
-    );
+    return this;
+    // return this.$el.html(
+
+    // //   [
+    // //   this.playerView.$el,
+    // //   this.libraryView.$el,
+    // //   this.songQueueView.$el
+    // // ]
+    // );
   }
 
 });
