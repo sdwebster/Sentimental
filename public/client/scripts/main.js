@@ -67,7 +67,7 @@ var data2 = [{
 
 var vis = d3.select("#visualisation"),
 WIDTH = 1000,
-HEIGHT = 500,
+HEIGHT = 200,
 MARGINS = {
     top: 20,
     right: 20,
