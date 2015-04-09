@@ -53,9 +53,30 @@ module.exports = function(app, express){
     // };
 
     // app.use(express.static(pathToUse(), {'dotfiles':'allow'}));
-    
+    var testData = [{
+        "sale": "212",
+        "year": "2000"
+    }, {
+        "sale": "225",
+        "year": "2001"
+    }, {
+        "sale": "199",
+        "year": "2002"
+    }, {
+        "sale": "219",
+        "year": "2003"
+    }, {
+        "sale": "154",
+        "year": "2005"
+    }, {
+        "sale": "196",
+        "year": "2010"
+    }];
 
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
+    app.get('/data', function(req, res){
+        res.send(testData);
+    })
 
 
     // var production = false;
