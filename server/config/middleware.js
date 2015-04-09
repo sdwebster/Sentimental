@@ -73,10 +73,13 @@ module.exports = function(app, express){
         "year": "2010"
     }];
 
+    //http://localhost:8080/data?startDate=20000101&endDate=20010101
+
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
     app.get('/data', function(req, res){
+        console.log(req);
         res.send(testData);
-    })
+    });
 
 
     // var production = false;
