@@ -8,7 +8,6 @@ var ChartView = Backbone.View.extend({
 
   render: function(){
     console.log('rendering chart');
-    this.svg = d3.select(this.el).append("svg");
     var WIDTH = 1000,
     HEIGHT = 200,
     MARGINS = {
@@ -25,7 +24,11 @@ var ChartView = Backbone.View.extend({
     yAxis = d3.svg.axis()
     .scale(yScale);
 
-    console.log('this.svg:', this.svg);
+
+    this.svg = d3.select(this.el).append("svg")
+    .attr('height', HEIGHT)
+    .attr('width', WIDTH);
+
     // this.svg.append("svg:g")
     // .call(xAxis);
     this.svg.append("svg:g")
@@ -33,7 +36,6 @@ var ChartView = Backbone.View.extend({
     .attr('class', 'axis')
     .call(xAxis);
 
-    console.log('this.svg:', this.svg);
 
     yAxis = d3.svg.axis()
     .scale(yScale)
