@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var ejs = require('ejs');
-var exphbs = require('express3-handlebars');
+// var exphbs = require('express3-handlebars');
 var handlebars = require('express-handlebars');
 
 
@@ -38,23 +38,36 @@ module.exports = function(app, express){
     // app.set('view engine', 'handlebars')
     // Check to see if a production file exists, if so use the production version, if not 
       // use the development version.  The dist folder is made with Gruntfile.js 
-    var production = false;
-    fs.existsSync(path.join(__dirname, '/../../public/dist/'), function (exists) {
-      if (exists){
-        production = true
-      } else {
-        production = false;
+    
+    // var pathToUse = function(){
+    //   var folder = '';
+    //   fs.existsSync(path.join(__dirname, '/../../public/dist/'), function (exists) {
+    //     if (exists){
+    //       folder = '/../../public/dist/';
+    //     } else {
+    //       folder = '/../../public/client/';
+    //     }
+    //   });
+    //   console.log('folder:', folder);
+    //   return path.join(__dirname, folder);     
+    // };
 
-      }
-    });
-    production
-    if (production){
-        console.log("Serving public/dist folder - production");
-        app.use(express.static(path.join(__dirname, '/../../public/dist/'), {'dotfiles':'allow'}));
-    } else {
-        console.log("Serving public/client folder - development");
-        app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
-    }
+    // app.use(express.static(pathToUse(), {'dotfiles':'allow'}));
+    
+
+    app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
+
+
+    // var production = false;
+    // });
+    // production
+    // if (production){
+    //     console.log("Serving public/dist folder - production");
+    //     app.use(express.static(path.join(__dirname, '/../../public/dist/'), {'dotfiles':'allow'}));
+    // } else {
+    //     console.log("Serving public/client folder - development");
+    //     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
+    // }
 
 
 
