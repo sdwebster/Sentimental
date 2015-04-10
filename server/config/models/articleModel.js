@@ -1,4 +1,4 @@
-var db = require('./dbConfig.js');
+var db = require('../dbConfig.js');
 var Source = require('./sourceModel.js');
 var Keyword = require('./keywordModel.js');
 

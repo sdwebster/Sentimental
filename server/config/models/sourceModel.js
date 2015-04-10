@@ -1,4 +1,4 @@
-var db = require('./dbConfig.js');
+var db = require('../dbConfig.js');
 var Article = require('./articleModel.js');
 
 var Source = db.Model.extend({

@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 var ejs = require('ejs');
 var handlebars = require('express-handlebars');
+var Article = require('./models/articleModel.js');
 
 module.exports = function(app, express){
 
@@ -41,9 +42,13 @@ module.exports = function(app, express){
 
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
     app.get('/data', function(req, res){
-        startDate = req.query.startDate;
-        endDate = req.query.endDate;
-        res.send(testData);
+        new Article().fetchAll()
+            .then(function(articles) {
+              res.send(articles.toJSON());
+            }).catch(function(error) {
+              console.log(error);
+              res.send('An error occured');
+            });
     });
 
     /// catch 404 and forward to error handler
