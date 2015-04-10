@@ -8,6 +8,7 @@ var fs = require('fs');
 var ejs = require('ejs');
 var handlebars = require('express-handlebars');
 var Article = require('./models/articleModel.js');
+var Articles = require('./collections/articles.js');
 
 module.exports = function(app, express){
 
@@ -42,7 +43,9 @@ module.exports = function(app, express){
 
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
     app.get('/data', function(req, res){
-        new Article().fetchAll()
+        new Article()
+            .query('where', 'published', '<', '2015-01-01')
+            .fetchAll()
             .then(function(articles) {
               res.send(articles.toJSON());
             }).catch(function(error) {
