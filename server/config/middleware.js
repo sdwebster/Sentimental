@@ -43,8 +43,8 @@ module.exports = function(app, express){
 
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
     app.get('/data', function(req, res){
-        var startDate = req.query.startDate;
-        var endDate = req.query.endDate ;
+        var startDate = req.query.startDate || 00000000;
+        var endDate = req.query.endDate || new Date();
         new Article()
             .query('where', 'published', '>', startDate )
             .query('where', 'published', '<', endDate )
