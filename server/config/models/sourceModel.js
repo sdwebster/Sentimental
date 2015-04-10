@@ -8,3 +8,5 @@ var Source = db.Model.extend({
     return this.hasMany(Article);
   }
 });
+
+module.exports = Source;
