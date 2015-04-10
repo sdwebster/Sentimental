@@ -1,21 +1,21 @@
 var bluebird = require('bluebird');
 var request = bluebird.promisifyAll(require('request'));
-var RateLimiter = require('limiter');
+var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
 
-var keys = require('./server/config/keys.js').sourceKeys;
+var keys = require('./keys.js').sourceKeys;
 
-var Article = require('./server/config/models/articleModel.js');
-var Source = require('./server/config/models/sourceModel.js');
-var Word = require('./server/config/models/keywordModel.js');
-
+var Article = require('./models/articleModel.js');
+var Source = require('./models/sourceModel.js');
+var Word = require('./models/keywordModel.js');
+console.log(Word)
 
 var limiter = new RateLimiter(10, 1000);
 
 
 var getSource = R.curry(retrieveRow)(Source);
 var getWord = R.curry(retrieveRow)(Word);
-
+console.log(retrieveRow(Word, {id: 1}));
 var makeArticle = R.curry(constructRow)(Article);
 
 
@@ -28,7 +28,7 @@ function ingestData (searchTerm, beginDate, endDate, sourceName) {
   // 
 
 
-  
+  return ingestPage(1);
 
   function ingestPage (page) {
     bluebird.all([getWord({word: searchTerm}), getSource({name: sourceName})])
@@ -54,7 +54,7 @@ function errorHandler (err) {
 }
 
 function constructRow (modelConstructor, columns) {
-  return new modelConstructor(columns);
+  return modelConstructor.forge(columns);
 }
 
 
@@ -65,7 +65,8 @@ function retrieveRow (modelConstructor, identifiers) {
   // given identifiers
   // argument
   // 
-  return new modelConstructor(identifiers).fetch();
+  console.log(modelConstructor);
+  return modelConstructor.forge(identifiers).fetch();
 };
 
 function insert (row) {
@@ -73,7 +74,7 @@ function insert (row) {
   return row.save();
 }
 
-function getResults = function (searchTerm, beginDate, endDate, page) {
+function getResults (searchTerm, beginDate, endDate, page) {
   return requestAsync(
     constructURL(searchTerm, beginDate, endDate, page));
 }
@@ -84,5 +85,5 @@ function constructURL (searchTerm, beginDate, endDate, page) {
   endDate + '&page=' + page + '&api-key=' + keys['New York Times'];
 }
 
-
+console.log(ingestData('Obama', '20000101', '20150406', 'New York Times'));
 module.exports = ingestData;
