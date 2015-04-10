@@ -5,4 +5,4 @@ var Keywords = new db.Collection();
 
 Keywords.model = Keyword;
 
-module.exports = Users;
+module.exports = Keywords;
