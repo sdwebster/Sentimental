@@ -19,26 +19,6 @@ module.exports = function(app, express){
       extended: true  
     }));
 
-    var testData = [{
-        "sale": "212",
-        "year": "2000"
-    }, {
-        "sale": "225",
-        "year": "2001"
-    }, {
-        "sale": "199",
-        "year": "2002"
-    }, {
-        "sale": "219",
-        "year": "2003"
-    }, {
-        "sale": "154",
-        "year": "2005"
-    }, {
-        "sale": "196",
-        "year": "2010"
-    }];
-
     //http://localhost:8080/data?startDate=20000101&endDate=20010101
 
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
