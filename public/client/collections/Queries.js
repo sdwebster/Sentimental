@@ -1,5 +1,6 @@
-// Each DataLine corresponds to a particular keyword and source
-// One chart may have several DataLines
+// Each query holds information given in response to a single
+// query about one specific keyword-source pair
+// A single chart may have several queries
 var Queries = Backbone.Collection.extend({ 
   model: QueryModel,
   url: '/data' 

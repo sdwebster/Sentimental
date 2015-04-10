@@ -23,7 +23,7 @@
 // });
 
 /***********/
-console.log('running main');
+// console.log('running main');
 
 var data = [{
     "sale": "202",

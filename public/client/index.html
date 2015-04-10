@@ -31,8 +31,8 @@
   $(function(){
     // set up model objects
     data3 = getData();
-    var queries = new Queries([data, data2]);
-    var chart = new ChartModel({queries: queries});
+    var queries = new Queries({keywords: ['BP'], sources: ['New York Times']});
+    var chart = new ChartModel({keywords: ['BP'], sources: ['New York Times']});
 
     // build a view for the top level of the whole chart
     var chartView = new ChartView({el: "#chart-container", model: chart});
