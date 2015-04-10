@@ -65,6 +65,8 @@ var data2 = [{
     "year": "2010"
 }];
 
+// var data3 = getData();
+
 var vis = d3.select("#visualisation"),
 WIDTH = 1000,
 HEIGHT = 200,
@@ -117,3 +119,9 @@ vis.append('svg:path')
 .attr('stroke', 'blue')
 .attr('stroke-width', 2)
 .attr('fill', 'none');
+
+// vis.append('svg:path')
+// .attr('d', lineGen(getData()))
+// .attr('stroke', 'blue')
+// .attr('stroke-width', 2)
+// .attr('fill', 'none');

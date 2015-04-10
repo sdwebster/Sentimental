@@ -9,9 +9,17 @@
     // .attr('fill', 'none');
 // to produce
 
-var DataLineView = Backbone.View.extend({
+var QueryView = Backbone.View.extend({
 
-  tagName: 'svg:path',
+  initialize: function() {
+    this.model.fetch();
+    // this.render();
+    console.log('specific dataLine is:', this.model);
+  },
+
+  render: function(el) {
+
+  }
 
   // template: _.template('<td>(<%= artist %>)</td><td><%= title %></td>'),
 

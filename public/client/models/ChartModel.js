@@ -1,7 +1,7 @@
-var Chart = Backbone.Model.extend({ 
+var ChartModel = Backbone.Model.extend({ 
 
   initialize: function(params){
-    this.set('dataLines', new DataLines ());
+    this.set('queries', new Queries ());
     // Later there will be more here for the input field to add keywords,
     // or the dropdown to add new news sources to chart,
     // or whatever interface will 

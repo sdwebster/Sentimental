@@ -19,19 +19,20 @@
   <script src="./bower_components/underscore/underscore.js"></script>
   <script src="./bower_components/backbone/backbone.js"></script>
   <!-- <script src="sentimental.js"></script> -->
-  <script src="./scripts/main.js"></script>
-  <script src="./models/DataLine.js"></script>
-  <script src="./collections/DataLines.js"></script>
-  <script src="./models/Chart.js"></script>
-  <script src="./views/DataLineView.js"></script>
-  <script src="./views/DataLinesView.js"></script>
-  <script src="./views/ChartView.js"></script>
   <script src="./scripts/util.js"></script>
+  <script src="./scripts/main.js"></script>
+  <script src="./models/QueryModel.js"></script>
+  <script src="./collections/Queries.js"></script>
+  <script src="./models/ChartModel.js"></script>
+  <script src="./views/QueryView.js"></script>
+  <script src="./views/QueriesView.js"></script>
+  <script src="./views/ChartView.js"></script>
   <script>
   $(function(){
     // set up model objects
-    var dataLines = new DataLines([data, data2]);
-    var chart = new Chart({dataLines: dataLines});
+    data3 = getData();
+    var queries = new Queries([data, data2]);
+    var chart = new ChartModel({queries: queries});
 
     // build a view for the top level of the whole chart
     var chartView = new ChartView({el: "#chart-container", model: chart});

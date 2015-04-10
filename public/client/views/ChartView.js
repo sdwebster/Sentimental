@@ -3,7 +3,7 @@ var ChartView = Backbone.View.extend({
   // tagName: "svg",
 
   initialize: function(params){
-    this.dataLinesView = new DataLinesView({model: this.model.get('dataLines')});
+    this.queriesView = new QueriesView({collection: this.model.get('queries')});
   },
 
   render: function(){
@@ -54,18 +54,9 @@ var ChartView = Backbone.View.extend({
     })
     .interpolate("basis");
 
-    this.svg.append('svg:path')
-    .attr('d', lineGen(data))
-    .attr('stroke', 'green')
-    .attr('stroke-width', 2)
-    .attr('fill', 'none');
+    this.queriesView.render(this.svg);
 
-    this.svg.append('svg:path')
-    .attr('d', lineGen(data2))
-    .attr('stroke', 'blue')
-    .attr('stroke-width', 2)
-    .attr('fill', 'none');
-
+  
     return this;
     // return this.$el.html(
 
