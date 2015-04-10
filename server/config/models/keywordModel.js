@@ -8,3 +8,5 @@ var Word = db.Model.extend({
     return this.belongsToMany(Article);
   }
 });
+
+module.exports = Word;
