@@ -9,6 +9,7 @@ var ejs = require('ejs');
 var handlebars = require('express-handlebars');
 var Article = require('./models/articleModel.js');
 var Articles = require('./collections/articles.js');
+var indico = require('./indico.js');
 
 module.exports = function(app, express){
 
@@ -35,6 +36,11 @@ module.exports = function(app, express){
               console.log(error);
               res.send('An error occured');
             });
+    });
+
+    //Manual Initiation for sending data to indico.io to retrive a sentiment analysis 
+    app.get('/calc', function (req, res){
+        indico(req, res);
     });
 
     /// catch 404 and forward to error handler
