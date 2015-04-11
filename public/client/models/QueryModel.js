@@ -11,6 +11,7 @@ var QueryModel = Backbone.Model.extend({
     this.keyword = queryObj.keyword;
     this.source = queryObj.source;
   },
+  
   queryServer: function(){
     var scope = this;
     $.ajax({  
@@ -18,7 +19,11 @@ var QueryModel = Backbone.Model.extend({
       url: "/data",
     })
     .done(function( newData  ) {
-      scope.set({data: newData});
+      scope.set({
+        data: newData,
+        // this.max = ??,
+        // this.min = ??
+      });
     });
     return this;
   }
