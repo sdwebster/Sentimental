@@ -8,7 +8,7 @@ var ChartView = Backbone.View.extend({
 
   events: {
     'click': function() {
-      console.log('clicked me!')
+      console.log('clicked me!');
       this.model.react();
     }
   },
@@ -51,8 +51,6 @@ var ChartView = Backbone.View.extend({
     .attr('class', 'axis')
     .call(yAxis);
 
-
-    // have to make this lineGen more visible  
     var lineGen = d3.svg.line()
     .x(function(d) {
       return xScale(d.year);
@@ -62,7 +60,7 @@ var ChartView = Backbone.View.extend({
     })
     .interpolate("basis");
 
-    this.queriesView.render(this.svg);
+    this.queriesView.render(this.svg, lineGen);
 
 
     return this;

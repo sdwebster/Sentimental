@@ -11,7 +11,11 @@ var QueryModel = Backbone.Model.extend({
     this.keyword = queryObj.keyword;
     this.source = queryObj.source;
   },
-  
+
+  react: function(){
+    console.log('you clicked my view (im a QueryModel)!');
+  },
+
   queryServer: function(){
     var scope = this;
     $.ajax({  

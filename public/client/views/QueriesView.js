@@ -6,14 +6,14 @@ var QueriesView = Backbone.View.extend({
     this.colors = ['red', 'green', 'blue', 'orange'];
   },
 
-  render: function(el) {
+  render: function(el, lineGen) {
     var scope = this;
     this.el = el;
     this.collection.each(function(query, i){
       new QueryView({
         model: query,
         color: scope.colors[i % scope.colors.length]
-      }).render(el);
+      }).render(el, lineGen);
     });
 
     // this.el.append('svg:path')
