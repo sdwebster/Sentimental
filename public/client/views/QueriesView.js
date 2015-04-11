@@ -1,13 +1,8 @@
-// Note: we may not even have a QueriesView, because it does
-// not correspond to any particular DOM element
+// Note:
+// this QueriesView does not correspond to any particular DOM element
 var QueriesView = Backbone.View.extend({
 
-  // tagName: "table",
-
   initialize: function() {
-    // this.collection.fetch();
-    // this.render();
-    // console.log('collection is:', this.collection);
   },
 
   render: function(el) {
