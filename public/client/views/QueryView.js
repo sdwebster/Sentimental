@@ -15,7 +15,7 @@ var QueryView = Backbone.View.extend({
     console.log('model has keyword', this.model.get('keyword'), ' and source', this.model.get('source'));
     this.parent = params.parentEl;
     this.lineGen = params.lineGen;
-    console.log('lineGen:', this.lineGen);
+    console.log('lineGen:', this.lineGen);  
   }, 
  
   events: {

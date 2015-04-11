@@ -13,6 +13,7 @@ var ChartModel = Backbone.Model.extend({
           'color': /* TODO: improve this */ colors[i % colors.length]});
       });
     });
+    this.queryList = queryList;
     this.set('queries', new Queries (queryList));
   },
 
