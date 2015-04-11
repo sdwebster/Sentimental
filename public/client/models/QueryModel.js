@@ -24,7 +24,9 @@ var QueryModel = Backbone.Model.extend({
     })
     .done(function( newData  ) {
       scope.set({
-        data: newData,
+        // data: newData,
+        data: mockData
+
         // this.max = ??,
         // this.min = ??
       });
