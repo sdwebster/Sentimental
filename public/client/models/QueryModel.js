@@ -6,6 +6,8 @@ var QueryModel = Backbone.Model.extend({
 
   initialize: function(queryObj){
     this.data = {};
+    this.max = 0;
+    this.min = 0;
     this.keyword = queryObj.keyword;
     this.source = queryObj.source;
   },

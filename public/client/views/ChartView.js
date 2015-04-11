@@ -8,12 +8,14 @@ var ChartView = Backbone.View.extend({
 
   events: {
     'click': function() {
-      this.model.enqueue();
+      console.log('clicked me!')
+      this.model.react();
     }
   },
 
   initialize: function(params){
-    console.log('params:', params);
+    // TODO: listen for a change to datasets in this.model.collection
+    // so that you can adjust min and max of the axis
     this.queriesView = new QueriesView({collection: this.model.get('queries')});
     this.options = _.extend(this.defaults, params);
   },
@@ -49,6 +51,8 @@ var ChartView = Backbone.View.extend({
     .attr('class', 'axis')
     .call(yAxis);
 
+
+    // have to make this lineGen more visible  
     var lineGen = d3.svg.line()
     .x(function(d) {
       return xScale(d.year);
@@ -59,6 +63,7 @@ var ChartView = Backbone.View.extend({
     .interpolate("basis");
 
     this.queriesView.render(this.svg);
+
 
     return this;
   }
