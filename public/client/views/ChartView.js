@@ -70,110 +70,51 @@ var ChartView = Backbone.View.extend({
 
     this.queriesView.render(this.svg, lineGen);
 
-    this.drawLegend();
+    setTimeout(this.drawLegend.bind(this), 500);
 
     return this;
   },
 
   drawLegend: function(){
+    var queryList = this.model.queryList;
+    // console.log('queryList:', queryList);
+    // console.log('colors:', this.model.get('colors'));
+    // console.log('KEYWORDS:', this.model.get('keywords'));
+
     var legendRectSize = 18;
     var legendSpacing = 4;
     var legend = this.svg.selectAll('.legend')
-      .data(['red'])
+      .data(queryList)
       .enter()
       .append('g')
       // .attr('class', 'legend')
       .attr('transform', function(d, i) {
-        // var height = legendRectSize + legendSpacing;
-        // var offset =  height * color.domain().length / 2;
+        var height = legendRectSize + legendSpacing;
+        var offset =  height * queryList.length / 2;
         var height = 100;
-        var offset = 0;
+        // var offset = 0;
         // var horz = -2 * legendRectSize;
         var horz = 100;
-        var vert = i * height - offset;
+        var vert = 100;
         return 'translate(' + horz + ',' + vert + ')';
       });
 
-    legend.append('rect')
-      .attr('width', legendRectSize)
-      .attr('height', legendRectSize)
-      .style('fill', 'red')
-      .style('stroke', 'black');
+    queryList.forEach(function(q, i){
+      legend.append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .attr('y', 50 * i)
+        .style('fill', q.color)
+        .style('stroke', 'black');
 
-    legend.append('text')
-      .attr('x', legendRectSize + legendSpacing)
-      .attr('y', legendRectSize - legendSpacing)
-      .text(function(d) { return d /*.toUpperCase()*/; });
+      legend.append('text')
+        .attr('x', legendRectSize + legendSpacing)
+        .attr('y', 50 * i)
+        .text(function(d) { return '"' + q.keyword + '" in ' + q.source; });
+      }
+    );
 
 
-
-
-    // this.legend = this.el.append()
-
-    // // /**********/
-    // d3.legend = function(g) {
-    //   g.each(function() {
-    //     var g= d3.select(this),
-    //         items = {},
-    //         svg = d3.select(g.property("nearestViewportElement")),
-    //         legendPadding = g.attr("data-style-padding") || 5,
-    //         lb = g.selectAll(".legend-box").data([true]),
-    //         li = g.selectAll(".legend-items").data([true])
-
-    //     lb.enter().append("rect").classed("legend-box",true)
-    //     li.enter().append("g").classed("legend-items",true)
-
-    //     svg.selectAll("[data-legend]").each(function() {
-    //         var self = d3.select(this)
-    //         items[self.attr("data-legend")] = {
-    //           pos : self.attr("data-legend-pos") || this.getBBox().y,
-    //           color : self.attr("data-legend-color") != undefined ? self.attr("data-legend-color") : self.style("fill") != 'none' ? self.style("fill") : self.style("stroke") 
-    //         }
-    //       })
-
-    //     items = d3.entries(items).sort(function(a,b) { return a.value.pos-b.value.pos})
-
-        
-    //     li.selectAll("text")
-    //         .data(items,function(d) { return d.key})
-    //         .call(function(d) { d.enter().append("text")})
-    //         .call(function(d) { d.exit().remove()})
-    //         .attr("y",function(d,i) { return i+"em"})
-    //         .attr("x","1em")
-    //         .text(function(d) { ;return d.key})
-        
-    //     li.selectAll("circle")
-    //         .data(items,function(d) { return d.key})
-    //         .call(function(d) { d.enter().append("circle")})
-    //         .call(function(d) { d.exit().remove()})
-    //         .attr("cy",function(d,i) { return i-0.25+"em"})
-    //         .attr("cx",0)
-    //         .attr("r","0.4em")
-    //         .style("fill",function(d) { console.log(d.value.color);return d.value.color})  
-        
-    //     // Reposition and resize the box
-    //     var lbbox = li[0][0].getBBox()  
-    //     lb.attr("x",(lbbox.x-legendPadding))
-    //         .attr("y",(lbbox.y-legendPadding))
-    //         .attr("height",(lbbox.height+2*legendPadding))
-    //         .attr("width",(lbbox.width+2*legendPadding))
-    //   })
-    //   return g
-    // }
-
-    // /*********/
-    // legend = this.svg.append("g")
-    //   .attr("class","legend")
-    //   .attr("transform","translate(50,30)")
-    //   .style("font-size","12px")
-    //   .call(d3.legend);
-
-    // setTimeout(function() { 
-    //   legend
-    //     .style("font-size","20px")
-    //     .attr("data-style-padding",10)
-    //     .call(d3.legend)
-    // },1000);
   }
 
 });

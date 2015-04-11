@@ -6,7 +6,7 @@ var QueriesView = Backbone.View.extend({
   },
 
   render: function(el, lineGen) {
-    console.log('lineGen:', lineGen);
+    // console.log('lineGen:', lineGen);
     var scope = this;
     this.el = el;
     this.collection.each(function(query, i){

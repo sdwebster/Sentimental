@@ -14,6 +14,7 @@ var ChartModel = Backbone.Model.extend({
       });
     });
     this.queryList = queryList;
+    console.log('list:', Array.isArray(this.queryList));
     this.set('queries', new Queries (queryList));
   },
 
@@ -23,7 +24,8 @@ var ChartModel = Backbone.Model.extend({
 
   initialize: function(params){
     this.keywords = params.keywords; 
-    this.sources = params.sources;    
+    this.sources = params.sources;  
+    this.queryList = 'temp';  
     this.colors = ['red', 'green', 'blue', 'orange'];
     this.makeQueryList();
 

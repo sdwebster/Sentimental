@@ -15,7 +15,7 @@ var QueryView = Backbone.View.extend({
     console.log('model has keyword', this.model.get('keyword'), ' and source', this.model.get('source'));
     this.parent = params.parentEl;
     this.lineGen = params.lineGen;
-    console.log('lineGen:', this.lineGen);  
+    // console.log('lineGen:', this.lineGen);  
   }, 
  
   events: {
@@ -34,7 +34,7 @@ var QueryView = Backbone.View.extend({
 
   displayLine: function() {
     this.manipulateData();
-    console.log('time to display line for model: ', this.model);
+    // console.log('time to display line for model: ', this.model);
     this.svgPath.attr('d', this.lineGen(this.model.get('data')))
       .attr('stroke', this.model.get('color'))
       .attr('stroke-width', 2)
@@ -42,7 +42,7 @@ var QueryView = Backbone.View.extend({
   },
 
   manipulateData: function() {
-    console.log('time to manipulate ', this.model.get('data'));
+    // console.log('time to manipulate ', this.model.get('data'));
 
   }
 
