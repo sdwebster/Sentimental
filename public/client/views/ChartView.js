@@ -3,7 +3,9 @@ var ChartView = Backbone.View.extend({
   defaults: {    
     MARGIN: {top: 20, right: 20, bottom: 20, left: 50},
     WIDTH: 1000,
-    HEIGHT: 200
+    HEIGHT: 200,
+    XATTR: 'year',
+    YATTR: 'sale'
   },
 
   events: {
@@ -51,12 +53,19 @@ var ChartView = Backbone.View.extend({
     .attr('class', 'axis')
     .call(yAxis);
 
+    var xAttr = this.options.XATTR;
+    var yAttr = this.options.YATTR;
+
+    // TODO: add axis labels
+
+    this.drawLegend();
+
     var lineGen = d3.svg.line()
     .x(function(d) {
-      return xScale(d.year);
+      return xScale(d[xAttr]);
     })
     .y(function(d) {
-      return yScale(d.sale);
+      return yScale(d[yAttr]);
     })
     .interpolate("basis");
 
@@ -64,6 +73,11 @@ var ChartView = Backbone.View.extend({
 
 
     return this;
+  },
+
+  drawLegend: function(){
+    
   }
+
 
 });

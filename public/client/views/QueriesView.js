@@ -3,7 +3,6 @@
 var QueriesView = Backbone.View.extend({
 
   initialize: function() {
-    this.colors = ['red', 'green', 'blue', 'orange'];
   },
 
   render: function(el, lineGen) {
@@ -15,10 +14,9 @@ var QueriesView = Backbone.View.extend({
         model: query,
         parentEl: el,
         lineGen: lineGen,
-        color: scope.colors[i % scope.colors.length]
       }).render();
     });
-    
+
     return this;
   }
 

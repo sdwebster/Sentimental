@@ -6,6 +6,8 @@ var QueryModel = Backbone.Model.extend({
 
   initialize: function(queryObj){
     this.data = {};
+    this.articles = {};
+    this.averages = {};
     this.max = 0;
     this.min = 0;
     this.keyword = queryObj.keyword;
@@ -26,9 +28,6 @@ var QueryModel = Backbone.Model.extend({
       scope.set({
         // data: newData,
         data: mockData
-
-        // this.max = ??,
-        // this.min = ??
       });
     });
     return this;
