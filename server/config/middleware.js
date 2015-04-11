@@ -30,20 +30,34 @@ module.exports = function(app, express){
         var endDate = req.query.endDate || new Date();
         var timePeriod = req.query.timePeriod;
 
+
+        // SELECT YEAR(published), MONTH(published), COUNT(id) FROM sentimentalDev.articles GROUP BY YEAR(published), MONTH(published)
+
         if (timePeriod) {
-            res.send("you want groups?");
+            new Article()
+                .query('count')
+                .query('where', 'published', '>', startDate )
+                .query('where', 'published', '<', endDate )
+                .fetchAll()
+                .then(function(frequencies) {
+                    res.send(frequencies.toJSON());
+                }).catch(function(error) {
+                    console.log(error);
+                    res.send('An error occured');
+                });
+        } else {
+            new Article()
+                .query('where', 'published', '>', startDate )
+                .query('where', 'published', '<', endDate )
+                .fetchAll()
+                .then(function(articles) {
+                  res.send(articles.toJSON());
+                }).catch(function(error) {
+                  console.log(error);
+                  res.send('An error occured');
+                });
         }
         
-        new Article()
-            .query('where', 'published', '>', startDate )
-            .query('where', 'published', '<', endDate )
-            .fetchAll()
-            .then(function(articles) {
-              res.send(articles.toJSON());
-            }).catch(function(error) {
-              console.log(error);
-              res.send('An error occured');
-            });
     });
 
     //Manual Initiation for sending data to indico.io to retrive a sentiment analysis 
