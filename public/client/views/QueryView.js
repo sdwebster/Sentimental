@@ -43,7 +43,7 @@ var QueryView = Backbone.View.extend({
 
   manipulateData: function() {
     // console.log('time to manipulate ', this.model.get('data'));
-
+    // here is where we can calculate averages
   }
 
 });

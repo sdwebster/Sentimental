@@ -58,7 +58,6 @@ var ChartView = Backbone.View.extend({
 
     // TODO: add axis labels
 
-
     var lineGen = d3.svg.line()
     .x(function(d) {
       return xScale(d[xAttr]);
@@ -77,9 +76,6 @@ var ChartView = Backbone.View.extend({
 
   drawLegend: function(){
     var queryList = this.model.queryList;
-    // console.log('queryList:', queryList);
-    // console.log('colors:', this.model.get('colors'));
-    // console.log('KEYWORDS:', this.model.get('keywords'));
 
     var legendRectSize = 18;
     var legendSpacing = 4;
@@ -95,7 +91,7 @@ var ChartView = Backbone.View.extend({
         // var offset = 0;
         // var horz = -2 * legendRectSize;
         var horz = 100;
-        var vert = 100;
+        var vert = 50;
         return 'translate(' + horz + ',' + vert + ')';
       });
 
@@ -113,8 +109,5 @@ var ChartView = Backbone.View.extend({
         .text(function(d) { return '"' + q.keyword + '" in ' + q.source; });
       }
     );
-
-
   }
-
 });
