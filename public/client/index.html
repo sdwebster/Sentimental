@@ -26,9 +26,56 @@
   <script src="./views/QueriesView.js"></script>
   <script src="./views/ChartView.js"></script>
   <script>
+
+  var mockData = {
+    'BP': [
+         {
+          "sale": "202",
+          "year": "2000"
+      }, {
+          "sale": "215",
+          "year": "2001"
+      }, {
+          "sale": "179",
+          "year": "2002"
+      }, {
+          "sale": "199",
+          "year": "2003"
+      }, {
+          "sale": "134",
+          "year": "2005"
+      }, {
+          "sale": "176",
+          "year": "2010"
+      }
+    ],
+    'Exxon': [
+         {
+          "sale": "150",
+          "year": "2000"
+      }, {
+          "sale": "130",
+          "year": "2001"
+      }, {
+          "sale": "160",
+          "year": "2002"
+      }, {
+          "sale": "140",
+          "year": "2003"
+      }, {
+          "sale": "170",
+          "year": "2005"
+      }, {
+          "sale": "150",
+          "year": "2010"
+      }
+    ]
+  }
+
+
   $(function(){
     var chart = new ChartModel(
-      {keywords: ['BP'], sources: ['New York Times']});
+      {keywords: ['BP', 'Exxon'], sources: ['New York Times']});
     var chartView = new ChartView(
       {el: "#chart-container", model: chart}).render();
   });

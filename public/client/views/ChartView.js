@@ -3,7 +3,9 @@ var ChartView = Backbone.View.extend({
   defaults: {    
     MARGIN: {top: 20, right: 20, bottom: 20, left: 50},
     WIDTH: 1000,
-    HEIGHT: 200
+    HEIGHT: 200,
+    XATTR: 'year',
+    YATTR: 'sale'
   },
 
   events: {
@@ -51,19 +53,61 @@ var ChartView = Backbone.View.extend({
     .attr('class', 'axis')
     .call(yAxis);
 
+    var xAttr = this.options.XATTR;
+    var yAttr = this.options.YATTR;
+
+    // TODO: add axis labels
+
     var lineGen = d3.svg.line()
     .x(function(d) {
-      return xScale(d.year);
+      return xScale(d[xAttr]);
     })
     .y(function(d) {
-      return yScale(d.sale);
+      return yScale(d[yAttr]);
     })
     .interpolate("basis");
 
     this.queriesView.render(this.svg, lineGen);
 
+    setTimeout(this.drawLegend.bind(this), 500);
 
     return this;
-  }
+  },
 
+  drawLegend: function(){
+    var queryList = this.model.queryList;
+
+    var legendRectSize = 18;
+    var legendSpacing = 4;
+    var legend = this.svg.selectAll('.legend')
+      .data(queryList)
+      .enter()
+      .append('g')
+      // .attr('class', 'legend')
+      .attr('transform', function(d, i) {
+        var height = legendRectSize + legendSpacing;
+        var offset =  height * queryList.length / 2;
+        var height = 100;
+        // var offset = 0;
+        // var horz = -2 * legendRectSize;
+        var horz = 100;
+        var vert = 50;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
+
+    queryList.forEach(function(q, i){
+      legend.append('rect')
+        .attr('width', legendRectSize)
+        .attr('height', legendRectSize)
+        .attr('y', 50 * i)
+        .style('fill', q.color)
+        .style('stroke', 'black');
+
+      legend.append('text')
+        .attr('x', legendRectSize + legendSpacing)
+        .attr('y', 50 * i)
+        .text(function(d) { return '"' + q.keyword + '" in ' + q.source; });
+      }
+    );
+  }
 });

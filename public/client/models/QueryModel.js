@@ -5,7 +5,8 @@ var QueryModel = Backbone.Model.extend({
   // Technically the fetching of data from server should happen in here
 
   initialize: function(queryObj){
-    this.data = {};
+    this.articles = {};
+    this.averages = {};
     this.max = 0;
     this.min = 0;
     this.keyword = queryObj.keyword;
@@ -24,10 +25,10 @@ var QueryModel = Backbone.Model.extend({
     })
     .done(function( newData  ) {
       scope.set({
-        data: newData,
-        // this.max = ??,
-        // this.min = ??
+        // data: newData,
+        data: mockData[scope.keyword]
       });
+      // console.log(scope.data);
     });
     return this;
   }
