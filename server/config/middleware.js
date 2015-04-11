@@ -23,9 +23,17 @@ module.exports = function(app, express){
     //http://localhost:8080/data?startDate=20000101&endDate=20010101
 
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
+    
     app.get('/data', function(req, res){
+
         var startDate = req.query.startDate || 00000000;
         var endDate = req.query.endDate || new Date();
+        var timePeriod = req.query.timePeriod;
+
+        if (timePeriod) {
+            res.send("you want groups?");
+        }
+        
         new Article()
             .query('where', 'published', '>', startDate )
             .query('where', 'published', '<', endDate )
