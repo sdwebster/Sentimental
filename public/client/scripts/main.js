@@ -65,7 +65,6 @@ var data2 = [{
     "year": "2010"
 }];
 
-// var data3 = getData();
 
 var vis = d3.select("#visualisation"),
 WIDTH = 1000,
@@ -77,27 +76,27 @@ MARGINS = {
     left: 50
 },
 xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([2000,2010]),
-yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([134,215]),
-xAxis = d3.svg.axis()
-.scale(xScale),
+yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([134,215]);
+// xAxis = d3.svg.axis()
+// .scale(xScale),
 
-yAxis = d3.svg.axis()
-.scale(yScale);
+// yAxis = d3.svg.axis()
+// .scale(yScale);
 
+// // vis.append("svg:g")
+// // .call(xAxis);
 // vis.append("svg:g")
+// .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+// .attr('class', 'axis')
 // .call(xAxis);
-vis.append("svg:g")
-.attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
-.attr('class', 'axis')
-.call(xAxis);
 
-yAxis = d3.svg.axis()
-.scale(yScale)
-.orient("left");
-vis.append("svg:g")
-.attr("transform", "translate(" + (MARGINS.left) + ",0)")
-.attr('class', 'axis')
-.call(yAxis);
+// yAxis = d3.svg.axis()
+// .scale(yScale)
+// .orient("left");
+// vis.append("svg:g")
+// .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+// .attr('class', 'axis')
+// .call(yAxis);
 
 var lineGen = d3.svg.line()
 .x(function(d) {
@@ -108,20 +107,20 @@ var lineGen = d3.svg.line()
 })
 .interpolate("basis");
 
-vis.append('svg:path')
-.attr('d', lineGen(data))
-.attr('stroke', 'green')
-.attr('stroke-width', 2)
-.attr('fill', 'none');
-
-vis.append('svg:path')
-.attr('d', lineGen(data2))
-.attr('stroke', 'blue')
-.attr('stroke-width', 2)
-.attr('fill', 'none');
+// vis.append('svg:path')
+// .attr('d', lineGen(data))
+// .attr('stroke', 'green')
+// .attr('stroke-width', 2)
+// .attr('fill', 'none');
 
 // vis.append('svg:path')
-// .attr('d', lineGen(getData()))
+// .attr('d', lineGen(data2))
 // .attr('stroke', 'blue')
 // .attr('stroke-width', 2)
 // .attr('fill', 'none');
+
+// // vis.append('svg:path')
+// // .attr('d', lineGen(getData()))
+// // .attr('stroke', 'blue')
+// // .attr('stroke-width', 2)
+// // .attr('fill', 'none');

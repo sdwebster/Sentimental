@@ -3,5 +3,6 @@
 // A single chart may have several queries
 var Queries = Backbone.Collection.extend({ 
   model: QueryModel,
-  url: '/data' 
+  // url: '/data' 
+  
 }); 

@@ -4,27 +4,28 @@ var ChartModel = Backbone.Model.extend({
   makeQueryList: function(){
     var sources = this.sources;
     var queryList = [];
-
-    console.log('keywords:', this.keywords);
-    console.log('sources:', this.sources);
     
     this.keywords.forEach(function(kw){
       sources.forEach(function(src){
         queryList.push({'keyword': kw, 'source': src})
       });
     });
-    console.log('now the queryList is:', queryList);
+    // console.log('now the queryList is:', queryList);
     this.set('queries', new Queries (queryList));
   },
 
+  
+
   initialize: function(params){
-    console.log('params:', params);
-    // this.set('keywords', params.keywords]);
+    // console.log('params:', params);
+    // this.keywords = [];
+    // this.sources = [];
+    // this.set('keywords', params.keywords);
     // this.set('sources', params.sources);
     this.keywords = params.keywords; 
     this.sources = params.sources; 
-    console.log('keywords:', this.keywords);
-    console.log('sources:', this.sources);
+    // console.log('keywords:', this.keywords);
+    // console.log('sources:', this.sources);
     
     this.makeQueryList();
     

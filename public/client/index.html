@@ -7,11 +7,10 @@
   <!-- <link rel="stylesheet" type="text/css" href="./styles/styles.css"></link> -->
 </head>
 </body>
-  <div class="container">
+<!--   <div class="container">
     <svg id="visualisation" width="1000" height="200"></svg>
-  </div>
+  </div> -->
   <div id="chart-container">
-    <!-- <svg id="visualisation2" width="1000" height="200"></svg> -->
   </div>
   <!-- <button onclick="transition()">Update</button> -->
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -29,17 +28,10 @@
   <script src="./views/ChartView.js"></script>
   <script>
   $(function(){
-    // set up model objects
-    data3 = getData();
-    var queries = new Queries({keywords: ['BP'], sources: ['New York Times']});
-    var chart = new ChartModel({keywords: ['BP'], sources: ['New York Times']});
-
-    // build a view for the top level of the whole chart
-    var chartView = new ChartView({el: "#chart-container", model: chart});
-
-    // put the view onto the screen
-    chartView.render();
-
+    var chart = new ChartModel(
+      {keywords: ['BP'], sources: ['New York Times']});
+    var chartView = new ChartView(
+      {el: "#chart-container", model: chart}).render();
   });
   // var n = 20, // number of layers
   //     m = 200, // number of samples per layer

@@ -12,30 +12,23 @@ var QueriesView = Backbone.View.extend({
 
   render: function(el) {
     this.el = el;
-    // console.log('collection to render:', this.collection);
-
     this.collection.each(function(query, i){
-      // console.log(i, ": ", query)
       new QueryView({ model: query}).render(el);
-      // render(this.el);
     });
 
+    // this.el.append('svg:path')
+    // .attr('d', lineGen(data))
+    // .attr('stroke', 'green')
+    // .attr('stroke-width', 2)
+    // .attr('fill', 'none');
 
-    this.el.append('svg:path')
-    .attr('d', lineGen(data))
-    .attr('stroke', 'green')
-    .attr('stroke-width', 2)
-    .attr('fill', 'none');
+    // this.el.append('svg:path')
+    // .attr('d', lineGen(data2))
+    // .attr('stroke', 'blue')
+    // .attr('stroke-width', 2)
+    // .attr('fill', 'none');
 
-    this.el.append('svg:path')
-    .attr('d', lineGen(data2))
-    .attr('stroke', 'blue')
-    .attr('stroke-width', 2)
-    .attr('fill', 'none');
-
-    var vis = this.el;
-
-
+    return this;
   }
 
 });
