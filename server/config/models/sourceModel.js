@@ -6,6 +6,12 @@ var Source = db.Model.extend({
 
   articles: function () {
     return this.hasMany(Article);
+  },
+
+  initialize: function () {
+    if (this.isNew()) {
+      this.save()
+    }
   }
 });
 

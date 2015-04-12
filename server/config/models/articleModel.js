@@ -15,10 +15,11 @@ var Article = db.Model.extend({
   },
 
   initialize: function () {
-    this.on('creating', function (model, attrs, options) {
-      
-    })
+    if (this.isNew()) {
+      this.save()
+    }
   }
+  
 });
 
 module.exports = Article;

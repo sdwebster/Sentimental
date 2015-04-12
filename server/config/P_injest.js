@@ -1,21 +1,20 @@
 var bluebird = require('bluebird');
-var request = bluebird.promisifyAll(require('request'));
+var request = bluebird.promisify(require('request'));
 var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
 
-var keys = require('./keys.js').sourceKeys;
+var keys = require('./keys.js').sourceAPIKeys;
 
 var Article = require('./models/articleModel.js');
 var Source = require('./models/sourceModel.js');
 var Word = require('./models/keywordModel.js');
-console.log(Word)
+
 
 var limiter = new RateLimiter(10, 1000);
 
-
 var getSource = R.curry(retrieveRow)(Source);
 var getWord = R.curry(retrieveRow)(Word);
-console.log(retrieveRow(Word, {id: 1}));
+
 var makeArticle = R.curry(constructRow)(Article);
 
 
@@ -29,18 +28,19 @@ function ingestData (searchTerm, beginDate, endDate, sourceName) {
 
 
   return ingestPage(1);
-
+  function logger (item) {
+    item.get('id').then(function(id) {
+      console.log(id);
+    });
+    return item
+  }
   function ingestPage (page) {
-    bluebird.all([getWord({word: searchTerm}), getSource({name: sourceName})])
-      .then(function (args) {
-        return {
-          word: args[0],
-          source: args[1],
-          results: getResults(searchTerm, beginDate, endDate, page)
-        };
-      })
-      .then(function (resolved) {
-        return insert(resolved.word, resolved.source, resolved.results);
+    bluebird.join(
+      getResults(searchTerm, beginDate, endDate, page),
+      logger(getWord({word: searchTerm}).fetch()), 
+      getSource({name: sourceName}).fetch()
+    ).then(function (results, word, source) {
+        return insertArticle(results, word, source);
       }).catch(function (err) {
         errorHandler(err);
       });
@@ -49,7 +49,11 @@ function ingestData (searchTerm, beginDate, endDate, sourceName) {
 
 function errorHandler (err) {
   // do a bunch of super complex error handling stuff...
+  console.log(
+    'ERROR!!!!!____________________________________________________________\n');
   console.log(err);
+  console.log(
+    '______________________________________________________________________\n');
   return err;
 }
 
@@ -65,9 +69,14 @@ function retrieveRow (modelConstructor, identifiers) {
   // given identifiers
   // argument
   // 
-  console.log(modelConstructor);
-  return modelConstructor.forge(identifiers).fetch();
+  return modelConstructor.forge(identifiers);
 };
+
+function insertArticle (results, word, src) {
+  console.log('results', word, src);
+  var article = makeArticle({})
+  return insert(article);
+}
 
 function insert (row) {
   //insert a row into it's table
@@ -75,15 +84,16 @@ function insert (row) {
 }
 
 function getResults (searchTerm, beginDate, endDate, page) {
-  return requestAsync(
-    constructURL(searchTerm, beginDate, endDate, page));
+  return request(constructURL(searchTerm, beginDate, endDate, page));
 }
 
 function constructURL (searchTerm, beginDate, endDate, page) {
-  'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
+  return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
   'headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + 
-  endDate + '&page=' + page + '&api-key=' + keys['New York Times'];
+  endDate + '&page=' + page + '&api-key=' + keys.nyt;
 }
 
-console.log(ingestData('Obama', '20000101', '20150406', 'New York Times'));
+
+ingestData('Al Gore', '20000101', '20150406', 'New York Times')
+
 module.exports = ingestData;
