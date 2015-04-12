@@ -60,12 +60,15 @@ module.exports = function(app, express){
         
     });
 
-    //Manual Initiation for sending data to indico.io to retrive a sentiment analysis 
+    // Manual Initiation for sending data to indico.io to retrive a sentiment analysis 
     app.get('/calc', function (req, res){
         indico(req, res);
     });
+    // Automatic start and continuous checking the database every 60 seconds for new data to be sent to indico.io API
+    // If left running 24 hours per day a call every 60 seconds will result in 1440 calls per day.
+    setInterval(function(){indico()}, 60000);  
 
-    /// catch 404 and forward to error handler
+    // catch 404 and forward to error handler
     app.use(function(req, res, next) {
         var err = new Error('Not Found');
         err.status = 404;
