@@ -7,7 +7,8 @@ var ChartView = Backbone.View.extend({
     START_YEAR: 2005,
     END_YEAR: 2015,
     XATTR: 'year',
-    YATTR: 'count'
+    // can choose between 'count' and 'averageSentiment'
+    YATTR: 'averageSentiment'
   },
 
   events: {

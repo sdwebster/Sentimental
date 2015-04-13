@@ -44,8 +44,8 @@ var QueryModel = Backbone.Model.extend({
     var scope = this;
 
     var frequencyTally = {};
-    var totalSentiments = {};
-    var averageSentiments = {};
+    var totalSentiment = {};
+    var averageSentiment = {};
     console.log('freq counts:', frequencyTally);
     
     var articles = this.get('responseData').map(function(obj){
@@ -60,36 +60,28 @@ var QueryModel = Backbone.Model.extend({
       article['year'] = year;
     });
 
-    console.log('all the articles:', articles);
     articles.forEach(function(article){
       var year = article['year'];
       console.log('year:', year);
       if (!frequencyTally.hasOwnProperty(year)){
         frequencyTally[year] = 0;
+        totalSentiment[year] = 0;
       }
-      // console.log('this year: ', year, frequencyTally[year]);
       frequencyTally[year] = frequencyTally[year] + 1;
-      // console.log('this year: ', year, frequencyTally[year]);
+      totalSentiment[year] = totalSentiment[year] + article['sentiment'];
     });
-    console.log(frequencyTally);
-    // console.log('final freq counts:', frequencyTally);
-    //   scope.get('frequencyTally').set({year:
-    //     scope.get('frequencyTally').get(year) + 1});
-    // });
-    // console.log(frequencyTally);
-    // this.displayLine();
-    
-    // put the object in a slightly different format to graph it
 
-    var frequencyDataPoints = _.reduce(frequencyTally, function(memo, tally, year){
+    // put summary data into array format to graph it
+    var summaryDataPoints = _.reduce(frequencyTally, function(memo, tally, year){
       var dataPoint = {};
       dataPoint.count = tally;
       dataPoint.year = year;
-      return memo.concat([dataPoint]);
-    },[]);
+      dataPoint.averageSentiment = totalSentiment[ year ] / tally;
+      return memo.concat( [dataPoint] );
+    }, [] );
 
-    console.log('frequencyDataPoints', frequencyDataPoints);
-    this.set('frequencyDataPoints', frequencyDataPoints);
+    console.log('summaryDataPoints', summaryDataPoints);
+    this.set('summaryDataPoints', summaryDataPoints);
   },
 
 
