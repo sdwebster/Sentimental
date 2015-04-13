@@ -8,15 +8,15 @@ var Articles = require('./collections/articles.js');
 indico.apiKey = keys.indicoAPIKey.key;
 
 function calcData(req, res){
-
+	console.log('calcData run ', new Date());
 	var fromDataBase= [];
-	// Get the data from the database - initIal search will be headlines.
+	// Get the data from the database - initial search will be headlines.
 	new Article()
+	// Search only for values that have not yet been calculated.
 		.query('whereNull', 'sentiment')
 	  .fetchAll()
 	  .then(function(articles) {
 	    var temp = toIndico(articles, res);
-	    res.send("action completed - indico.js line 20ish");
 
 			// Send to indico for calculation
 			// Indico.io batch requests allow you to process larger volumes of data more efficiently 
@@ -37,13 +37,12 @@ function calcData(req, res){
 
 	  }).catch(function(error) {
 	    console.log(error);
-	    res.send('An error occured');
 	  });
 
 
 // Extract the Data from the object and place it into an array to send to indico.io
 	function toIndico (value, res){
-		// Use JSON to remove any functions returned with query
+		// Use JSON to remove any functions returned with the query
 		value = JSON.parse(JSON.stringify(value));
 
 		var sentiment = [];
@@ -55,8 +54,7 @@ function calcData(req, res){
 
 // Take the response from the array, for each row, insert into corresponding sentiment row.
 	function updateDataBase (sentiment, articles){
-		// Use JSON to remove any functions returned with query
-
+		// Use JSON to remove any functions returned with the query
 		var articles = JSON.parse(JSON.stringify(articles));
 		articles.map(function(value, index){
 			new Article({'id': value.id})
