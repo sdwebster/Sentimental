@@ -1,14 +1,8 @@
 
 var logger = require('morgan');
 var path = require('path');
-var favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var fs = require('fs');
-var ejs = require('ejs');
-var handlebars = require('express-handlebars');
-var Article = require('./models/articleModel.js');
-var Articles = require('./collections/articles.js');
 var indico = require('./indico.js');
 var fetchData = require('./fetchData.js');
 
