@@ -4,10 +4,10 @@ var ChartView = Backbone.View.extend({
     MARGIN: {top: 20, right: 20, bottom: 20, left: 50},
     WIDTH: 1000,
     HEIGHT: 200,
-    START_YEAR: 2000,
-    END_YEAR: 2010,
+    START_YEAR: 2005,
+    END_YEAR: 2015,
     XATTR: 'year',
-    YATTR: 'sale'
+    YATTR: 'count'
   },
 
   events: {
@@ -33,7 +33,7 @@ var ChartView = Backbone.View.extend({
       ),
     yScale = d3.scale.linear().range(
       [this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom]
-      ).domain([134,215]),
+      ).domain([0,10]),
 
     xAxis = d3.svg.axis()
     .scale(xScale),

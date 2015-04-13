@@ -28,22 +28,21 @@ var QueryView = Backbone.View.extend({
   render: function() {
     this.svgPath = this.parent.append('svg:path');
 
-    this.model.on('change', this.displayLine, this);
+    this.model.on('change:responseData', this.displayData, this);
     this.model.queryServer();
   },
 
-  displayLine: function() {
-    this.manipulateData();
+  // handleResponseData: function() {
+
+  // },
+
+  displayData: function() {
     // console.log('time to display line for model: ', this.model);
-    this.svgPath.attr('d', this.lineGen(this.model.get('data')))
+    this.model.handleResponseData();
+    this.svgPath.attr('d', this.lineGen(this.model.get('frequencyDataPoints')))
       .attr('stroke', this.model.get('color'))
       .attr('stroke-width', 2)
       .attr('fill', 'none');
   },
-
-  manipulateData: function() {
-    // console.log('time to manipulate ', this.model.get('data'));
-    // here is where we can calculate averages
-  }
 
 });
