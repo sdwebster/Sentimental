@@ -17,7 +17,6 @@ function calcData(req, res){
 	  .fetchAll()
 	  .then(function(articles) {
 	    var temp = toIndico(articles, res);
-	    // res.send("action completed - indico.js line 20ish");
 
 			// Send to indico for calculation
 			// Indico.io batch requests allow you to process larger volumes of data more efficiently 
@@ -38,7 +37,6 @@ function calcData(req, res){
 
 	  }).catch(function(error) {
 	    console.log(error);
-	    // res.send('An error occured');
 	  });
 
 
