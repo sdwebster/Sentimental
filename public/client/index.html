@@ -75,7 +75,7 @@
 
   $(function(){
     var chart = new ChartModel(
-      {keywords: ['BP', 'Exxon'], sources: ['New York Times']});
+      {keywords: ['BP'/*, 'Exxon'*/], sources: ['New York Times']});
     var chartView = new ChartView(
       {el: "#chart-container", model: chart}).render();
   });
