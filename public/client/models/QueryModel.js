@@ -55,7 +55,7 @@ var QueryModel = Backbone.Model.extend({
     // could vary this function if time period is not '1 year'
     // could use a more generic word like 'timeSpan' insted of 'year'
     articles.forEach(function(article){
-      // provisionally, convert dates manually
+      // provisionally, convert date formats manually
       var year = article['published'].substring(0, 4);
       article['year'] = year;
     });

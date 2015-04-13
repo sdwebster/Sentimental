@@ -3,7 +3,7 @@ var ChartView = Backbone.View.extend({
   defaults: {    
     MARGIN: {top: 20, right: 20, bottom: 20, left: 50},
     WIDTH: 1000,
-    HEIGHT: 200,
+    HEIGHT: 400,
     START_YEAR: 2005,
     END_YEAR: 2015,
     XATTR: 'year',
@@ -34,7 +34,7 @@ var ChartView = Backbone.View.extend({
       ),
     yScale = d3.scale.linear().range(
       [this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom]
-      ).domain([0,10]),
+      ).domain([0,5]),
 
     xAxis = d3.svg.axis()
     .scale(xScale),
