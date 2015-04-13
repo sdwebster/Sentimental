@@ -10,6 +10,7 @@ var handlebars = require('express-handlebars');
 var Article = require('./models/articleModel.js');
 var Articles = require('./collections/articles.js');
 var indico = require('./indico.js');
+var fetchData = require('./fetchData.js');
 
 module.exports = function(app, express){
 
@@ -24,40 +25,8 @@ module.exports = function(app, express){
 
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
     
-    app.get('/data', function(req, res){
-
-        var startDate = req.query.startDate || 00000000;
-        var endDate = req.query.endDate || new Date();
-        var timePeriod = req.query.timePeriod;
-
-
-        // SELECT YEAR(published), MONTH(published), COUNT(id) FROM sentimentalDev.articles GROUP BY YEAR(published), MONTH(published)
-
-        if (timePeriod) {
-            new Article()
-                .query('count')
-                .query('where', 'published', '>', startDate )
-                .query('where', 'published', '<', endDate )
-                .fetchAll()
-                .then(function(frequencies) {
-                    res.send(frequencies.toJSON());
-                }).catch(function(error) {
-                    console.log(error);
-                    res.send('An error occured');
-                });
-        } else {
-            new Article()
-                .query('where', 'published', '>', startDate )
-                .query('where', 'published', '<', endDate )
-                .fetchAll()
-                .then(function(articles) {
-                  res.send(articles.toJSON());
-                }).catch(function(error) {
-                  console.log(error);
-                  res.send('An error occured');
-                });
-        }
-        
+    app.get('/data', function (req, res){
+        fetchData(req, res);
     });
 
     // Manual Initiation for sending data to indico.io to retrive a sentiment analysis 
@@ -66,7 +35,7 @@ module.exports = function(app, express){
     });
     // Automatic start and continuous checking the database every 60 seconds for new data to be sent to indico.io API
     // If left running 24 hours per day a call every 60 seconds will result in 1440 calls per day.
-    setInterval(function(){indico()}, 60000);  
+    // setInterval(function(){indico()}, 60000);  
 
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
