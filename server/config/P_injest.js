@@ -15,7 +15,18 @@ var limiter = new RateLimiter(10, 1000);
 var getSource = R.curry(retrieveRow)(Source);
 var getWord = R.curry(retrieveRow)(Word);
 
-var makeArticle = R.curry(constructRow)(Article);
+var makeArticle = R.curry(function(source, word, article){
+  return constructRow(Article, function(){
+    return {
+      source: source.get('id'),
+      word: word.get('id'),
+      published: article.pub_date,
+      url: article.web_url,
+      headline: article.headline.main,
+      // authorFN: article.byline.person.original,
+    }
+  }())
+});
 
 
 function ingestData (searchTerm, beginDate, endDate, sourceName) {
@@ -26,25 +37,30 @@ function ingestData (searchTerm, beginDate, endDate, sourceName) {
   // the database
   // 
 
+  bluebird.join(
+      getWord({word: searchTerm}), 
+      getSource({name: sourceName})
+      ).then(ingestPage)
 
-  return ingestPage(1);
-  function logger (item) {
-    item.get('id').then(function(id) {
-      console.log(id);
-    });
-    return item
+  // return ingestPage(1);
+  function ingestPage (data, page) {
+    page = 1;
+    console.log()
+      getResults(searchTerm, beginDate, endDate, page)
+        .then(function (results) {
+          return insertArticle(results, data[0], data[1]);
+        })
+      // .catch(function (err) {
+      //     errorHandler(err);
+      //   });
   }
-  function ingestPage (page) {
-    bluebird.join(
-      getResults(searchTerm, beginDate, endDate, page),
-      logger(getWord({word: searchTerm}).fetch()), 
-      getSource({name: sourceName}).fetch()
-    ).then(function (results, word, source) {
-        return insertArticle(results, word, source);
-      }).catch(function (err) {
-        errorHandler(err);
-      });
-  }
+}
+
+function logger (item) {
+  item.get('id').then(function(id) {
+    console.log(id);
+  });
+  return item
 }
 
 function errorHandler (err) {
@@ -57,8 +73,14 @@ function errorHandler (err) {
   return err;
 }
 
+function sliceArgs (context, start, end) {
+  Array.prototype.slice.call(context, start, end);
+}
+
+// (* -> Model) -> {} -> Model
 function constructRow (modelConstructor, columns) {
-  return modelConstructor.forge(columns);
+  console.log(arguments);
+  return modelConstructor.forge(sliceArgs(arguments, 1));
 }
 
 
@@ -72,10 +94,14 @@ function retrieveRow (modelConstructor, identifiers) {
   return modelConstructor.forge(identifiers);
 };
 
-function insertArticle (results, word, src) {
-  console.log('results', word, src);
-  var article = makeArticle({})
-  return insert(article);
+function insertArticle (results, word, source) {
+  // console.log(results[0].body);
+  // console.log(Object.keys(JSON.parse(results)));
+  return JSON.parse(results[0].body)['response'].docs.map(
+    R.composeP(
+      insert,
+      makeArticle(source, word)
+    ));
 }
 
 function insert (row) {
