@@ -36,43 +36,54 @@ var ChartView = Backbone.View.extend({
       [this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom]
       ).domain([0,5]),
 
+    xAttr = this.options.XATTR,
+    yAttr = this.options.YATTR,
+
+    xMap = function(d) { return xScale(d[xAttr]);}, // data -> display
+    yMap = function(d) { return yScale(d[yAttr]);}, // data -> display
+
     xAxis = d3.svg.axis()
     .scale(xScale),
     yAxis = d3.svg.axis()
-    .scale(yScale);
+      .scale(yScale)
+      .orient("left");
 
     this.svg = d3.select(this.el).append("svg")
     .attr('height', this.options.HEIGHT)
     .attr('width', this.options.WIDTH);
 
     this.svg.append("svg:g")
-    .attr("transform", "translate(0," + (this.options.HEIGHT - this.options.MARGIN.bottom) + ")")
-    .attr('class', 'axis')
-    .call(xAxis);
+        .attr("transform", "translate(0," + (this.options.HEIGHT - this.options.MARGIN.bottom) + ")")
+        .attr('class', 'axis')
+        .call(xAxis)
+      .append("text")
+        .attr("class", "label")
+        .style("text-anchor", "end")
+        .attr("x", 100)
+        .attr("y", -6)
+        .text("Time");
 
-    yAxis = d3.svg.axis()
-    .scale(yScale)
-    .orient("left");
+
     this.svg.append("svg:g")
-    .attr("transform", "translate(" + (this.options.MARGIN.left) + ",0)")
-    .attr('class', 'axis')
-    .call(yAxis);
-
-    var xAttr = this.options.XATTR;
-    var yAttr = this.options.YATTR;
+        .attr("transform", "translate(" + (this.options.MARGIN.left) + ",0)")
+        .attr('class', 'axis')
+        .call(yAxis)
+      .append('text')
+        .attr("class", "label")
+        .attr("y", 6)
+        .attr("dy", ".71em")
+        .attr("transform", "rotate(-90)")
+        .style("text-anchor", "end")
+        .text("Sentiment");
 
     // TODO: add axis labels
 
     var lineGen = d3.svg.line()
-    .x(function(d) {
-      return xScale(d[xAttr]);
-    })
-    .y(function(d) {
-      return yScale(d[yAttr]);
-    })
+    .x(xMap)
+    .y(yMap)
     .interpolate("basis");
 
-    this.queriesView.render(this.svg, lineGen);
+    this.queriesView.render(this.svg, lineGen, xMap, yMap);
 
     this.drawLegend();
 

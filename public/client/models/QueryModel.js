@@ -25,9 +25,10 @@ var QueryModel = Backbone.Model.extend({
     var scope = this;
     $.ajax({  
       // could easily make this depend on keyword, source
-      url: "/data?startDate=20101214&endDate=20150114",
+      url: "/data?startDate=20101214&endDate=20150114&source=newyorktimes&keyword=BP",
     })
     .done(function( newData  ) {
+      console.log('receiving data: ', newData);
       scope.set({
         responseData: newData,
 
@@ -80,7 +81,7 @@ var QueryModel = Backbone.Model.extend({
       return memo.concat( [dataPoint] );
     }, [] );
 
-    console.log('summaryDataPoints', summaryDataPoints);
+    this.set('articles', articles);
     this.set('summaryDataPoints', summaryDataPoints);
   },
 
