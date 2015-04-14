@@ -5,7 +5,7 @@ var QueriesView = Backbone.View.extend({
   initialize: function() {
   },
 
-  render: function(el, lineGen, xMap, yMap) {
+  render: function(el, lineGen, xMap, yMap, startDate, endDate) {
     // console.log('lineGen:', lineGen);
     var scope = this;
     this.el = el;
@@ -15,7 +15,9 @@ var QueriesView = Backbone.View.extend({
         parentEl: el,
         lineGen: lineGen,
         xScale: xMap,
-        yScale: yMap
+        yScale: yMap,
+        startDate: startDate,
+        endDate: endDate 
       }).render();
     });
     return this;
