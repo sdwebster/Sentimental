@@ -11,10 +11,15 @@ var QueryModel = Backbone.Model.extend({
     this.totalSentiments = {};
     this.averages = {};
 
-    this.max = 0;
-    this.min = 0;
+    this.maxSentiment = 0;
+    this.minSentiment = 0;
     this.keyword = queryObj.keyword;
     this.source = queryObj.source;
+    this.url =
+      '/data?startDate=' + '20101214' +
+      '&endDate=' + '20150114' +
+      '&source=' + 'newyorktimes' +
+      '&keyword=' + 'BP'; 
   },
 
   react: function(){
@@ -25,7 +30,8 @@ var QueryModel = Backbone.Model.extend({
     var scope = this;
     $.ajax({  
       // could easily make this depend on keyword, source
-      url: "/data?startDate=20101214&endDate=20150114&source=newyorktimes&keyword=BP",
+      url: scope.url
+      // url: "/data?startDate=20101214&endDate=20150114&source=newyorktimes&keyword=BP",
     })
     .done(function( newData  ) {
       console.log('receiving data: ', newData);
@@ -43,11 +49,12 @@ var QueryModel = Backbone.Model.extend({
   handleResponseData: function(){
     // calculate frequency counts and averages
     var scope = this;
+    var maxSentiment = 0;
+    var minSentiment = 0;
 
     var frequencyTally = {};
     var totalSentiment = {};
     var averageSentiment = {};
-    console.log('freq counts:', frequencyTally);
     
     var articles = this.get('responseData').map(function(obj){
       return _.pick(obj, 'published', 'sentiment', 'url');
@@ -63,13 +70,18 @@ var QueryModel = Backbone.Model.extend({
 
     articles.forEach(function(article){
       var year = article['year'];
-      console.log('year:', year);
+      var sentiment = article['sentiment'];
+      if (sentiment > maxSentiment){
+        maxSentiment = sentiment;
+      } else if (sentiment < minSentiment){
+        minSentiment = sentiment;
+      }
       if (!frequencyTally.hasOwnProperty(year)){
         frequencyTally[year] = 0;
         totalSentiment[year] = 0;
       }
       frequencyTally[year] = frequencyTally[year] + 1;
-      totalSentiment[year] = totalSentiment[year] + article['sentiment'];
+      totalSentiment[year] = totalSentiment[year] + sentiment;
     });
 
     // put summary data into array format to graph it
@@ -82,6 +94,8 @@ var QueryModel = Backbone.Model.extend({
     }, [] );
 
     this.set('articles', articles);
+    this.set('maxSentiment', maxSentiment);
+    this.set('minSentiment', minSentiment);
     this.set('summaryDataPoints', summaryDataPoints);
   },
 
