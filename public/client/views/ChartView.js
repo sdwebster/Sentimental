@@ -11,6 +11,7 @@ var ChartView = Backbone.View.extend({
     YATTR: 'averageSentiment'
   },
 
+  // currently working
   events: {
     'click': function() {
       console.log('clicked me!');
@@ -62,7 +63,6 @@ var ChartView = Backbone.View.extend({
         .attr("x", 100)
         .attr("y", -6)
         .text("Time");
-
 
     this.svg.append("svg:g")
         .attr("transform", "translate(" + (this.options.MARGIN.left) + ",0)")

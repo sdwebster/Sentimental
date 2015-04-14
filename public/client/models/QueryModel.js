@@ -5,16 +5,17 @@ var QueryModel = Backbone.Model.extend({
   // Technically the fetching of data from server should happen in here
 
   initialize: function(queryObj){
+    this.keyword = queryObj.keyword;
+    this.source = queryObj.source;
+
     this.responseData = [];
     this.articles = [];
     this.frequencyCounts = {};
     this.totalSentiments = {};
     this.averages = {};
-
     this.maxSentiment = 0;
     this.minSentiment = 0;
-    this.keyword = queryObj.keyword;
-    this.source = queryObj.source;
+
     this.url =
       '/data?startDate=' + '20101214' +
       '&endDate=' + '20150114' +
@@ -22,6 +23,7 @@ var QueryModel = Backbone.Model.extend({
       '&keyword=' + 'BP'; 
   },
 
+  // currently QueryView is not registering clicks, so this react is not called
   react: function(){
     console.log('you clicked my view (im a QueryModel)!');
   },

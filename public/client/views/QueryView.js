@@ -21,6 +21,7 @@ var QueryView = Backbone.View.extend({
     // console.log('lineGen:', this.lineGen);  
   }, 
  
+  // currently unable to register these clicks
   events: {
     'click': function() {
       console.log('clicked me (im a QueryView)!');

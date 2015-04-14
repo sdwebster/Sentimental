@@ -14,10 +14,11 @@ var ChartModel = Backbone.Model.extend({
       });
     });
     this.queryList = queryList;
-    console.log('list:', Array.isArray(this.queryList));
+    // console.log('list:', Array.isArray(this.queryList));
     this.set('queries', new Queries (queryList));
   },
 
+  // currently working
   react: function(){
     console.log('you clicked my view!');
   },
@@ -25,7 +26,7 @@ var ChartModel = Backbone.Model.extend({
   initialize: function(params){
     this.keywords = params.keywords; 
     this.sources = params.sources;  
-    this.queryList = 'temp';  
+    this.queryList = [];  
     this.colors = ['red', 'green', 'blue', 'orange'];
     this.makeQueryList();
 
