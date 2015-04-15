@@ -42,7 +42,7 @@ db.knex.schema.hasTable('articles').then(function (exists) {
       article.increments('id').primary();
       article.integer('source').unsigned().references('id').inTable('sources');
       article.integer('word').unsigned().references('id').inTable('keywords');
-      article.string('published', 25);
+      article.date('published');
       article.string('url', 225);
       article.string('headline', 225);
       article.float('sentiment');

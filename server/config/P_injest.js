@@ -31,14 +31,14 @@ var getWord = retrieveRow(Word);
 
 
 var makeArticle = R.curry(function(source, word, article){
-  console.log('pub_date: ' + article.pub_date)
+  console.log('pub_date: ' + new Date (article.pub_date))
   console.log('web_url: ' + article.web_url)
   console.log('headline: ' + article.headline.main)
   return constructRow(Article, function(){
     return {
       source: source.get('id'),
       word: word.get('id'),
-      published: article.pub_date,
+      published: new Date(article.pub_date),
       url: article.web_url,
       headline: article.headline.main,
     }

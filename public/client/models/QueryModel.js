@@ -17,7 +17,7 @@ var QueryModel = Backbone.Model.extend({
     this.minSentiment = 0;
 
     this.url =
-      '/data?startDate=' + '20101214' +
+      '/data?startDate=' + '20001214' +
       '&endDate=' + '20150114' +
       '&source=' + 'newyorktimes' +
       '&keyword=' + 'BP'; 
