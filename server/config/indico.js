@@ -17,7 +17,8 @@ function calcData(req, res){
 	  .fetchAll()
 	  .then(function(articles) {
 	    var temp = toIndico(articles, res);
-
+	    console.log('Got to this point.');
+	    // console.log(articles);
 			// Send to indico for calculation
 			// Indico.io batch requests allow you to process larger volumes of data more efficiently 
 			// by grouping many examples into a single request. Simply call the batch method 
@@ -26,18 +27,19 @@ function calcData(req, res){
 			  .batchSentiment(temp)
 			  .then(function(sentiments){
 					updateDataBase(sentiments, articles);
-			  })
-			  .catch(function(err){
-			    console.log('err: ', err);
+			  });
+			  // .catch(function(err){
+			  //   console.log('err: ', err);
 			});
 
 
 
 
 
-	  }).catch(function(error) {
-	    console.log(error);
-	  });
+
+	  // }).catch(function(error) {
+	  //   console.log(error);
+	  // });
 
 
 // Extract the Data from the object and place it into an array to send to indico.io
