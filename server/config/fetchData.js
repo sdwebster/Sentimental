@@ -9,9 +9,9 @@ var fetchData = function (req, res){
   //Parse url queries for us in table lookup
   var startDate = req.query.startDate || 00000000;
   var endDate = req.query.endDate || new Date();
+  // Spaces in keyword queries must be percent encoded (e.g Jeb Bush -> Jeb%20Bush)
   var keyword = req.query.keyword;
   var source = req.query.source;
-  var timePeriod = req.query.timePeriod;
 
   // Both keywordId and sourceId return promises
   var keywordId = function(){
@@ -43,37 +43,3 @@ var fetchData = function (req, res){
 };
 
 module.exports = fetchData;
-
- 
-
-
-
-// var fetchID = function (table, value){
-//   //TODO refactor with lookup to keyword/source tables
-//   if (table = 'keywords'){
-//     new Keywords({word: 'BP'})
-//   }
-
-  // if (table === 'keywords' && value === 'BP'){
-  //     return 1;
-  // } else if (table === 'sources' && value === 'newyorktimes'){
-  //     return 1;
-  // }
-// };
-
-  // if (timePeriod) {
-  //     res.send('We\'ll get to this');
-  //     //TODO refactor out
-  //     // newyorktimesew Article()
-  //     //     .query('count')
-  //     //     .query('where', 'published', '>', startDate )
-  //     //     .query('where', 'published', '<', endDate )
-  //     //     .fetchAll()
-  //     //     .then(function(frequencies) {
-  //     //         res.send(frequencies.toJSON());
-  //     //     }).catch(function(error) {
-  //     //         console.log(error);
-  //     //         res.send('An error occured');
-  //     //     });
-  // } else {
-  // }
