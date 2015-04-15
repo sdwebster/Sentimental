@@ -17,12 +17,11 @@
     "strict"   : true,
     "unused"   : true,
     "curly"    : true,
-    "devel"    : true
+    "devel"    : true,
     "immed"    : true,
     "noarg"    : true,
     "undef"    : true,
     "node"     : true,
-
     "globals": {
         "Sentimental": true,
         "sentimental": true,
@@ -31,11 +30,11 @@
         "describe": false,
         "require": true,
         "assert": true,
-        "define": false
+        "define": false,
         "expect": true,
         "should": true,
         "JST": false,
         "it": false,
-        "_": true,
+        "_": true
     }
 }
