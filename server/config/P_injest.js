@@ -19,6 +19,7 @@ var retrieveRow = R.curry(function (modelConstructor, identifiers) {
     .query({where: identifiers})
     .fetch().then(function (row) {
       if (row === undefined || row === null) {
+        console.log('row does not exist');
         return constructRow(modelConstructor, identifiers);
       }
       return row;
@@ -30,37 +31,44 @@ var getWord = retrieveRow(Word);
 
 
 var makeArticle = R.curry(function(source, word, article){
+  console.log('pub_date: ' + article.pub_date)
+  console.log('web_url: ' + article.web_url)
+  console.log('headline: ' + article.headline.main)
   return constructRow(Article, function(){
     return {
-      source: logger(source).get('id'),
-      word: logger(word).get('id'),
+      source: source.get('id'),
+      word: word.get('id'),
       published: article.pub_date,
       url: article.web_url,
       headline: article.headline.main,
-      // authorFN: article.byline.person.original,
     }
   }())
 });
 
 
-function ingestData (searchTerm, beginDate, endDate, sourceName) {
+
+function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
   // get all the data from an
   // API in the specified 
   // date range and insert 
   // all of the entries into
   // the database
   // 
+  page = page || 0;
 
   bluebird.join(
-      getWord({word: searchTerm}), 
-      getSource({name: sourceName})
+      (function(){
+        return logger(getWord({ word: searchTerm }))
+       })(), 
+       (function(){
+          console.log('making sourceModel: ')
+          return logger(getSource({name: sourceName}))
+        })()
       ).then(ingestPage)
 
   // return ingestPage(1);
-  function ingestPage (data, page) {
-    page = 1;
-    logger(data);
-      getResults(searchTerm, beginDate, endDate, page)
+  function ingestPage (data) {
+      getResults(searchTerm, beginDate, endDate, sourceName, page)
         .then(function (results) {
           return insertArticle(results, data[0], data[1]);
         })
@@ -101,7 +109,7 @@ function sliceArgs (context, start, end) {
 // (* -> Model) -> {} -> Model
 function constructRow (modelConstructor, columns) {
   //console.log(arguments);
-  return modelConstructor.forge(sliceArgs(arguments, 1));
+  return new modelConstructor(sliceArgs(arguments, 1)).set(columns);
 }
 
 
@@ -116,12 +124,18 @@ function insertArticle (results, word, source) {
 }
 
 function insert (row) {
-  //insert a row into it's table
-  return logger(row.save().then(function(row){logger(row)}))
+  return row.save()
 }
 
-function getResults (searchTerm, beginDate, endDate, page) {
-  return request(constructURL(searchTerm, beginDate, endDate, page));
+function getResults (searchTerm, beginDate, endDate, source, page) {
+  return request(constructURL(searchTerm, beginDate, endDate, page))
+  .then(function (results) {
+    var res = JSON.parse(results[0].body).response;
+    if (res.meta.hits > (res.meta.offset + 10)) {
+      ingestData(searchTerm, beginDate, endDate, source, (page + 1));
+    }
+    return results;
+  });
 }
 
 function constructURL (searchTerm, beginDate, endDate, page) {
@@ -131,6 +145,6 @@ function constructURL (searchTerm, beginDate, endDate, page) {
 }
 
 
-ingestData('Al Gore', '20000101', '20150406', 'New York Times')
+ingestData('BP', '20000101', '20150406', 'New York Times')
 
 module.exports = ingestData;
