@@ -5,23 +5,28 @@ var Source = require('./models/sourceModel.js');
 var bluebird = require('bluebird');
 
 var fetchData = function (req, res){
+
+  //Parse url queries for us in table lookup
   var startDate = req.query.startDate || 00000000;
   var endDate = req.query.endDate || new Date();
+  var keyword = req.query.keyword;
+  var source = req.query.source;
   var timePeriod = req.query.timePeriod;
 
+  // Both keywordId and sourceId return promises
   var keywordId = function(){
-    return new Keyword({'word': 'Jeb Bush'})
+    return new Keyword({'word': keyword})
     .fetch();
   };
 
   var sourceId = function(){
-    return new Source({'name': 'newyorktimes'})
+    return new Source({'name': source})
     .fetch();
   };
 
+  // bluebird is used to resolve promises retured by keywordId and sourceId
   bluebird.join(keywordId(), sourceId())
     .then(function(array){
-      console.log('our promises are back: ', array[0].get('id'), 'whats this?', array[1].get('id'));
       return new Article()
         .query('where', 'published', '>', startDate )
         .query('where', 'published', '<', endDate )
@@ -35,8 +40,7 @@ var fetchData = function (req, res){
       console.log(error);
       res.send('An error occured, please ensure that you request a keyword and source.');
     });
-}
-
+};
 
 module.exports = fetchData;
 
