@@ -9,9 +9,13 @@ var Source = db.Model.extend({
   },
 
   initialize: function () {
-    if (this.isNew()) {
-      this.save()
-    }
+    this.fetch().then(function (data) {
+      console.log('DATA: ' + JSON.stringify(data));
+       if(data === null) {
+        console.log('new!')
+        this.save()
+       }
+    })
   }
 });
 

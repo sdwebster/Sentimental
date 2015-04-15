@@ -9,9 +9,8 @@ var Word = db.Model.extend({
   },
 
   initialize: function () {
-    console.log('THIS: ' + JSON.stringify(this));
     this.fetch().then(function (data) {
-      console.log('DATA: ' + data);
+      console.log('DATA: ' + JSON.stringify(data));
        if(data === undefined) {
         console.log('new!')
         this.save()

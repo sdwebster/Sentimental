@@ -12,14 +12,28 @@ var Word = require('./models/keywordModel.js');
 
 var limiter = new RateLimiter(10, 1000);
 
-var getSource = R.curry(retrieveRow)(Source);
-var getWord = R.curry(retrieveRow)(Word);
+
+
+var retrieveRow = R.curry(function (modelConstructor, identifiers) {
+  return new modelConstructor()
+    .query({where: identifiers})
+    .fetch().then(function (row) {
+      if (row === undefined || row === null) {
+        return constructRow(modelConstructor, identifiers);
+      }
+      return row;
+    });
+});
+
+var getSource = retrieveRow(Source);
+var getWord = retrieveRow(Word);
+
 
 var makeArticle = R.curry(function(source, word, article){
   return constructRow(Article, function(){
     return {
-      source: source.get('id'),
-      word: word.get('id'),
+      source: logger(source).get('id'),
+      word: logger(word).get('id'),
       published: article.pub_date,
       url: article.web_url,
       headline: article.headline.main,
@@ -45,7 +59,7 @@ function ingestData (searchTerm, beginDate, endDate, sourceName) {
   // return ingestPage(1);
   function ingestPage (data, page) {
     page = 1;
-    console.log()
+    logger(data);
       getResults(searchTerm, beginDate, endDate, page)
         .then(function (results) {
           return insertArticle(results, data[0], data[1]);
@@ -56,10 +70,17 @@ function ingestData (searchTerm, beginDate, endDate, sourceName) {
   }
 }
 
-function logger (item) {
-  item.get('id').then(function(id) {
-    console.log(id);
-  });
+// a -> key || undefined -> a
+function logger (item, key) {
+    if(key !== undefined) {
+      logger(item[key])
+    } else if (item === null || item === undefined) {
+      console.log(item);
+    }else if(
+      item.constructor === Object ||
+      item.constructor === Array) {
+        console.log(JSON.stringify(item));
+      }
   return item
 }
 
@@ -79,20 +100,10 @@ function sliceArgs (context, start, end) {
 
 // (* -> Model) -> {} -> Model
 function constructRow (modelConstructor, columns) {
-  console.log(arguments);
+  //console.log(arguments);
   return modelConstructor.forge(sliceArgs(arguments, 1));
 }
 
-
-function retrieveRow (modelConstructor, identifiers) {
-  // create an instance of
-  // a given model from DB
-  // selected based on the
-  // given identifiers
-  // argument
-  // 
-  return modelConstructor.forge(identifiers);
-};
 
 function insertArticle (results, word, source) {
   // console.log(results[0].body);
@@ -106,7 +117,7 @@ function insertArticle (results, word, source) {
 
 function insert (row) {
   //insert a row into it's table
-  return row.save();
+  return logger(row.save().then(function(row){logger(row)}))
 }
 
 function getResults (searchTerm, beginDate, endDate, page) {
