@@ -1,57 +1,45 @@
 var keys = require('./keys.js');
 var Article = require('./models/articleModel.js');
-var Articles = require('./collections/articles.js');
 var Keyword = require('./models/keywordModel.js');
-var Keywords = require('./collections/keywords.js');
 var Source = require('./models/sourceModel.js');
-var Sources = require('./collections/sources.js');
-
+var bluebird = require('bluebird');
 
 var fetchData = function (req, res){
-    var startDate = req.query.startDate || 00000000;
-    var endDate = req.query.endDate || new Date();
-    var timePeriod = req.query.timePeriod;
-    var keyword = fetchID('keywords', req.query.keyword);
-    var source = fetchID('sources', req.query.source);
 
-    new Article()
+  //Parse url queries for us in table lookup
+  var startDate = req.query.startDate || 00000000;
+  var endDate = req.query.endDate || new Date();
+  // Spaces in keyword queries must be percent encoded (e.g Jeb Bush -> Jeb%20Bush)
+  var keyword = req.query.keyword;
+  var source = req.query.source;
+
+  // Both keywordId and sourceId return promises
+  var keywordId = function(){
+    return new Keyword({'word': keyword})
+    .fetch();
+  };
+
+  var sourceId = function(){
+    return new Source({'name': source})
+    .fetch();
+  };
+
+  // bluebird is used to resolve promises retured by keywordId and sourceId
+  bluebird.join(keywordId(), sourceId())
+    .then(function(array){
+      return new Article()
         .query('where', 'published', '>', startDate )
         .query('where', 'published', '<', endDate )
-        .query('where', 'source', '=', source )
-        .query('where', 'word', '=', keyword )
+        .query('where', 'word', '=', array[0].get('id') )
+        .query('where', 'source', '=', array[1].get('id') )
         .fetchAll()
-        .then(function(articles) {
-          res.send(articles.toJSON());
-        }).catch(function(error) {
-          console.log(error);
-          res.send('An error occured, please ensure that you request a keyword and source.');
-        });
-
-    // if (timePeriod) {
-    //     res.send('We\'ll get to this');
-    //     //TODO refactor out
-    //     // new Article()
-    //     //     .query('count')
-    //     //     .query('where', 'published', '>', startDate )
-    //     //     .query('where', 'published', '<', endDate )
-    //     //     .fetchAll()
-    //     //     .then(function(frequencies) {
-    //     //         res.send(frequencies.toJSON());
-    //     //     }).catch(function(error) {
-    //     //         console.log(error);
-    //     //         res.send('An error occured');
-    //     //     });
-    // } else {
-    // }
-}
-
-var fetchID = function (table, value){
-    //TODO refactor with lookup to keyword/source tables
-    if (table === 'keywords' && value === 'BP'){
-        return 1;
-    } else if (table === 'sources' && value === 'newyorktimes'){
-        return 1;
-    }
+    })
+    .then(function(articles) {
+      res.send(articles.toJSON());
+    }).catch(function(error) {
+      console.log(error);
+      res.send('An error occured, please ensure that you request a keyword and source.');
+    });
 };
 
 module.exports = fetchData;
