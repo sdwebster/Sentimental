@@ -66,24 +66,29 @@ var QueryModel = Backbone.Model.extend({
     // could use a more generic word like 'timeSpan' insted of 'year'
     articles.forEach(function(article){
       // provisionally, convert date formats manually
-      var year = article['published'].substring(0, 4);
-      article['year'] = year;
+      var date = new Date(article['published']);
+      article['year'] = date.getFullYear();
+      article['month'] = date.getMonth();
+      // article['year'] = year;
     });
 
     articles.forEach(function(article){
       var year = article['year'];
+      var month = article['month'];
       var sentiment = article['sentiment'];
-      if (sentiment > maxSentiment){
-        maxSentiment = sentiment;
-      } else if (sentiment < minSentiment){
-        minSentiment = sentiment;
-      }
+      // if (sentiment > maxSentiment){
+      //   maxSentiment = sentiment;
+      // } else if (sentiment < minSentiment){
+      //   minSentiment = sentiment;
+      // }
       if (!frequencyTally.hasOwnProperty(year)){
         frequencyTally[year] = 0;
         totalSentiment[year] = 0;
       }
       frequencyTally[year] = frequencyTally[year] + 1;
       totalSentiment[year] = totalSentiment[year] + sentiment;
+
+      console.log(totalSentiment);
     });
 
     // put summary data into array format to graph it

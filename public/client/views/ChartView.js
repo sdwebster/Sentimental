@@ -1,10 +1,10 @@
 var ChartView = Backbone.View.extend({
 
   defaults: {    
-    MARGIN: {top: 20, right: 20, bottom: 20, left: 50},
-    WIDTH: 1000,
+    MARGIN: {top: 20, right: 20, bottom: 25, left: 50},
+    WIDTH: 750,
     HEIGHT: 400,
-    START_YEAR: 2005,
+    START_YEAR: 2014,
     END_YEAR: 2015,
     XATTR: 'year',
     // can choose between 'count' and 'averageSentiment'
