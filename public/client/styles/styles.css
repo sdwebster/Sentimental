@@ -17,8 +17,8 @@ button {
 
 }*/
 
-svg {
-  margin-left: 260px;
+h2 {
+  text-align: right;
 }
 
 #sidebar {
@@ -29,6 +29,10 @@ svg {
   background: #f2f2f2;
   width: 250px;
   padding: 10px;
+}
+
+#content {
+  margin: 30px 20px 30px 280px;
 }
 
 /*.legend {
