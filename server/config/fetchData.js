@@ -35,6 +35,7 @@ var fetchData = function (req, res){
         .fetchAll()
     })
     .then(function(articles) {
+      console.log('sending articles: ', articles.toJSON())
       res.send(articles.toJSON());
     }).catch(function(error) {
       console.log(error);

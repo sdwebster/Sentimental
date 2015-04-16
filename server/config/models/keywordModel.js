@@ -6,7 +6,17 @@ var Word = db.Model.extend({
 
   articles: function () {
     return this.belongsToMany(Article);
+  },
+
+  initialize: function () {
+    this.fetch().then(function (data) {
+       if(data ===  null) {
+        console.log('new!');
+        this.save()
+       }
+    })
   }
+  
 });
 
 module.exports = Word;

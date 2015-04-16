@@ -47,6 +47,7 @@ function calcData(req, res){
 
 		var sentiment = [];
 		value.map(function(value){
+			console.log('value: ', value.headline, ' is a ', typeof value.headline);
 			sentiment.push(value.headline);
 		});
 		return sentiment;
@@ -58,8 +59,12 @@ function calcData(req, res){
 		var articles = JSON.parse(JSON.stringify(articles));
 		articles.map(function(value, index){
 			new Article({'id': value.id})
-				.save({'sentiment':sentiment[index]});
+				.save({'sentiment':logger(sentiment[index])});
 		})
 	}
+}
+function logger (val) {
+	console.log(val);
+	return val;
 }
 module.exports = calcData;

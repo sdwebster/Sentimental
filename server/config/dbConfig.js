@@ -29,7 +29,7 @@ db.knex.schema.hasTable('sources').then(function (exists) {
   if (!exists) {
     db.knex.schema.createTable('sources', function (source) {
       source.increments('id').primary();
-      source.string('name', 225);
+      source.string('name', 255);
     }).then(function (table) {
       console.log('Created Table', table);
     });
@@ -47,15 +47,13 @@ db.knex.schema.hasTable('articles').then(function (exists) {
       article.string('headline', 225);
       article.float('sentiment');
       article.timestamps();
-      article.string('authorFN', 50);
-      article.string('authorLN', 50);
-
     }).then(function (table) {
       console.log('Created Table', table);
     });
   }
 });
 
+//we may not need this due to the way relations are set up in the models.
 db.knex.schema.hasTable('keywordSources').then(function (exists) {
   if (!exists) {
     db.knex.schema.createTable('keywordSources', function (wordSource) {

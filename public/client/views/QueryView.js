@@ -44,6 +44,7 @@ var QueryView = Backbone.View.extend({
     // console.log('time to display line for model: ', this.model);
     console.log(this.model.get('summaryDataPoints'));
     this.model.handleResponseData();
+    console.log('bp data: ', this.model.get('summaryDataPoints'));
     this.svgPath.attr('d', this.lineGen(this.model.get('summaryDataPoints')))
       .attr('stroke', this.model.get('color'))
       .attr('stroke-width', 2)
