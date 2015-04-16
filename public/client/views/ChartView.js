@@ -1,10 +1,10 @@
 var ChartView = Backbone.View.extend({
 
   defaults: {    
-    MARGIN: {top: 20, right: 20, bottom: 20, left: 50},
-    WIDTH: 1000,
+    MARGIN: {top: 20, right: 20, bottom: 25, left: 50},
+    WIDTH: 960,
     HEIGHT: 400,
-    START_YEAR: 2005,
+    START_YEAR: 2000,
     END_YEAR: 2015,
     XATTR: 'year',
     // can choose between 'count' and 'averageSentiment'
@@ -35,7 +35,8 @@ var ChartView = Backbone.View.extend({
       ),
     yScale = d3.scale.linear().range(
       [this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom]
-      ).domain([0,1.5]),
+
+      ).domain([0.3, 0.7]),
 
     xAttr = this.options.XATTR,
     yAttr = this.options.YATTR,
@@ -85,8 +86,8 @@ var ChartView = Backbone.View.extend({
 
 
     // TODO: make this depend on timeframe
-    var startDate = this.options.START_YEAR + '0101';
-    var endDate = this.options.END_YEAR + '1231';
+    var startDate = this.options.START_YEAR ;
+    var endDate = this.options.END_YEAR ;
 
     this.queriesView.render(
       this.svg,
