@@ -2,7 +2,7 @@ var ChartView = Backbone.View.extend({
 
   defaults: {    
     MARGIN: {top: 20, right: 20, bottom: 25, left: 50},
-    WIDTH: 750,
+    WIDTH: 960,
     HEIGHT: 400,
     START_YEAR: 2014,
     END_YEAR: 2015,
