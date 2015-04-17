@@ -56,7 +56,7 @@ var QueryModel = Backbone.Model.extend({
 
     var frequencyTally = {};
     var totalSentiment = {};
-    var averageSentiment = {};
+    var sentimen = {};
     
     var articles = this.get('responseData').map(function(obj){
       return _.pick(obj, 'published', 'sentiment', 'url');
@@ -88,7 +88,6 @@ var QueryModel = Backbone.Model.extend({
       frequencyTally[year] = frequencyTally[year] + 1;
       totalSentiment[year] = totalSentiment[year] + sentiment;
 
-      console.log(totalSentiment);
     });
 
     // put summary data into array format to graph it
@@ -96,7 +95,7 @@ var QueryModel = Backbone.Model.extend({
       var dataPoint = {};
       dataPoint.count = tally;
       dataPoint.year = year;
-      dataPoint.averageSentiment = totalSentiment[ year ] / tally;
+      dataPoint.sentiment = totalSentiment[ year ] / tally;
       return memo.concat( [dataPoint] );
     }, [] );
 

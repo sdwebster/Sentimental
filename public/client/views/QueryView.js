@@ -12,12 +12,15 @@
 var QueryView = Backbone.View.extend({
 
   initialize: function(params) {
-    console.log('model has keyword', this.model.get('keyword'), ' and source', this.model.get('source'));
+    console.dir(params);
+    // console.log('model has keyword', this.model.get('keyword'), ' and source', this.model.get('source'));
     this.parent = params.parentEl;
     this.lineGen = params.lineGen;
+
     this.xMap = params.xMap;
     this.yMap = params.yMap;
-
+    console.log("this.xmap " ,this.xMap);
+    console.log("this.ymap " ,this.yMap);
     // console.log('lineGen:', this.lineGen);  
   }, 
  
@@ -59,7 +62,7 @@ var QueryView = Backbone.View.extend({
         .data(this.model.get('articles'))
       .enter().append("circle")
         .attr("class", "dot")
-        .attr("r", 10)
+        .attr("r", 2.5)
         .attr("cx", this.xMap)
         .attr("cy", this.yMap)
         .style("fill", this.model.get('color')) 
