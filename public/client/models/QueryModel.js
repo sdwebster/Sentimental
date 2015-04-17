@@ -23,11 +23,6 @@ var QueryModel = Backbone.Model.extend({
       '&keyword=' + 'BP'; 
   },
 
-  // currently QueryView is not registering clicks, so this react is not called
-  react: function(){
-    console.log('you clicked my view (im a QueryModel)!');
-  },
-
   queryServer: function(){
     var scope = this;
     $.ajax({  
