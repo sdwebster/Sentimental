@@ -55,28 +55,31 @@ var QueryView = Backbone.View.extend({
 
   displayDots: function() {
 
+    var tooltip = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+
      this.parent.selectAll(".dot")
         .data(this.model.get('articles'))
       .enter().append("circle")
         .attr("class", "dot")
-        .attr("r", 2.5)
+        .attr("r", 1.5)
         .attr("cx", this.xMap)
         .attr("cy", this.yMap)
         .style("fill", this.model.get('color')) 
-        // .on("mouseover", function(d) {
-        //     tooltip.transition()
-        //          .duration(200)
-        //          .style("opacity", .9);
-        //     tooltip.html(d["Cereal Name"] + "<br/> (" + xValue(d) 
-        //     + ", " + yValue(d) + ")")
-        //          .style("left", (d3.event.pageX + 5) + "px")
-        //          .style("top", (d3.event.pageY - 28) + "px");
-        // })
-        // .on("mouseout", function(d) {
-        //     tooltip.transition()
-        //          .duration(500)
-        //          .style("opacity", 0);
-        // })
+        .on("mouseover", function(d) {
+            tooltip.transition()
+                 .duration(200)
+                 .style("opacity", .9);
+            tooltip.html(d["url"])
+                 .style("left", (d3.event.pageX + 5) + "px")
+                 .style("top", (d3.event.pageY - 28) + "px");
+        })
+        .on("mouseout", function(d) {
+            tooltip.transition()
+                 .duration(500)
+                 .style("opacity", 0);
+        })
         ;
   }
 
