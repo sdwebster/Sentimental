@@ -38,7 +38,7 @@ var ChartView = Backbone.View.extend({
     yScale = d3.scale.linear().range(
       [this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom]
 
-      ).domain([0.3, 0.7]),
+      ).domain([0.0, 1.0]),
 
     xAttr = this.options.XATTR,
     yAttr = this.options.YATTR,
