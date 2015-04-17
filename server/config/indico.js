@@ -13,7 +13,7 @@ function calcData(req, res){
 	// Get the data from the database - initial search will be headlines.
 	new Article()
 	// Search only for values that have not yet been calculated.
-		.query('whereNull', 'sentiment')
+		.query('whereNull', 'sentiment', 'and', 'whereNotNull', 'headline')
 	  .fetchAll()
 	  .then(function(articles) {
 	    var temp = toIndico(articles, res);
