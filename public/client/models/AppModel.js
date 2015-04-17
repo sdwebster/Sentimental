@@ -1,6 +1,9 @@
 var AppModel = Backbone.Model.extend({
 
   initialize: function(params){
-    this.set('sidebar', new SidebarModel());
+    // this.chart = new ChartModel({
+    //   keywords: ['BP'], 
+    //   sources: ['New York Times']
+    // });
   }
 });
