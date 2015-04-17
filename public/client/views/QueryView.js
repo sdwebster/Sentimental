@@ -47,7 +47,7 @@ var QueryView = Backbone.View.extend({
       .attr("r", 4)
       .attr("cx", this.xMap)
       .attr("cy", 900)
-      .attr("opacity", 0.1)
+      .attr("opacity", .1)
       .style("fill", this.model.get('color')) 
       .on("mouseover", function(d, i) {
         console.log(dataPoints[0][i]);
@@ -59,14 +59,16 @@ var QueryView = Backbone.View.extend({
           .style("left", (d3.event.pageX + 5) + "px")
           .style("top", (d3.event.pageY - 28) + "px");
         d3.select(this).transition()
-          .attr("r", 10);
+          .attr("r", 10)
+          .style("opacity", .5);
       })
       .on("mouseout", function(d) {
         tooltip.transition()
           .duration(500)
           .style("opacity", 0);
         d3.select(this).transition()
-          .attr("r", 4);
+          .attr("r", 4)
+          .style("opacity", .1);
         });
 
       dataPoints.transition().duration(2000).attr("cy", this.yMap)
