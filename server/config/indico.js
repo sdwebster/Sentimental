@@ -1,6 +1,8 @@
 var indico = require('indico.io');
 var keys = require('./keys.js');
 var RateLimiter = require('limiter');
+var db = require('./dbConfig.js');
+// var knex = require('knex');
 
 var Article = require('./models/articleModel.js');
 var Articles = require('./collections/articles.js');
@@ -11,8 +13,10 @@ function calcData(req, res){
 	console.log('calcData run ', new Date());
 	var fromDataBase= [];
 	// Get the data from the database - initial search will be headlines.
+
 	new Article()
 	// Search only for values that have not yet been calculated.
+		.query('whereNotNull', 'headline')
 		.query('whereNull', 'sentiment')
 	  .fetchAll()
 	  .then(function(articles) {
@@ -21,6 +25,7 @@ function calcData(req, res){
 			// Indico.io batch requests allow you to process larger volumes of data more efficiently 
 			// by grouping many examples into a single request. Simply call the batch method 
 			// that corresponds to the API you'd like to use, and ensure your data is wrapped in an array. 
+			
 			indico
 			  .batchSentiment(temp)
 			  .then(function(sentiments){
@@ -30,14 +35,16 @@ function calcData(req, res){
 			    console.log('err: ', err);
 			});
 
-
-
-
-
-
 	  }).catch(function(error) {
 	    console.log(error);
 	  });
+
+	db.knex
+		.raw('delete from articles where headline is null')
+		.then( function (value){
+			console.log('Null Rows should be deleted');
+		});
+}
 
 
 // Extract the Data from the object and place it into an array to send to indico.io
@@ -47,8 +54,9 @@ function calcData(req, res){
 
 		var sentiment = [];
 		value.map(function(value){
-			console.log('value: ', value.headline, ' is a ', typeof value.headline);
+			// console.log('value: ', value.headline, ' is a ', typeof value.headline);
 			sentiment.push(value.headline);
+			console.log(sentiment);
 		});
 		return sentiment;
 	}
@@ -58,13 +66,15 @@ function calcData(req, res){
 		// Use JSON to remove any functions returned with the query
 		var articles = JSON.parse(JSON.stringify(articles));
 		articles.map(function(value, index){
+			console.log(sentiment[index]);
+
+
 			new Article({'id': value.id})
 				.save({'sentiment':logger(sentiment[index])});
-		})
+		});
 	}
-}
 function logger (val) {
-	console.log(val);
+	// console.log(val);
 	return val;
 }
 module.exports = calcData;
