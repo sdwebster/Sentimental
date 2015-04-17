@@ -14,8 +14,8 @@ var QueriesView = Backbone.View.extend({
         model: query,
         parentEl: el,
         lineGen: lineGen,
-        xScale: xMap,
-        yScale: yMap,
+        xMap: xMap,
+        yMap: yMap,
         startDate: startDate,
         endDate: endDate 
       }).render();
