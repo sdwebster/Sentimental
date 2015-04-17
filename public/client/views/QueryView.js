@@ -19,9 +19,6 @@ var QueryView = Backbone.View.extend({
 
     this.xMap = params.xMap;
     this.yMap = params.yMap;
-    console.log("this.xmap " ,this.xMap);
-    console.log("this.ymap " ,this.yMap);
-    // console.log('lineGen:', this.lineGen);  
   }, 
  
   // currently unable to register these clicks

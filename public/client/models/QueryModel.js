@@ -56,7 +56,7 @@ var QueryModel = Backbone.Model.extend({
 
     var frequencyTally = {};
     var totalSentiment = {};
-    var sentimen = {};
+    var sentiment = {};
     
     var articles = this.get('responseData').map(function(obj){
       return _.pick(obj, 'published', 'sentiment', 'url');
