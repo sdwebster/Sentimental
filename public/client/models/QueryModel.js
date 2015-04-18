@@ -60,11 +60,12 @@ var QueryModel = Backbone.Model.extend({
     // could vary this function if time period is not '1 year'
     // could use a more generic word like 'timeSpan' insted of 'year'
     articles.forEach(function(article){
-      // provisionally, convert date formats manually
       var date = new Date(article['published']);
       article['year'] = date.getFullYear();
       article['month'] = date.getMonth();
       // article['year'] = year;
+      // console.log('date:', date);
+      article['date'] = date;
     });
 
     articles.forEach(function(article){
@@ -90,6 +91,7 @@ var QueryModel = Backbone.Model.extend({
       var dataPoint = {};
       dataPoint.count = tally;
       dataPoint.year = year;
+      dataPoint.date = new Date(year + "-07-01");
       dataPoint.sentiment = totalSentiment[ year ] / tally;
       return memo.concat( [dataPoint] );
     }, [] );

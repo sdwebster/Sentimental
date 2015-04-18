@@ -6,7 +6,7 @@ var ChartView = Backbone.View.extend({
     HEIGHT: 400,
     START_YEAR: 2000,
     END_YEAR: 2015,
-    XATTR: 'year',
+    XATTR: 'date',
     // can choose between 'count' and 'averageSentiment'
     YATTR: 'sentiment'
   },
@@ -28,12 +28,23 @@ var ChartView = Backbone.View.extend({
   },
 
   render: function(){
+    var startDate = new Date(this.options.START_YEAR + "-01-01");
+    var endDate = new Date(this.options.END_YEAR + "-12-31");
+    console.log(startDate);
+    console.log(endDate);
     var 
-    xScale = d3.scale.linear().range(
+    xScale = d3.time.scale()
+        .range(
         [this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]
-      ).domain(
-        [this.options.START_YEAR,this.options.END_YEAR]
-      ),
+      )
+    .domain(
+        [new Date(this.options.START_YEAR + "-01-01"),
+        new Date(this.options.END_YEAR + "-12-31")]
+      ).rangeRound(
+        [this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]
+      )
+    ,
+
     yScale = d3.scale.linear().range(
       [this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom]
 
