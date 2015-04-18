@@ -5,9 +5,16 @@ var QueryModel = Backbone.Model.extend({
   // Technically the fetching of data from server should happen in here
 
   initialize: function(queryObj){
+    this.startDate = queryObj.startDate;
+    this.endDate = queryObj.endDate;
     this.keyword = queryObj.keyword;
     this.source = queryObj.source;
 
+    console.log('the start is ', this.startDate);
+
+
+    // declare some variables that will be used when
+    // we handleResponseData below
     this.responseData = [];
     this.articles = [];
     this.frequencyCounts = {};
@@ -16,6 +23,10 @@ var QueryModel = Backbone.Model.extend({
     this.maxSentiment = 0;
     this.minSentiment = 0;
 
+    var startDateURLFormat = '';
+    var endDateURLFormat = '';
+    var keywordURLFormat = '';
+    // figure out what url to ping
     this.url =
       '/data?startDate=' + '20000101' +
       '&endDate=' + '20150414' +
@@ -43,7 +54,7 @@ var QueryModel = Backbone.Model.extend({
     return this;
   },
 
-  handleResponseData: function(endDate){
+  handleResponseData: function(){
     // calculate frequency counts and averages
     var scope = this;
     var maxSentiment = 0;
@@ -92,7 +103,7 @@ var QueryModel = Backbone.Model.extend({
       dataPoint.count = tally;
       dataPoint.year = year;
       var midPeriodDate = new Date(year + "-07-01");
-      dataPoint.date = new Date(Math.min(endDate, midPeriodDate));
+      dataPoint.date = new Date(Math.min(scope.endDate, midPeriodDate));
       dataPoint.sentiment = totalSentiment[ year ] / tally;
       return memo.concat( [dataPoint] );
     }, [] );
