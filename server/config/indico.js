@@ -66,13 +66,11 @@ function calcData(req, res){
 		// Use JSON to remove any functions returned with the query
 		var articles = JSON.parse(JSON.stringify(articles));
 		articles.map(function(value, index){
-			console.log(sentiment[index]);
-
-
 			new Article({'id': value.id})
 				.save({'sentiment':logger(sentiment[index])});
 		});
 	}
+	
 function logger (val) {
 	// console.log(val);
 	return val;

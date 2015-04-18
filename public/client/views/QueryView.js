@@ -17,10 +17,9 @@ var QueryView = Backbone.View.extend({
   },
 
   displayData: function() {
-    // console.log('time to display line for model: ', this.model);
-    // console.log(this.model.get('summaryDataPoints'));
+
     this.model.handleResponseData();
-    // console.log('bp data: ', this.model.get('summaryDataPoints'));
+    
     this.svgPath.attr('d', this.lineGen(this.model.get('summaryDataPoints')))
       .attr('stroke', this.model.get('color'))
       .attr('stroke-width', 2)
@@ -59,13 +58,18 @@ var QueryView = Backbone.View.extend({
 
       })
       .on("mouseover", function(d, i) {
+        // Change the published date to a more pleasing format. 
+        var date = new Date(d.published).toDateString();
+
         tooltip.transition()
           .duration(200)
           .style("opacity", .9);
-        tooltip.html("<div>" + d.published + "</div><div>" + d.headline +"</div><div>" + d.sentiment + "</div>")
+        // Add in popup data for each rendered dot represeting an article.
+        tooltip.html("<div>" + date + "</div><div>" + d.headline +"</div><div>" + d.sentiment + "</div>")
           .style("text-align", "left")
           .style("left", (d3.event.pageX + 5) + "px")
           .style("top", (d3.event.pageY - 28) + "px");
+
         d3.select(this).transition()
           .attr("r", 10)
           .style("opacity", .5); 
