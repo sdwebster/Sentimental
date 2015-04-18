@@ -3,11 +3,10 @@
 var QueryView = Backbone.View.extend({
 
   initialize: function(params) {
-    // console.dir(params);
-    this.parent = params.parentEl;
-    this.lineGen = params.lineGen;
-    this.xMap = params.xMap;
-    this.yMap = params.yMap;
+    this.parent = params.chartOptions.parentEl;
+    this.lineGen = params.chartOptions.lineGen;
+    this.xMap = params.chartOptions.xMap;
+    this.yMap = params.chartOptions.yMap;
   }, 
  
   render: function() {
@@ -61,14 +60,11 @@ var QueryView = Backbone.View.extend({
         window.open(d["url"]);
       })
       .on("mouseover", function(d, i) {
-        // Change the published date to a more pleasing format. 
-        var date = new Date(d.published).toDateString();
-
         tooltip.transition()
           .duration(200)
           .style("opacity", .9);
         // Add in popup data for each rendered dot represeting an article.
-        tooltip.html("<div>" + date + "</div><div>" + d.headline +"</div><div>" + d.sentiment + "</div>")
+        tooltip.html("<div>" + d.displayDate + "</div><div>" + d.headline +"</div><div>" + d.sentiment + "</div>")
           .style("text-align", "left")
           .style("left", (d3.event.pageX + 5) + "px")
           .style("top", (d3.event.pageY - 28) + "px");
@@ -77,7 +73,6 @@ var QueryView = Backbone.View.extend({
           .attr("r", 10)
           .style("opacity", .5)
           .attr("cursor", "pointer"); 
-
 
       })
       .on("mouseout", function(d) {

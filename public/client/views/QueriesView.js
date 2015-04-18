@@ -5,19 +5,11 @@ var QueriesView = Backbone.View.extend({
   initialize: function() {
   },
 
-  render: function(el, lineGen, xMap, yMap, startDate, endDate) {
-    // console.log('lineGen:', lineGen);
-    var scope = this;
-    this.el = el;
+  render: function(chartOptions) {
     this.collection.each(function(query, i){
       new QueryView({
         model: query,
-        parentEl: el,
-        lineGen: lineGen,
-        xMap: xMap,
-        yMap: yMap,
-        startDate: startDate,
-        endDate: endDate 
+        chartOptions: chartOptions
       }).render();
     });
     return this;

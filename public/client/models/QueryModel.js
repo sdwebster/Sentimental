@@ -5,9 +5,16 @@ var QueryModel = Backbone.Model.extend({
   // Technically the fetching of data from server should happen in here
 
   initialize: function(queryObj){
-    this.keyword = queryObj.keyword;
+    this.startDate = queryObj.startDate;
+    this.endDate = queryObj.endDate;
     this.source = queryObj.source;
+    this.keyword = queryObj.keyword;
 
+    console.log('the start is ', this.startDate);
+
+
+    // declare some variables that will be used when
+    // we handleResponseData below
     this.responseData = [];
     this.articles = [];
     this.frequencyCounts = {};
@@ -16,29 +23,36 @@ var QueryModel = Backbone.Model.extend({
     this.maxSentiment = 0;
     this.minSentiment = 0;
 
+    // figure out what url to ping
+    // example url:
+    // "/data?startDate=20101214&endDate=20150114&source=newyorktimes&keyword=BP",
+    var startDateURLFormat = this.startDate.getFullYear() + '' +
+      this.startDate.getMonth() + '' +
+      this.startDate.getDate();
+    var endDateURLFormat = this.endDate.getFullYear() + '' +
+      this.endDate.getMonth() + '' +
+      this.endDate.getDate();
+    var sourceURLFormat = this.source.replace(/\s+/g, '').toLowerCase();
+    var keywordURLFormat = this.keyword.replace(/\s+/g, '') //.toLowerCase();
+
     this.url =
-      '/data?startDate=' + '20000101' +
-      '&endDate=' + '20150414' +
-      '&source=' + 'newyorktimes' +
-      '&keyword=' + 'BP'; 
+      '/data?startDate=' + startDateURLFormat +
+      '&endDate=' + endDateURLFormat +
+      '&source=' + sourceURLFormat +
+      '&keyword=' + keywordURLFormat; 
+    console.log(this.url);
   },
 
   queryServer: function(){
     var scope = this;
     $.ajax({  
-      // could easily make this depend on keyword, source
       url: scope.url
-      // url: "/data?startDate=20101214&endDate=20150114&source=newyorktimes&keyword=BP",
     })
     .done(function( newData  ) {
-      console.log('receiving data: ', newData);
+      // console.log('receiving data: ', newData);
       scope.set({
         responseData: newData,
-
-        // data: mockData[scope.keyword]
       });
-      // console.log(newData);
-      // console.log(scope.data);
     });
     return this;
   },
@@ -61,6 +75,7 @@ var QueryModel = Backbone.Model.extend({
     // could use a more generic word like 'timeSpan' insted of 'year'
     articles.forEach(function(article){
       var date = new Date(article['published']);
+      article['displayDate'] = date.toDateString();
       article['year'] = date.getFullYear();
       article['month'] = date.getMonth();
       // article['year'] = year;
@@ -91,7 +106,8 @@ var QueryModel = Backbone.Model.extend({
       var dataPoint = {};
       dataPoint.count = tally;
       dataPoint.year = year;
-      dataPoint.date = new Date(year + "-07-01");
+      var midPeriodDate = new Date(year + "-07-01");
+      dataPoint.date = new Date(Math.min(scope.endDate, midPeriodDate));
       dataPoint.sentiment = totalSentiment[ year ] / tally;
       return memo.concat( [dataPoint] );
     }, [] );
