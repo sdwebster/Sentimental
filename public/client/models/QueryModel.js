@@ -54,7 +54,7 @@ var QueryModel = Backbone.Model.extend({
     var sentiment = {};
     
     var articles = this.get('responseData').map(function(obj){
-      return _.pick(obj, 'published', 'sentiment', 'url');
+      return _.pick(obj, 'published', 'sentiment', 'url', 'headline');
     });
 
     // could vary this function if time period is not '1 year'
