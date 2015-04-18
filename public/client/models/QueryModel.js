@@ -7,8 +7,8 @@ var QueryModel = Backbone.Model.extend({
   initialize: function(queryObj){
     this.startDate = queryObj.startDate;
     this.endDate = queryObj.endDate;
-    this.keyword = queryObj.keyword;
     this.source = queryObj.source;
+    this.keyword = queryObj.keyword;
 
     console.log('the start is ', this.startDate);
 
@@ -23,33 +23,36 @@ var QueryModel = Backbone.Model.extend({
     this.maxSentiment = 0;
     this.minSentiment = 0;
 
-    var startDateURLFormat = '';
-    var endDateURLFormat = '';
-    var keywordURLFormat = '';
     // figure out what url to ping
+    // example url:
+    // "/data?startDate=20101214&endDate=20150114&source=newyorktimes&keyword=BP",
+    var startDateURLFormat = this.startDate.getFullYear() + '' +
+      this.startDate.getMonth() + '' +
+      this.startDate.getDate();
+    var endDateURLFormat = this.endDate.getFullYear() + '' +
+      this.endDate.getMonth() + '' +
+      this.endDate.getDate();
+    var sourceURLFormat = this.source.replace(/\s+/g, '').toLowerCase();
+    var keywordURLFormat = this.keyword.replace(/\s+/g, '') //.toLowerCase();
+
     this.url =
-      '/data?startDate=' + '20000101' +
-      '&endDate=' + '20150414' +
-      '&source=' + 'newyorktimes' +
-      '&keyword=' + 'BP'; 
+      '/data?startDate=' + startDateURLFormat +
+      '&endDate=' + endDateURLFormat +
+      '&source=' + sourceURLFormat +
+      '&keyword=' + keywordURLFormat; 
+    console.log(this.url);
   },
 
   queryServer: function(){
     var scope = this;
     $.ajax({  
-      // could easily make this depend on keyword, source
       url: scope.url
-      // url: "/data?startDate=20101214&endDate=20150114&source=newyorktimes&keyword=BP",
     })
     .done(function( newData  ) {
-      console.log('receiving data: ', newData);
+      // console.log('receiving data: ', newData);
       scope.set({
         responseData: newData,
-
-        // data: mockData[scope.keyword]
       });
-      // console.log(newData);
-      // console.log(scope.data);
     });
     return this;
   },

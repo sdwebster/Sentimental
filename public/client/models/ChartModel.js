@@ -1,8 +1,8 @@
 var ChartModel = Backbone.Model.extend({ 
 
   defaults: {    
-    START_YEAR: 2000,
-    END_YEAR: 2015,
+    START_YEAR: 2002,
+    END_YEAR: 2011,
   },
   
   makeQueryList: function(){
@@ -35,10 +35,8 @@ var ChartModel = Backbone.Model.extend({
     this.options = _.extend(this.defaults, params);
     this.startDate = new Date(this.options.START_YEAR + "-01-01");
     this.endDate = new Date(Math.min(new Date(), new Date(this.options.END_YEAR + "-12-31")));
-    console.log(this.startDate);
-    console.log(this.endDate);
+    console.log('Showing data from', this.startDate, 'through', this.endDate);
 
-    console.log('initial start year: ', this.options.START_YEAR);
     this.keywords = params.keywords; 
     this.sources = params.sources;  
     this.queryList = [];  

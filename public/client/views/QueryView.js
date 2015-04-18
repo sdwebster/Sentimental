@@ -3,14 +3,10 @@
 var QueryView = Backbone.View.extend({
 
   initialize: function(params) {
-    // console.dir(params);
-    console.log('third chartOptions:', params.chartOptions);
     this.parent = params.chartOptions.parentEl;
     this.lineGen = params.chartOptions.lineGen;
     this.xMap = params.chartOptions.xMap;
     this.yMap = params.chartOptions.yMap;
-    // this.startDate = params.chartOptions.startDate,
-    // this.endDate = params.chartOptions.endDate 
   }, 
  
   render: function() {
@@ -77,7 +73,7 @@ var QueryView = Backbone.View.extend({
           .attr("r", 10)
           .style("opacity", .5)
           .attr("cursor", "pointer"); 
-          
+
       })
       .on("mouseout", function(d) {
         tooltip.transition()
