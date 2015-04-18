@@ -29,7 +29,7 @@ var ChartView = Backbone.View.extend({
 
   render: function(){
     var startDate = new Date(this.options.START_YEAR + "-01-01");
-    var endDate = new Date(this.options.END_YEAR + "-12-31");
+    var endDate = new Date(Math.min(new Date(), new Date(this.options.END_YEAR + "-12-31")));
     console.log(startDate);
     console.log(endDate);
     var 
@@ -96,18 +96,19 @@ var ChartView = Backbone.View.extend({
     .y(yMap)
     .interpolate("basis");
 
-
     // TODO: make this depend on timeframe
-    var startDate = this.options.START_YEAR ;
-    var endDate = this.options.END_YEAR ;
+
+    var chartOptions = {
+      parentEl: this.svg,
+      lineGen: lineGen,
+      xMap: xMap,
+      yMap: yMap,
+      startDate: startDate,
+      endDate: endDate 
+    };
 
     this.queriesView.render(
-      this.svg,
-      lineGen,
-      xMap,
-      yMap,
-      startDate,
-      endDate
+      chartOptions
     );
 
     this.drawLegend();

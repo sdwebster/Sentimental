@@ -4,10 +4,13 @@ var QueryView = Backbone.View.extend({
 
   initialize: function(params) {
     // console.dir(params);
-    this.parent = params.parentEl;
-    this.lineGen = params.lineGen;
-    this.xMap = params.xMap;
-    this.yMap = params.yMap;
+    console.log('third chartOptions:', params.chartOptions);
+    this.parent = params.chartOptions.parentEl;
+    this.lineGen = params.chartOptions.lineGen;
+    this.xMap = params.chartOptions.xMap;
+    this.yMap = params.chartOptions.yMap;
+    this.startDate = params.chartOptions.startDate,
+    this.endDate = params.chartOptions.endDate 
   }, 
  
   render: function() {
@@ -18,7 +21,7 @@ var QueryView = Backbone.View.extend({
 
   displayData: function() {
 
-    this.model.handleResponseData();
+    this.model.handleResponseData(this.endDate);
     
     this.svgPath.attr('d', this.lineGen(this.model.get('summaryDataPoints')))
       .attr('stroke', this.model.get('color'))

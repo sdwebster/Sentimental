@@ -43,7 +43,7 @@ var QueryModel = Backbone.Model.extend({
     return this;
   },
 
-  handleResponseData: function(){
+  handleResponseData: function(endDate){
     // calculate frequency counts and averages
     var scope = this;
     var maxSentiment = 0;
@@ -91,7 +91,8 @@ var QueryModel = Backbone.Model.extend({
       var dataPoint = {};
       dataPoint.count = tally;
       dataPoint.year = year;
-      dataPoint.date = new Date(year + "-07-01");
+      var midPeriodDate = new Date(year + "-07-01");
+      dataPoint.date = new Date(Math.min(endDate, midPeriodDate));
       dataPoint.sentiment = totalSentiment[ year ] / tally;
       return memo.concat( [dataPoint] );
     }, [] );
