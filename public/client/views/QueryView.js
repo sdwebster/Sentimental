@@ -57,6 +57,9 @@ var QueryView = Backbone.View.extend({
       .html(function(d){
 
       })
+      .on("click", function(d){
+        window.open(d["url"]);
+      })
       .on("mouseover", function(d, i) {
         // Change the published date to a more pleasing format. 
         var date = new Date(d.published).toDateString();
