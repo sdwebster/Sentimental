@@ -22,7 +22,6 @@ var ChartView = Backbone.View.extend({
   initialize: function(params){
     // TODO: listen for a change to datasets in this.model.collection
     // so that you can adjust min and max of the axis
-    console.log('Where are we? ', this)
     this.queriesView = new QueriesView({collection: this.model.get('queries')});
     this.options = _.extend(this.defaults, params);
     this.render();

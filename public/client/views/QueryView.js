@@ -51,11 +51,14 @@ var QueryView = Backbone.View.extend({
       .attr("class", "dot")
       .attr("r", 4)
       .attr("cx", this.xMap)
-      .attr("cy", 900)
+      .attr("cy", 200)
       .attr("opacity", .1)
       .style("fill", this.model.get('color'))
       .html(function(d){
 
+      })
+      .on("click", function(d){
+        window.open(d["url"]);
       })
       .on("mouseover", function(d, i) {
         // Change the published date to a more pleasing format. 
@@ -72,7 +75,8 @@ var QueryView = Backbone.View.extend({
 
         d3.select(this).transition()
           .attr("r", 10)
-          .style("opacity", .5); 
+          .style("opacity", .5)
+          .attr("cursor", "pointer"); 
 
 
       })
@@ -85,7 +89,8 @@ var QueryView = Backbone.View.extend({
           .style("opacity", .1);
         });
 
-    dataPoints.transition().duration(2000).attr("cy", this.yMap)
+    dataPoints.transition().duration(1500).attr("cy", this.yMap);
+
   }
 
 });
