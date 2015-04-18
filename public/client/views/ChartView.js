@@ -22,24 +22,26 @@ var ChartView = Backbone.View.extend({
   initialize: function(params){
     // TODO: listen for a change to datasets in this.model.collection
     // so that you can adjust min and max of the axis
-    this.queriesView = new QueriesView({collection: this.model.get('queries')});
     this.options = _.extend(this.defaults, params);
+    this.startDate = new Date(this.options.START_YEAR + "-01-01");
+    this.endDate = new Date(Math.min(new Date(), new Date(this.options.END_YEAR + "-12-31")));
+    console.log(this.startDate);
+    console.log(this.endDate);
+
+    
+
+    this.queriesView = new QueriesView({collection: this.model.get('queries')});
     this.render();
   },
 
   render: function(){
-    var startDate = new Date(this.options.START_YEAR + "-01-01");
-    var endDate = new Date(Math.min(new Date(), new Date(this.options.END_YEAR + "-12-31")));
-    console.log(startDate);
-    console.log(endDate);
     var 
     xScale = d3.time.scale()
         .range(
         [this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]
       )
     .domain(
-        [new Date(this.options.START_YEAR + "-01-01"),
-        new Date(this.options.END_YEAR + "-12-31")]
+        [this.startDate, this.endDate]
       ).rangeRound(
         [this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]
       )
@@ -103,8 +105,8 @@ var ChartView = Backbone.View.extend({
       lineGen: lineGen,
       xMap: xMap,
       yMap: yMap,
-      startDate: startDate,
-      endDate: endDate 
+      startDate: this.startDate,
+      endDate: this.endDate 
     };
 
     this.queriesView.render(

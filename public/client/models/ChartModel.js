@@ -14,7 +14,6 @@ var ChartModel = Backbone.Model.extend({
       });
     });
     this.queryList = queryList;
-    // console.log('list:', Array.isArray(this.queryList));
     this.set('queries', new Queries (queryList));
   },
 
