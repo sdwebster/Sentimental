@@ -75,7 +75,8 @@ var QueryView = Backbone.View.extend({
 
         d3.select(this).transition()
           .attr("r", 10)
-          .style("opacity", .5); 
+          .style("opacity", .5)
+          .attr("cursor", "pointer"); 
 
 
       })
