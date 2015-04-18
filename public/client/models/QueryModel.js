@@ -72,6 +72,7 @@ var QueryModel = Backbone.Model.extend({
     // could use a more generic word like 'timeSpan' insted of 'year'
     articles.forEach(function(article){
       var date = new Date(article['published']);
+      article['displayDate'] = date.toDateString();
       article['year'] = date.getFullYear();
       article['month'] = date.getMonth();
       // article['year'] = year;
