@@ -12,20 +12,28 @@ var QueryView = Backbone.View.extend({
  
   render: function() {
     this.svgPath = this.parent.append('svg:path');
-
     this.model.on('change:responseData', this.displayData, this);
     this.model.queryServer();
   },
 
   displayData: function() {
-    // console.log('time to display line for model: ', this.model);
     console.log(this.model.get('summaryDataPoints'));
     this.model.handleResponseData();
     console.log('bp data: ', this.model.get('summaryDataPoints'));
     this.svgPath.attr('d', this.lineGen(this.model.get('summaryDataPoints')))
       .attr('stroke', this.model.get('color'))
       .attr('stroke-width', 2)
-      .attr('fill', 'none');
+      .attr('fill', 'none')
+      .on("mouseover", function(d){
+        d3.select(this).transition()
+          .attr("stroke-width", 6)
+          .style("opacity", .5);
+      })
+      .on("mouseout", function(d){
+        d3.select(this).transition()
+          .attr("stroke-width", 2)
+          .style("opacity", 1);
+      });
 
     this.displayDots();
   },
@@ -37,10 +45,7 @@ var QueryView = Backbone.View.extend({
       .style("opacity", 1);
 
     var dataPoint = this.parent.selectAll(".dot");
-    console.log("datapoint: ", dataPoint)
-
     var dataPoints = dataPoint.data(this.model.get('articles'));
-    console.log("datapoints: ", dataPoints);
 
     dataPoints.enter().append("circle")
       .attr("class", "dot")
@@ -48,10 +53,11 @@ var QueryView = Backbone.View.extend({
       .attr("cx", this.xMap)
       .attr("cy", 900)
       .attr("opacity", .1)
-      .style("fill", this.model.get('color')) 
+      .style("fill", this.model.get('color'))
+      .html(function(d){
+
+      })
       .on("mouseover", function(d, i) {
-        console.log(dataPoints[0][i]);
-        console.log(this);
         tooltip.transition()
           .duration(200)
           .style("opacity", .9);
@@ -60,7 +66,7 @@ var QueryView = Backbone.View.extend({
           .style("top", (d3.event.pageY - 28) + "px");
         d3.select(this).transition()
           .attr("r", 10)
-          .style("opacity", .5);
+          .style("opacity", .5)
       })
       .on("mouseout", function(d) {
         tooltip.transition()
@@ -71,7 +77,7 @@ var QueryView = Backbone.View.extend({
           .style("opacity", .1);
         });
 
-      dataPoints.transition().duration(2000).attr("cy", this.yMap)
+    dataPoints.transition().duration(2000).attr("cy", this.yMap)
   }
 
 });
