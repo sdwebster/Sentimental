@@ -13,18 +13,26 @@ var Word = require('./models/keywordModel.js');
 var limiter = new RateLimiter(10, 1000);
 
 
-
 var retrieveRow = R.curry(function (modelConstructor, identifiers) {
   return new modelConstructor()
     .query({where: identifiers})
     .fetch().then(function (row) {
-      if (row === undefined || row === null) {
-        console.log('row does not exist');
-        return constructRow(modelConstructor, identifiers);
-      }
-      return row;
+        return constructRow(modelConstructor, identifiers, row);
     });
 });
+
+
+// (* -> Model) -> {} -> Model
+function constructRow (modelConstructor, columns, row) {
+  //console.log(arguments);
+  if (row === undefined || row === null) {
+    console.log('NO ROW!');
+    return new modelConstructor(sliceArgs(arguments, 1)).set(columns).save();
+  } else {
+    return row.fetch()
+  }
+}
+
 
 var getSource = retrieveRow(Source);
 var getWord = retrieveRow(Word);
@@ -57,14 +65,9 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
   page = page || 0;
 
   bluebird.join(
-      (function(){
-        return logger(getWord({ word: searchTerm }))
-       })(), 
-       (function(){
-          console.log('making sourceModel: ')
-          return logger(getSource({name: sourceName}))
-        })()
-      ).then(ingestPage)
+    getWord({ word: searchTerm }),
+    getSource({name: sourceName})
+    ).then(ingestPage);
 
   // return ingestPage(1);
   function ingestPage (data) {
@@ -106,11 +109,6 @@ function sliceArgs (context, start, end) {
   Array.prototype.slice.call(context, start, end);
 }
 
-// (* -> Model) -> {} -> Model
-function constructRow (modelConstructor, columns) {
-  //console.log(arguments);
-  return new modelConstructor(sliceArgs(arguments, 1)).set(columns);
-}
 
 
 function insertArticle (results, word, source) {
@@ -145,6 +143,6 @@ function constructURL (searchTerm, beginDate, endDate, page) {
 }
 
 
-ingestData('BP', '20000101', '20150406', 'New York Times')
+ingestData('ExxonMobil', '20000101', '20150406', 'New York Times')
 
 module.exports = ingestData;
