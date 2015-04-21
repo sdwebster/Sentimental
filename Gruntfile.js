@@ -4,10 +4,10 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     concat: {
       options: {
-        separator: ';'
+        separator: ';\n\n'
       },
       dist: {
-        src: ['public/client/**/*.js'],
+        src: ['public/client/**/*.js', '!public/client/bower_components/*.js'],
         dest: 'public/dist/<%= pkg.name %>.js'
       }
     },
@@ -29,7 +29,8 @@ module.exports = function(grunt) {
 
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n',
+        semicolons    : true
       },
       dist: {
         files: {
@@ -86,7 +87,8 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, flatten:true , src: 'public/client/*', dest: 'public/dist', filter: 'isFile'}
+          {expand: true, flatten:true , src: 'public/client/*', dest: 'public/dist', filter: 'isFile'},
+          {expand: true, flatten:true , src: 'public/client/styles/*', dest: 'public/dist', filter: 'isFile'}
         ],
       },
     },
@@ -136,8 +138,8 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
-    'jshint',
-    'mochaTest'
+    'jshint'
+    // ,'mochaTest'
   ]);
 
   grunt.registerTask('build', [
