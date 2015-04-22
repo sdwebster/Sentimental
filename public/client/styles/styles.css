@@ -6,6 +6,12 @@ body {
   background-color: #264669;
 }
 
+.header {
+  background-color: #122C4A;
+  color: white;
+  width: 100%;
+}
+
 .bottomNav {
   background-color: #122C4A;
 }
