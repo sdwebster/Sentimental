@@ -21,13 +21,11 @@ var retrieveRow = R.curry(function (modelConstructor, identifiers) {
     });
 });
 
-
 // (* -> Model) -> {} -> Model
 function constructRow (modelConstructor, columns, row) {
   //console.log(arguments);
   if (row === undefined || row === null) {
-    console.log('NO ROW!');
-    return new modelConstructor(sliceArgs(arguments, 1)).set(columns).save();
+    return new modelConstructor(sliceArgs(arguments, 1)).set(columns);
   } else {
     return row.fetch()
   }
@@ -40,8 +38,8 @@ var getWord = retrieveRow(Word);
 
 var makeArticle = R.curry(function(source, word, article){
   console.log('pub_date: ' + new Date (article.pub_date))
-  console.log('web_url: ' + article.web_url)
-  console.log('headline: ' + article.headline.main)
+  // console.log('web_url: ' + article.web_url)
+  // console.log('headline: ' + article.headline.main)
   return constructRow(Article, function(){
     return {
       source: source.get('id'),
@@ -53,8 +51,6 @@ var makeArticle = R.curry(function(source, word, article){
   }())
 });
 
-
-
 function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
   // get all the data from an
   // API in the specified 
@@ -62,22 +58,33 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
   // all of the entries into
   // the database
   // 
-  page = page || 0;
+  // page = page || 0;
+  var wordModel;
+  var sourceModel;
 
   bluebird.join(
     getWord({ word: searchTerm }),
     getSource({name: sourceName})
-    ).then(ingestPage);
+    ).then(ingestPages);
 
-  // return ingestPage(1);
-  function ingestPage (data) {
-      getResults(searchTerm, beginDate, endDate, sourceName, page)
-        .then(function (results) {
-          return insertArticle(results, data[0], data[1]);
-        })
-      // .catch(function (err) {
-      //     errorHandler(err);
-      //   });
+  function ingestPages (data) {
+    wordModel = data[0];
+    sourceModel = data[1];
+    getResults (0);
+
+    function getResults (page) {
+      return request(constructURL(searchTerm, beginDate, endDate, sourceName, page))
+      .then(function (results) {
+        var res = JSON.parse(results[0].body).response;
+        if (res.meta.hits > (res.meta.offset + 10)) {
+          getResults(page + 1);
+        }
+        res.docs.forEach(makeArticle(sourceModel, wordModel));
+    //   // .catch(function (err) {
+    //   //     errorHandler(err);
+    //   //   });
+      });
+    }
   }
 }
 
@@ -109,34 +116,23 @@ function sliceArgs (context, start, end) {
   Array.prototype.slice.call(context, start, end);
 }
 
+// function insertArticle (res, word, source) {
+//   // console.log(results[0].body);
+//   // console.log(Object.keys(JSON.parse(results)));
+//   return res.docs.forEach(
+//     // R.composeP(
+//     //   insert,
+//       makeArticle(source, word)
+//     // ));
+//   )
+// }
+
+// function insert (row) {
+//   return row.save()
+// }
 
 
-function insertArticle (results, word, source) {
-  // console.log(results[0].body);
-  // console.log(Object.keys(JSON.parse(results)));
-  return JSON.parse(results[0].body)['response'].docs.map(
-    R.composeP(
-      insert,
-      makeArticle(source, word)
-    ));
-}
-
-function insert (row) {
-  return row.save()
-}
-
-function getResults (searchTerm, beginDate, endDate, source, page) {
-  return request(constructURL(searchTerm, beginDate, endDate, page))
-  .then(function (results) {
-    var res = JSON.parse(results[0].body).response;
-    if (res.meta.hits > (res.meta.offset + 10)) {
-      ingestData(searchTerm, beginDate, endDate, source, (page + 1));
-    }
-    return results;
-  });
-}
-
-function constructURL (searchTerm, beginDate, endDate, page) {
+function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
   return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
   'headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + 
   endDate + '&page=' + page + '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
