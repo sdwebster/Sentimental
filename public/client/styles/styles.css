@@ -1,9 +1,13 @@
 body { 
-  padding-top: 70px; 
+  padding-top: 30px; 
 }
 
 .topNav {
   background-color: #264669;
+}
+
+h1 {
+  padding-top: 0px;
 }
 
 .header {
