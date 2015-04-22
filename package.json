@@ -53,6 +53,7 @@
     "node": "=0.10.32"
   },
   "scripts":{
-    "postinstall" : "bower install"
+
+    "postinstall" : "npm install bower && bower install"
   }
 }
