@@ -1,6 +1,6 @@
 var HeaderView = Backbone.View.extend({
   
-  tagName: 'div class=header',
+  tagName: 'div class=col-md-9',
 
   initialize: function() {
     this.render();

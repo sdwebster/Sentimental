@@ -1,5 +1,5 @@
 body { 
-  padding-top: 30px; 
+  padding-top: 30px;
 }
 
 .topNav {
@@ -8,12 +8,22 @@ body {
 
 h1 {
   padding-top: 0px;
+  margin: 0px 0px;
+}
+
+.storymenu {
+  /*margin-top: 30px;*/
+  background-color: #122C4A;
+  color: white;
+  /*height: 9em;*/
+  /*display: inline-block;*/
 }
 
 .header {
   background-color: #122C4A;
   color: white;
-  width: 100%;
+  /*width: 100%;/**/
+  /*height: 9em;*/
 }
 
 .bottomNav {
