@@ -23,32 +23,25 @@ var retrieveRow = R.curry(function (modelConstructor, identifiers) {
 
 // (* -> Model) -> {} -> Model
 function constructRow (modelConstructor, columns, row) {
-  //console.log(arguments);
   if (row === undefined || row === null) {
     return new modelConstructor(sliceArgs(arguments, 1)).set(columns);
   } else {
-    return row.fetch()
+    return row.fetch();
   }
 }
-
 
 var getSource = retrieveRow(Source);
 var getWord = retrieveRow(Word);
 
-
 var makeArticle = R.curry(function(source, word, article){
-  console.log('pub_date: ' + new Date (article.pub_date))
-  // console.log('web_url: ' + article.web_url)
-  // console.log('headline: ' + article.headline.main)
-  return constructRow(Article, function(){
-    return {
+  return constructRow(Article,
+    {
       source: source.get('id'),
       word: word.get('id'),
       published: new Date(article.pub_date),
       url: article.web_url,
-      headline: article.headline.main,
-    }
-  }())
+      headline: article.headline.main
+    });
 });
 
 function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
@@ -57,10 +50,6 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
   // date range and insert 
   // all of the entries into
   // the database
-  // 
-  // page = page || 0;
-  var wordModel;
-  var sourceModel;
 
   bluebird.join(
     getWord({ word: searchTerm }),
@@ -68,13 +57,14 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
     ).then(ingestPages);
 
   function ingestPages (data) {
-    wordModel = data[0];
-    sourceModel = data[1];
+    var wordModel = data[0];
+    var sourceModel = data[1];
     getResults (0);
 
     function getResults (page) {
-      return request(constructURL(searchTerm, beginDate, endDate, sourceName, page))
-      .then(function (results) {
+      return request(constructURL(
+        searchTerm, beginDate, endDate, sourceName, page
+      )).then(function (results) {
         var res = JSON.parse(results[0].body).response;
         if (res.meta.hits > (res.meta.offset + 10)) {
           getResults(page + 1);
@@ -116,28 +106,14 @@ function sliceArgs (context, start, end) {
   Array.prototype.slice.call(context, start, end);
 }
 
-// function insertArticle (res, word, source) {
-//   // console.log(results[0].body);
-//   // console.log(Object.keys(JSON.parse(results)));
-//   return res.docs.forEach(
-//     // R.composeP(
-//     //   insert,
-//       makeArticle(source, word)
-//     // ));
-//   )
-// }
-
-// function insert (row) {
-//   return row.save()
-// }
-
-
 function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
   return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
-  'headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + 
-  endDate + '&page=' + page + '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
+    'headline:\"' + searchTerm +
+    '\"&begin_date=' + beginDate +
+    '&end_date=' + endDate +
+    '&page=' + page +
+    '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
 }
-
 
 ingestData('ExxonMobil', '20000101', '20150406', 'New York Times')
 
