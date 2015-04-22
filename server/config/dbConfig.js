@@ -2,7 +2,7 @@ var keys = require('./keys.js');
 var path = require('path');
 var knex = require('knex').initialize({
   client: 'mysql',
-  connection: {
+  connection: process.env.CUSTOMCONNSTR_MYSQL_CONNURL || {
     host     : 'localhost',
     user     : keys.mysqlUser.username,
     password : keys.mysqlUser.password,
