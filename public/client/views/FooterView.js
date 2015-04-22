@@ -1,6 +1,6 @@
 var FooterView = Backbone.View.extend({
   
-  tagName: 'div',
+  tagName: 'div class="footer"',
 
   initialize: function() {
     this.render();

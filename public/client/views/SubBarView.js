@@ -1,6 +1,6 @@
 var SubBarView = Backbone.View.extend({
   
-  tagName: 'div class=row',
+  tagName: 'div class="row subbar"',
 
   initialize: function() {
     this.storyMenuView = new StoryMenuView();

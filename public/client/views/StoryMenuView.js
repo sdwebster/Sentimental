@@ -1,6 +1,6 @@
 var StoryMenuView = Backbone.View.extend({
   
-  tagName: 'div class=col-md-3',
+  tagName: 'div class="col-md-3"',
 
   initialize: function() {
     this.render();
