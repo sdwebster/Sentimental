@@ -8,8 +8,7 @@
   <link rel="stylesheet" type="text/css" href="./styles/styles.css"></link>
 </head>
 <body>
-  <div class="container">
-  </div>
+  <div class="container"></div>
 
   <!-- Load library utils -->
   <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
@@ -38,21 +37,21 @@
   <script src="./views/TopNavView.js"></script>
 
   <script>
+    $(function(){
 
-  $(function(){
+      // Set up model objects
+      var chart = new ChartModel({keywords: ['BP'], sources: ['New York Times']});
+      var app = new AppModel({chart: chart});
 
-    // Set up model objects
-    var chart = new ChartModel({keywords: ['BP'], sources: ['New York Times']});
-    var app = new AppModel({chart: chart});
+      // Set up view for whole app
+      var appView = new AppView({model: app});
 
-    // Set up view for whole app
-    var appView = new AppView({model: app});
-
-    // Render the view on the screen
-    $('.container').append(appView.render())
-
-  });
+      // Render the view on the screen
+      $('.container').append(appView.render())
+    });
   </script>
+
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
 </body>
 </html>
