@@ -45,7 +45,6 @@
     "grunt-open": "^0.2.3",
     "grunt-requirejs": "^0.4.2",
     "grunt-rev": "^0.1.0",
-    "grunt-sass": "^0.17.0",
     "grunt-usemin": "^2.4.0",
     "jshint-stylish": "^1.0.0",
     "load-grunt-tasks": "^0.6.0",
