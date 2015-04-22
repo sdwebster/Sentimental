@@ -15,9 +15,12 @@ var Article = db.Model.extend({
   },
 
   initialize: function () {
-    if (this.isNew()) {
-      this.save()
-    }
+    this.fetch().then(function (data) {
+       if (data ===  null) {
+        console.log('new!');
+        this.save()
+       }
+    })
   }
   
 });

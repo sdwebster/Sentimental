@@ -24,7 +24,7 @@ var retrieveRow = R.curry(function (modelConstructor, identifiers) {
 // (* -> Model) -> {} -> Model
 function constructRow (modelConstructor, columns, row) {
   if (row === undefined || row === null) {
-    return new modelConstructor(sliceArgs(arguments, 1)).set(columns);
+    return new modelConstructor(sliceArgs(arguments, 1)).set(columns).save();
   } else {
     return row.fetch();
   }
@@ -115,6 +115,6 @@ function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
     '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
 }
 
-ingestData('ExxonMobil', '20000101', '20150406', 'New York Times')
+ingestData('Chevron', '20000101', '20150406', 'New York Times')
 
 module.exports = ingestData;
