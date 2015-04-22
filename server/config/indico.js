@@ -7,7 +7,7 @@ var db = require('./dbConfig.js');
 var Article = require('./models/articleModel.js');
 var Articles = require('./collections/articles.js');
 
-indico.apiKey = keys.indicoAPIKey.key;
+indico.apiKey = process.env.CUSTOMCONNSTR_INDICO_API_KEY /*keys.indicoAPIKey.key*/;
 
 function calcData(req, res){
 	console.log('calcData run ', new Date());

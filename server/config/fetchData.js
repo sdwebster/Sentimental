@@ -1,4 +1,4 @@
-var keys = require('./keys.js');
+// var keys = require('./keys.js');
 var Article = require('./models/articleModel.js');
 var Keyword = require('./models/keywordModel.js');
 var Source = require('./models/sourceModel.js');
@@ -23,6 +23,7 @@ var fetchData = function (req, res){
     return new Source({'name': source})
     .fetch();
   };
+  
 
   // bluebird is used to resolve promises retured by keywordId and sourceId
   bluebird.join(keywordId(), sourceId())

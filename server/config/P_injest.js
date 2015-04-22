@@ -141,7 +141,7 @@ function getResults (searchTerm, beginDate, endDate, source, page) {
 function constructURL (searchTerm, beginDate, endDate, page) {
   return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
   'headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + 
-  endDate + '&page=' + page + '&api-key=' + keys.nyt;
+  endDate + '&page=' + page + '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
 }
 
 
