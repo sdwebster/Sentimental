@@ -18,6 +18,15 @@ h1 {
   font-size: 24px;
 }
 
+ul {
+  padding-left: 0px;
+}
+
+li {
+  list-style: none;
+  padding: 15px 0 15px 40px;
+}
+
 .topNav {
   background-color: #264669;
 }
@@ -25,6 +34,12 @@ h1 {
 .subbar {
   background-color: #122C4A;
   color: white;
+  margin-top: 20px;
+}
+
+.lowlight {
+  background-color: #3F5F84;
+  color: #88BDFA;
 }
 
 .summary {
@@ -42,11 +57,6 @@ h1 {
 
 .navbar-default .navbar-text {
   color: #3F5F84;
-}
-
-.col-md-3 {
-  padding-top: 30px;
-  padding-left: 4em;
 }
 
 .col-md-9 {
