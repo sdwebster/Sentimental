@@ -21,7 +21,7 @@ var QueryView = Backbone.View.extend({
     
     this.svgPath.attr('d', this.lineGen(this.model.get('summaryDataPoints')))
       .attr('stroke', this.model.get('color'))
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 0)
       .attr('fill', 'none')
       .on("mouseover", function(d){
         d3.select(this).transition()
@@ -33,6 +33,8 @@ var QueryView = Backbone.View.extend({
           .attr("stroke-width", 2)
           .style("opacity", 1);
       });
+
+    this.svgPath.transition().duration(2000).attr('stroke-width', 2);
 
     this.displayDots();
   },
