@@ -1,5 +1,4 @@
 body { 
-
   padding-top: 30px;
 }
 
@@ -54,6 +53,11 @@ li {
 
 .navbar-fixed-top {
   border-width: 0 0 0px;
+}
+
+.navbar-default .navbar-link {
+  margin-left: 40px;
+  color: #77AAE5;
 }
 
 .navbar-default .navbar-text {
