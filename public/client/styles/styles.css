@@ -1,5 +1,21 @@
 body { 
+
   padding-top: 30px;
+}
+
+.navbar-default .navbar-brand {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  letter-spacing: 1;
+  color: white;
+
+}
+
+h1 { 
+  font-family: 'Roboto', sans-serif;
+  font-weight: 100; 
+  font-size: 24px;
 }
 
 .topNav {
@@ -9,6 +25,11 @@ body {
 .subbar {
   background-color: #122C4A;
   color: white;
+}
+
+.summary {
+  font-family: 'Vollkorn', serif;
+  font-size: 14px;
 }
 
 .bottomNav {
