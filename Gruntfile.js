@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         separator: ';\n\n'
       },
       dist: {
-        src: ['public/client/**/*.js', '!public/client/bower_components/*.js'],
+        src: ['public/client/**/*.js'],
         dest: 'public/dist/<%= pkg.name %>.js'
       }
     },
