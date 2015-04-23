@@ -64,24 +64,24 @@ var ChartView = Backbone.View.extend({
         .attr("transform", "translate(0," + (this.options.HEIGHT - this.options.MARGIN.bottom) + ")")
         .attr('class', 'axis')
         .call(xAxis)
-      .append("text")
-        .attr("class", "label")
-        .style("text-anchor", "end")
-        .attr("x", 100)
-        .attr("y", -6)
-        .text("Time");
+      // .append("text")
+      //   .attr("class", "label")
+      //   .style("text-anchor", "end")
+      //   .attr("x", 100)
+      //   .attr("y", -6);
+        // .text("Time");
 
     this.svg.append("svg:g")
         .attr("transform", "translate(" + (this.options.MARGIN.left) + ",0)")
         .attr('class', 'axis')
         .call(yAxis)
-      .append('text')
-        .attr("class", "label")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .attr("transform", "rotate(-90)")
-        .style("text-anchor", "end")
-        .text("Sentiment");
+      // .append('text')
+      //   .attr("class", "label")
+      //   .attr("y", 6)
+      //   .attr("dy", ".71em")
+      //   .attr("transform", "rotate(-90)")
+      //   .style("text-anchor", "end");
+        // .text("Sentiment");
 
     // TODO: add axis labels
 
@@ -105,45 +105,45 @@ var ChartView = Backbone.View.extend({
       chartOptions
     );
 
-    this.drawLegend();
+    // this.drawLegend();
 
     return this;
   },
 
-  drawLegend: function(){
-    var queryList = this.model.queryList;
+  // drawLegend: function(){
+  //   var queryList = this.model.queryList;
 
-    var legendRectSize = 18;
-    var legendSpacing = 4;
-    var legend = this.svg.selectAll('.legend')
-      .data(queryList)
-      .enter()
-      .append('g')
-      // .attr('class', 'legend')
-      .attr('transform', function(d, i) {
-        var height = legendRectSize + legendSpacing;
-        var offset =  height * queryList.length / 2;
-        var height = 100;
-        // var offset = 0;
-        // var horz = -2 * legendRectSize;
-        var horz = 100;
-        var vert = 50;
-        return 'translate(' + horz + ',' + vert + ')';
-      });
+  //   var legendRectSize = 18;
+  //   var legendSpacing = 4;
+  //   var legend = this.svg.selectAll('.legend')
+  //     .data(queryList)
+  //     .enter()
+  //     .append('g')
+  //     // .attr('class', 'legend')
+  //     .attr('transform', function(d, i) {
+  //       var height = legendRectSize + legendSpacing;
+  //       var offset =  height * queryList.length / 2;
+  //       var height = 100;
+  //       // var offset = 0;
+  //       // var horz = -2 * legendRectSize;
+  //       var horz = 100;
+  //       var vert = 50;
+  //       return 'translate(' + horz + ',' + vert + ')';
+  //     });
 
-    queryList.forEach(function(q, i){
-      legend.append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .attr('y', 50 * i)
-        .style('fill', q.color)
-        .style('stroke', 'black');
+  //   queryList.forEach(function(q, i){
+  //     legend.append('rect')
+  //       .attr('width', legendRectSize)
+  //       .attr('height', legendRectSize)
+  //       .attr('y', 50 * i)
+  //       .style('fill', q.color)
+  //       .style('stroke', 'black');
 
-      legend.append('text')
-        .attr('x', legendRectSize + legendSpacing)
-        .attr('y', 50 * i)
-        .text(function(d) { return '"' + q.keyword + '" in ' + q.source; });
-      }
-    );
-  }
+  //     legend.append('text')
+  //       .attr('x', legendRectSize + legendSpacing)
+  //       .attr('y', 50 * i)
+  //       .text(function(d) { return '"' + q.keyword + '" in ' + q.source; });
+  //     }
+  //   );
+  // }
 });
