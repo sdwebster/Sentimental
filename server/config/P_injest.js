@@ -34,8 +34,7 @@ var getSource = retrieveRow(Source);
 var getWord = retrieveRow(Word);
 
 var makeArticle = R.curry(function(source, word, article){
-  return constructRow(Article,
-    {
+  return constructRow(Article, {
       source: source.get('id'),
       word: word.get('id'),
       published: new Date(article.pub_date),
@@ -44,13 +43,8 @@ var makeArticle = R.curry(function(source, word, article){
     });
 });
 
+// make a large query to a news API and insert all entries into the database
 function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
-  // get all the data from an
-  // API in the specified 
-  // date range and insert 
-  // all of the entries into
-  // the database
-
   bluebird.join(
     getWord({ word: searchTerm }),
     getSource({name: sourceName})
@@ -70,9 +64,9 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
           getResults(page + 1);
         }
         res.docs.forEach(makeArticle(sourceModel, wordModel));
-    //   // .catch(function (err) {
-    //   //     errorHandler(err);
-    //   //   });
+      // .catch(function (err) {
+      //     errorHandler(err);
+      //   });
       });
     }
   }
