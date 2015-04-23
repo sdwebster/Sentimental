@@ -24,7 +24,7 @@ ul {
 
 li {
   list-style: none;
-  padding: 15px 0 15px 40px;
+  padding: 10px 0 10px 63px;
 }
 
 .topNav {
@@ -32,14 +32,15 @@ li {
 }
 
 .subbar {
-  background-color: #122C4A;
-  color: white;
-  margin-top: 20px;
-}
-
-.lowlight {
   background-color: #3F5F84;
   color: #88BDFA;
+  margin-top: 20px;
+  height: 160px;
+}
+
+.highlight {
+  background-color: #122C4A;
+  color: white;
 }
 
 .summary {
@@ -59,8 +60,15 @@ li {
   color: #3F5F84;
 }
 
+.col-md-3 {
+  padding-right: 0px;
+}
 .col-md-9 {
   padding-right: 15em;
+  padding-left: 45px;
+  background-color: #122C4A;
+  color: white;
+  height: 100%;
 }
 
 svg {
