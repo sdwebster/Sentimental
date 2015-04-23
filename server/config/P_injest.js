@@ -13,68 +13,69 @@ var Word = require('./models/keywordModel.js');
 var limiter = new RateLimiter(10, 1000);
 
 
-
 var retrieveRow = R.curry(function (modelConstructor, identifiers) {
-  return new modelConstructor()
+  console.log('identifiers:', JSON.stringify(identifiers));
+  return modelConstructor
     .query({where: identifiers})
-    .fetch().then(function (row) {
-      if (row === undefined || row === null) {
-        console.log('row does not exist');
-        return constructRow(modelConstructor, identifiers);
+    .fetch()
+    .then(function (row) {
+      if (row === null){
+        row = new modelConstructor(identifiers);
       }
-      return row;
+      // console.log('row is ', row);
+      return row.save();
+        // return constructRow(modelConstructor, identifiers, logger(row));
     });
 });
+
+// (* -> Model) -> {} -> Model
+function constructRow (modelConstructor, columns, row) {
+  if (row === undefined || row === null) {
+    return new modelConstructor(sliceArgs(arguments, 1)).set(columns).save();
+  } else {
+    return row.fetch();
+  }
+}
 
 var getSource = retrieveRow(Source);
 var getWord = retrieveRow(Word);
 
-
 var makeArticle = R.curry(function(source, word, article){
-  console.log('pub_date: ' + new Date (article.pub_date))
-  console.log('web_url: ' + article.web_url)
-  console.log('headline: ' + article.headline.main)
-  return constructRow(Article, function(){
-    return {
+  return constructRow(Article, {
       source: source.get('id'),
       word: word.get('id'),
       published: new Date(article.pub_date),
       url: article.web_url,
-      headline: article.headline.main,
-    }
-  }())
+      headline: article.headline.main
+    });
 });
 
-
-
+// make a large query to a news API and insert all entries into the database
 function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
-  // get all the data from an
-  // API in the specified 
-  // date range and insert 
-  // all of the entries into
-  // the database
-  // 
-  page = page || 0;
-
   bluebird.join(
-      (function(){
-        return logger(getWord({ word: searchTerm }))
-       })(), 
-       (function(){
-          console.log('making sourceModel: ')
-          return logger(getSource({name: sourceName}))
-        })()
-      ).then(ingestPage)
+    getWord({ word: searchTerm }),
+    getSource({name: sourceName})
+    ).then(ingestPages);
 
-  // return ingestPage(1);
-  function ingestPage (data) {
-      getResults(searchTerm, beginDate, endDate, sourceName, page)
-        .then(function (results) {
-          return insertArticle(results, data[0], data[1]);
-        })
+  function ingestPages (data) {
+    var wordModel = data[0];
+    var sourceModel = data[1];
+    getResults (0);
+
+    function getResults (page) {
+      return request(constructURL(
+        searchTerm, beginDate, endDate, sourceName, page
+      )).then(function (results) {
+        var res = JSON.parse(results[0].body).response;
+        if (res.meta.hits > (res.meta.offset + 10)) {
+          getResults(page + 1);
+        }
+        res.docs.forEach(makeArticle(sourceModel, wordModel));
       // .catch(function (err) {
       //     errorHandler(err);
       //   });
+      });
+    }
   }
 }
 
@@ -106,45 +107,15 @@ function sliceArgs (context, start, end) {
   Array.prototype.slice.call(context, start, end);
 }
 
-// (* -> Model) -> {} -> Model
-function constructRow (modelConstructor, columns) {
-  //console.log(arguments);
-  return new modelConstructor(sliceArgs(arguments, 1)).set(columns);
-}
-
-
-function insertArticle (results, word, source) {
-  // console.log(results[0].body);
-  // console.log(Object.keys(JSON.parse(results)));
-  return JSON.parse(results[0].body)['response'].docs.map(
-    R.composeP(
-      insert,
-      makeArticle(source, word)
-    ));
-}
-
-function insert (row) {
-  return row.save()
-}
-
-function getResults (searchTerm, beginDate, endDate, source, page) {
-  return request(constructURL(searchTerm, beginDate, endDate, page))
-  .then(function (results) {
-    var res = JSON.parse(results[0].body).response;
-    if (res.meta.hits > (res.meta.offset + 10)) {
-      ingestData(searchTerm, beginDate, endDate, source, (page + 1));
-    }
-    return results;
-  });
-}
-
-function constructURL (searchTerm, beginDate, endDate, page) {
+function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
   return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
-  'headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + 
-  endDate + '&page=' + page + '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
+    'headline:\"' + searchTerm +
+    '\"&begin_date=' + beginDate +
+    '&end_date=' + endDate +
+    '&page=' + page +
+    '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
 }
 
-
-ingestData('BP', '20000101', '20150406', 'New York Times')
+ingestData('Gazprom', '20000101', '20150406', 'New York Times')
 
 module.exports = ingestData;

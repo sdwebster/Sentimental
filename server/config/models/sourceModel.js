@@ -10,7 +10,7 @@ var Source = db.Model.extend({
 
   initialize: function () {
     this.fetch().then(function (data) {
-       if(data === null) {
+       if (data === null) {
         console.log('new!')
         this.save()
        }
