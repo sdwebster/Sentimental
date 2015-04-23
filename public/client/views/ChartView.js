@@ -12,12 +12,12 @@ var ChartView = Backbone.View.extend({
   },
 
   // currently working
-  events: {
-    'click': function() {
-      console.log('clicked me!');
-      this.model.react();
-    }
-  },
+  // events: {
+  //   'click': function() {
+  //     console.log('clicked me!');
+  //     this.model.react();
+  //   }
+  // },
 
   initialize: function(params){
     // TODO: listen for a change to datasets in this.model.collection

@@ -48,9 +48,9 @@ var QueryView = Backbone.View.extend({
 
     dataPoints.enter().append("circle")
       .attr("class", "dot")
-      .attr("r", 4)
+      .attr("r", 0)
       .attr("cx", this.xMap)
-      .attr("cy", 200)
+      .attr("cy", this.yMap)
       .attr("opacity", .1)
       .style("fill", this.model.get('color'))
       .html(function(d){
@@ -84,7 +84,7 @@ var QueryView = Backbone.View.extend({
           .style("opacity", .1);
         });
 
-    dataPoints.transition().duration(1500).attr("cy", this.yMap);
+    dataPoints.transition().duration(1500).attr("r", 4);
 
   }
 
