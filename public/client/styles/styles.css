@@ -4,16 +4,16 @@ body {
 }
 
 .navbar-default .navbar-brand {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Helvetica Neue', 'Roboto', sans-serif;
   font-weight: 300;
   font-size: 18px;
-  letter-spacing: 1;
+  letter-spacing: 4px;
   color: white;
 
 }
 
 h1 { 
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Helvetica Neue', 'Roboto', sans-serif;
   font-weight: 100; 
   font-size: 24px;
 }
@@ -28,7 +28,7 @@ h1 {
 }
 
 .summary {
-  font-family: 'Vollkorn', serif;
+  font-family: 'Georgia', 'Vollkorn', serif;
   font-size: 14px;
 }
 
@@ -46,4 +46,9 @@ h1 {
 
 .col-md-3 {
   padding-top: 30px;
+  padding-left: 4em;
+}
+
+.col-md-9 {
+  padding-right: 4em;
 }
