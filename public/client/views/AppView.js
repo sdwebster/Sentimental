@@ -1,16 +1,18 @@
 var AppView = Backbone.View.extend({
   
   initialize: function(params){
-    this.sidebarView = new SidebarView();
-    this.headerView = new HeaderView();
+    this.topNavView = new TopNavView();
+    this.subBarView = new SubBarView();
     this.chartView = new ChartView({model: this.model.get('chart')});
+    this.footerView = new FooterView();
   },
 
   render: function(){
     return this.$el.html([
-      this.sidebarView.$el,
-      this.headerView.$el,
-      this.chartView.$el
+      this.topNavView.$el,
+      this.subBarView.$el,
+      this.chartView.$el,
+      this.footerView.$el
     ]);
   }
 

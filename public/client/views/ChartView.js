@@ -86,9 +86,9 @@ var ChartView = Backbone.View.extend({
     // TODO: add axis labels
 
     var lineGen = d3.svg.line()
-    .x(xMap)
-    .y(yMap)
-    .interpolate("basis");
+      .x(xMap)
+      .y(yMap)
+      .interpolate("basis");
 
     // TODO: make this depend on timeframe
 

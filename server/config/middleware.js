@@ -28,9 +28,11 @@ module.exports = function(app, express){
     app.get('/calc', function (req, res){
         indico(req, res);
     });
+
     // Automatic start and continuous checking the database every 60 seconds for new data to be sent to indico.io API
     // If left running 24 hours per day a call every 60 seconds will result in 1440 calls per day.
     setInterval(function(){indico()}, 60000);  
+    
     // indico()
     // catch 404 and forward to error handler
     app.use(function(req, res, next) {
