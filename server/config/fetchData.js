@@ -19,6 +19,9 @@ var fetchData = function (req, res){
   };
 
   var sourceId = function(){
+    if (source === 'newyorktimes'){
+       source = 'New York Times';
+    }
     return new Source({'name': source})
     .fetch();
   };

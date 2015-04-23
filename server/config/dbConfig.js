@@ -45,6 +45,7 @@ db.knex.schema.hasTable('articles').then(function (exists) {
       article.date('published');
       article.string('url', 225);
       article.string('headline', 225);
+      article.string('leadParagraph', 1000);
       article.float('sentiment', 4, 4);
       article.timestamps();
     }).then(function (table) {

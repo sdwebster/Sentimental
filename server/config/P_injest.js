@@ -46,7 +46,8 @@ var makeArticle = R.curry(function(source, word, article){
       word: word.get('id'),
       published: new Date(article.pub_date),
       url: article.web_url,
-      headline: article.headline.main
+      headline: article.headline.main,
+      leadParagraph: article.lead_paragraph
     });
 });
 
@@ -116,6 +117,6 @@ function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
     '&api-key=' + (process.env.CUSTOMCONNSTR_NYT_API_KEY /*|| keys.nyt*/);
 }
 
-ingestData('Gazprom', '20000101', '20150406', 'New York Times')
+ingestData('BP', '20000101', '20150406', 'New York Times')
 
 module.exports = ingestData;
