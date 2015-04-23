@@ -3,7 +3,7 @@ var request = bluebird.promisify(require('request'));
 var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
 
-var keys = require('./keys.js').sourceAPIKeys;
+// var keys = require('./keys.js').sourceAPIKeys;
 
 var Article = require('./models/articleModel.js');
 var Source = require('./models/sourceModel.js');
@@ -141,7 +141,7 @@ function getResults (searchTerm, beginDate, endDate, source, page) {
 function constructURL (searchTerm, beginDate, endDate, page) {
   return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
   'headline:\"' + searchTerm + '\"&begin_date=' + beginDate + '&end_date=' + 
-  endDate + '&page=' + page + '&api-key=' + keys.nyt;
+  endDate + '&page=' + page + '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
 }
 
 
