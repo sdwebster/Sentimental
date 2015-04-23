@@ -3,7 +3,7 @@ var request = bluebird.promisify(require('request'));
 var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
 
-// var keys = require('./keys.js').sourceAPIKeys;
+var keys = require('./keys.js').sourceAPIKeys;
 
 var Article = require('./models/articleModel.js');
 var Source = require('./models/sourceModel.js');

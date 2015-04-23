@@ -30,6 +30,10 @@ module.exports = function(app, express){
         indico(req, res);
     });
 
+    app.get('/newsapi', function (req, res){
+        // send the data to parsed with options to P_injest to start the data gathering process 
+        // require(P_injest.js)('term', 'startDate', 'endDate', 'New York Times');
+    });
     // Automatic start and continuous checking the database every 60 seconds for new data to be sent to indico.io API
     // If left running 24 hours per day a call every 60 seconds will result in 1440 calls per day.
     setInterval(function(){indico()}, 60000);  
