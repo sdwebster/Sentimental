@@ -6,7 +6,7 @@ var FooterView = Backbone.View.extend({
     this.render();
   },
 
-  template: _.template('<nav class="navbar navbar-default navbar-fixed-bottom bottomNav"><div class="container"><div class="navbar-footer"></div><p class="navbar-text navbar-right">Created by <strong>Optimistic Botanists</strong>  © 2015</p></div></nav>'),
+  template: _.template('<nav class="navbar navbar-default navbar-fixed-bottom bottomNav"><div class="container"><div class="navbar-footer"></div><p class="navbar-text navbar-right">Created by <a href="https://github.com/OptiBots/"><strong>Optimistic Botanists</strong></a>  © 2015</p></div></nav>'),
 
   render: function(){
     return this.$el.html(this.template());
