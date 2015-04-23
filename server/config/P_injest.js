@@ -3,7 +3,7 @@ var request = bluebird.promisify(require('request'));
 var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
 
-// var keys = require('./keys.js').sourceAPIKeys;
+var keys = require('./keys.js').sourceAPIKeys;
 
 var Article = require('./models/articleModel.js');
 var Source = require('./models/sourceModel.js');
@@ -14,10 +14,17 @@ var limiter = new RateLimiter(10, 1000);
 
 
 var retrieveRow = R.curry(function (modelConstructor, identifiers) {
-  return new modelConstructor()
+  console.log('identifiers:', JSON.stringify(identifiers));
+  return modelConstructor
     .query({where: identifiers})
-    .fetch().then(function (row) {
-        return constructRow(modelConstructor, identifiers, row);
+    .fetch()
+    .then(function (row) {
+      if (row === null){
+        row = new modelConstructor(identifiers);
+      }
+      // console.log('row is ', row);
+      return row.save();
+        // return constructRow(modelConstructor, identifiers, logger(row));
     });
 });
 
@@ -106,9 +113,9 @@ function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
     '\"&begin_date=' + beginDate +
     '&end_date=' + endDate +
     '&page=' + page +
-    '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
+    '&api-key=' + /*process.env.CUSTOMCONNSTR_NYT_API_KEY*/keys.nyt;
 }
 
-ingestData('Chevron', '20000101', '20150406', 'New York Times')
+ingestData('Gazprom', '20000101', '20150406', 'New York Times')
 
 module.exports = ingestData;
