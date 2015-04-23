@@ -50,5 +50,10 @@ h1 {
 }
 
 .col-md-9 {
-  padding-right: 4em;
+  padding-right: 15em;
+}
+
+svg {
+  margin-left: 100px;
+  margin-top: 50px;
 }
