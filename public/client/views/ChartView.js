@@ -28,31 +28,24 @@ var ChartView = Backbone.View.extend({
   },
 
   render: function(){
-    var 
-    xScale = d3.time.scale()
-        .range(
-        [this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]
-      )
-    .domain([this.model.startDate, this.model.endDate])
-    .rangeRound(
-        [this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]
-      )
-    ,
+    var xScale = d3.time.scale()
+      .range([this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right])
+      .domain([this.model.startDate, this.model.endDate])
+      .rangeRound([this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]);
 
-    yScale = d3.scale.linear().range(
-      [this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom]
+    var yScale = d3.scale.linear()
+      .range([this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom])
+      .domain([0.0, 1.0]);
 
-      ).domain([0.0, 1.0]),
+    var xAttr = this.options.XATTR;
+    var yAttr = this.options.YATTR;
 
-    xAttr = this.options.XATTR,
-    yAttr = this.options.YATTR,
+    var xMap = function(d) { return xScale(d[xAttr]);}; // data -> display
+    var yMap = function(d) { return yScale(d[yAttr]);}; // data -> display
 
-    xMap = function(d) { return xScale(d[xAttr]);}, // data -> display
-    yMap = function(d) { return yScale(d[yAttr]);}, // data -> display
-
-    xAxis = d3.svg.axis()
-    .scale(xScale),
-    yAxis = d3.svg.axis()
+    var xAxis = d3.svg.axis()
+      .scale(xScale);
+    var yAxis = d3.svg.axis()
       .scale(yScale)
       .orient("left");
 
@@ -63,7 +56,7 @@ var ChartView = Backbone.View.extend({
     this.svg.append("svg:g")
         .attr("transform", "translate(0," + (this.options.HEIGHT - this.options.MARGIN.bottom) + ")")
         .attr('class', 'axis')
-        .call(xAxis)
+        .call(xAxis);
       // .append("text")
       //   .attr("class", "label")
       //   .style("text-anchor", "end")
@@ -74,7 +67,7 @@ var ChartView = Backbone.View.extend({
     this.svg.append("svg:g")
         .attr("transform", "translate(" + (this.options.MARGIN.left) + ",0)")
         .attr('class', 'axis')
-        .call(yAxis)
+        .call(yAxis);
       // .append('text')
       //   .attr("class", "label")
       //   .attr("y", 6)
