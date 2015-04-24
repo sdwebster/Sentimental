@@ -130,10 +130,6 @@ function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
     '&api-key=' + sourceAPIKey;
 }
 
-<<<<<<< HEAD
-ingestData('Enron', '19950001', '20150306', 'New York Times')
-=======
 // ingestData('Gazprom', '20000101', '20150406', 'New York Times')
->>>>>>> (add) endpoints for requesting new keyword for database ingestion and retrieval of keword/publish timeframe/ source search
 
 module.exports = ingestData;
