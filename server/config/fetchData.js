@@ -40,7 +40,7 @@ var fetchData = function (req, res){
     })
     .then(function(articles) {
       articles.forEach(function(article){
-        article.set('sentiment', article.get('sentimentOfHeadline'));
+        article.set('sentiment', article.get('sentimentOfSnippet'));
       });
       res.send(articles.toJSON());
     }).catch(function(error) {

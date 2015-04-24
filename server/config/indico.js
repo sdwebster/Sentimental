@@ -16,7 +16,7 @@ function calcData(req, res){
 	new Article()
 	// Search only for values that have not yet been calculated.
 		.query('whereNotNull', 'headline')
-		.query('whereNull', 'sentimentOfHeadline')
+		.query('whereNull', 'sentimentOfSnippet')
 	  .fetchAll()
 	  .then(function(articles) {
 	    var temp = toIndico(articles, res);
@@ -51,22 +51,22 @@ function calcData(req, res){
 		// Use JSON to remove any functions returned with the query
 		value = JSON.parse(JSON.stringify(value));
 
-		var sentimentOfHeadline = [];
+		var sentimentOfSnippet = [];
 		value.map(function(value){
 			// console.log('value: ', value.headline, ' is a ', typeof value.headline);
-			sentimentOfHeadline.push(value.headline);
-			console.log(sentimentOfHeadline);
+			sentimentOfSnippet.push(value.headline);
+			console.log(sentimentOfSnippet);
 		});
-		return sentimentOfHeadline;
+		return sentimentOfSnippet;
 	}
 
-// Take the response from the array, for each row, insert into corresponding sentimentOfHeadline row.
-	function updateDataBase (sentimentOfHeadline, articles){
+// Take the response from the array, for each row, insert into corresponding sentimentOfSnippet row.
+	function updateDataBase (sentimentOfSnippet, articles){
 		// Use JSON to remove any functions returned with the query
 		var articles = JSON.parse(JSON.stringify(articles));
 		articles.map(function(value, index){
 			new Article({'id': value.id})
-				.save({'sentimentOfHeadline':logger(sentimentOfHeadline[index])});
+				.save({'sentimentOfSnippet':logger(sentimentOfSnippet[index])});
 		});
 	}
 	
