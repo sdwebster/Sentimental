@@ -1,8 +1,8 @@
 var ChartView = Backbone.View.extend({
 
   defaults: {    
-    MARGIN: {top: 20, right: 20, bottom: 25, left: 50},
-    WIDTH: 960,
+    MARGIN: {top: 20, right: 320, bottom: 25, left: 50},
+    WIDTH: 1200,
     HEIGHT: 400,
     START_YEAR: 2000,
     END_YEAR: 2015,
@@ -98,45 +98,43 @@ var ChartView = Backbone.View.extend({
       chartOptions
     );
 
-    // this.drawLegend();
+    this.drawLegend();
 
     return this;
   },
 
-  // drawLegend: function(){
-  //   var queryList = this.model.queryList;
+  drawLegend: function(){
+    var queryList = this.model.queryList;
 
-  //   var legendRectSize = 18;
-  //   var legendSpacing = 4;
-  //   var legend = this.svg.selectAll('.legend')
-  //     .data(queryList)
-  //     .enter()
-  //     .append('g')
-  //     // .attr('class', 'legend')
-  //     .attr('transform', function(d, i) {
-  //       var height = legendRectSize + legendSpacing;
-  //       var offset =  height * queryList.length / 2;
-  //       var height = 100;
-  //       // var offset = 0;
-  //       // var horz = -2 * legendRectSize;
-  //       var horz = 100;
-  //       var vert = 50;
-  //       return 'translate(' + horz + ',' + vert + ')';
-  //     });
+    var legendRectSize = 18;
+    var legendSpacing = 3;
+    var legend = this.svg.selectAll('.legend')
+      .data(queryList)
+      .enter()
+      .append('g')
+      // .attr('class', 'legend')
+      .attr('transform', function(d, i) {
+        var height = legendRectSize + legendSpacing;
+        var offset =  height * queryList.length / 2;
+        var height = 100;
+        // var offset = 0;
+        // var horz = -2 * legendRectSize;
+        var horz = 900;
+        var vert = 50;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
 
-  //   queryList.forEach(function(q, i){
-  //     legend.append('rect')
-  //       .attr('width', legendRectSize)
-  //       .attr('height', legendRectSize)
-  //       .attr('y', 50 * i)
-  //       .style('fill', q.color)
-  //       .style('stroke', 'black');
+    queryList.forEach(function(q, i){
+      legend.append('circle')
+        .attr('r', 8)
+        .attr('y', 50)
+        .style('fill', q.color);
 
-  //     legend.append('text')
-  //       .attr('x', legendRectSize + legendSpacing)
-  //       .attr('y', 50 * i)
-  //       .text(function(d) { return '"' + q.keyword + '" in ' + q.source; });
-  //     }
-  //   );
-  // }
+      legend.append('text')
+        .attr('x', legendRectSize + legendSpacing)
+        .attr('y', 4)
+        .text(function(d) { return '"' + q.keyword + '" in ' + q.source; });
+      }
+    );
+  }
 });
