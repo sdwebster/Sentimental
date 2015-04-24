@@ -1,5 +1,5 @@
 var indico = require('indico.io');
-var keys = require('./keys.js');
+// var keys = require('./keys.js');
 var RateLimiter = require('limiter');
 var keys = require('./keys.js');
 var db = require('./dbConfig.js');
