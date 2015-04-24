@@ -1,8 +1,8 @@
 var ChartModel = Backbone.Model.extend({ 
 
   defaults: {    
-    START_YEAR: 2002,
-    END_YEAR: 2011,
+    START_YEAR: 1995,
+    END_YEAR: 2015,
   },
   
   makeQueryList: function(){

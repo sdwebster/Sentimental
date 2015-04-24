@@ -46,7 +46,9 @@ var makeArticle = R.curry(function(source, word, article){
       word: word.get('id'),
       published: new Date(article.pub_date),
       url: article.web_url,
-      headline: article.headline.main
+      headline: article.headline.main,
+      snippet: article.snippet,
+      leadParagraph: article.lead_paragraph
     });
 });
 
@@ -55,7 +57,10 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
   bluebird.join(
     getWord({ word: searchTerm }),
     getSource({name: sourceName})
-    ).then(ingestPages);
+    ).then(ingestPages)
+      .catch(function (err) {
+          errorHandler(err);
+        });
 
   function ingestPages (data) {
     var wordModel = data[0];
@@ -71,9 +76,6 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
           getResults(page + 1);
         }
         res.docs.forEach(makeArticle(sourceModel, wordModel));
-      // .catch(function (err) {
-      //     errorHandler(err);
-      //   });
       });
     }
   }
@@ -116,6 +118,6 @@ function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
     '&api-key=' + (process.env.CUSTOMCONNSTR_NYT_API_KEY /*|| keys.nyt*/);
 }
 
-ingestData('Gazprom', '20000101', '20150406', 'New York Times')
+ingestData('Enron', '19950001', '20150306', 'New York Times')
 
 module.exports = ingestData;

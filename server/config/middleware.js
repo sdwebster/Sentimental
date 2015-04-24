@@ -21,6 +21,7 @@ module.exports = function(app, express){
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
     
     app.get('/data', function (req, res){
+        // console.log('in mware, req is', req);
         fetchData(req, res);
     });
 
@@ -41,3 +42,9 @@ module.exports = function(app, express){
         next(err);
     });
 }
+
+function logger(string, x){
+  console.log(string);
+  console.log(JSON.stringify(x));
+  return x;
+} 

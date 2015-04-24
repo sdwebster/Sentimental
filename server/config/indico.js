@@ -16,7 +16,7 @@ function calcData(req, res){
 	new Article()
 	// Search only for values that have not yet been calculated.
 		.query('whereNotNull', 'headline')
-		.query('whereNull', 'sentiment')
+		.query('whereNull', 'sentimentOfSnippet')
 	  .fetchAll()
 	  .then(function(articles) {
 	    var temp = toIndico(articles, res);
@@ -41,7 +41,7 @@ function calcData(req, res){
 	db.knex
 		.raw('delete from articles where headline is null')
 		.then( function (value){
-			console.log('Null Rows should be deleted');
+			console.log('Deleted all rows with null leadParagraph');
 		});
 }
 
@@ -51,22 +51,22 @@ function calcData(req, res){
 		// Use JSON to remove any functions returned with the query
 		value = JSON.parse(JSON.stringify(value));
 
-		var sentiment = [];
+		var sentimentOfSnippet = [];
 		value.map(function(value){
 			// console.log('value: ', value.headline, ' is a ', typeof value.headline);
-			sentiment.push(value.headline);
-			console.log(sentiment);
+			sentimentOfSnippet.push(value.headline);
+			console.log(sentimentOfSnippet);
 		});
-		return sentiment;
+		return sentimentOfSnippet;
 	}
 
-// Take the response from the array, for each row, insert into corresponding sentiment row.
-	function updateDataBase (sentiment, articles){
+// Take the response from the array, for each row, insert into corresponding sentimentOfSnippet row.
+	function updateDataBase (sentimentOfSnippet, articles){
 		// Use JSON to remove any functions returned with the query
 		var articles = JSON.parse(JSON.stringify(articles));
 		articles.map(function(value, index){
 			new Article({'id': value.id})
-				.save({'sentiment':logger(sentiment[index])});
+				.save({'sentimentOfSnippet':logger(sentimentOfSnippet[index])});
 		});
 	}
 	

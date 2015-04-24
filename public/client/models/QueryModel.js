@@ -49,7 +49,7 @@ var QueryModel = Backbone.Model.extend({
       url: scope.url
     })
     .done(function( newData  ) {
-      // console.log('receiving data: ', newData);
+      console.log('receiving data: ', newData);
       scope.set({
         responseData: newData,
       });
@@ -67,6 +67,7 @@ var QueryModel = Backbone.Model.extend({
     var totalSentiment = {};
     var sentiment = {};
     
+    console.log(this.get('responseData').constructor);
     var articles = this.get('responseData').map(function(obj){
       return _.pick(obj, 'published', 'sentiment', 'url', 'headline');
     });
