@@ -64,12 +64,12 @@ var QueryView = Backbone.View.extend({
       .on("mouseover", function(d, i) {
         tooltip.transition()
           .duration(200)
-          .style("opacity", .9);
+          .style("opacity", .8);
         // Add in popup data for each rendered dot represeting an article.
-        tooltip.html("<div>" + d.displayDate + "</div><div>" + d.headline +"</div><div>" + d.sentiment + "</div>")
+        tooltip.html("<div>" + d.displayDate + "</div><div>" + d.headline +"</div><div>Sentiment score: " + d.sentiment + "</div>")
           .style("text-align", "left")
           .style("left", (d3.event.pageX + 5) + "px")
-          .style("top", (d3.event.pageY - 28) + "px");
+          .style("top", (d3.event.pageY - 58) + "px");
 
         d3.select(this).transition()
           .attr("r", 10)

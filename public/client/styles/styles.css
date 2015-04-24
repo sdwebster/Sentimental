@@ -30,6 +30,15 @@ li {
   background-color: #264669;
 }
 
+.tooltip {
+  padding: 4px;
+  font-size: 12px;
+  color: #88BDFA;
+  background-color: #3F5F84;
+  border: 0px;
+  pointer-events: none;
+}
+
 .subbar {
   background-color: #3F5F84;
   color: #88BDFA;
