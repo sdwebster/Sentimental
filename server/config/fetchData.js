@@ -2,9 +2,10 @@ var Article = require('./models/articleModel.js');
 var Keyword = require('./models/keywordModel.js');
 var Source = require('./models/sourceModel.js');
 var bluebird = require('bluebird');
+var R = require('ramda');
 
 var fetchData = function (req, res){
-
+  // console.log('fetch has req of', req);
   //Parse url queries for us in table lookup
   var startDate = req.query.startDate || 00000000;
   var endDate = req.query.endDate || new Date();
@@ -38,12 +39,19 @@ var fetchData = function (req, res){
         .fetchAll()
     })
     .then(function(articles) {
-      console.log('sending articles: ', articles.toJSON())
+      articles.forEach(function(article){
+        article.set('sentiment', article.get('sentimentOfHeadline'));
+      });
       res.send(articles.toJSON());
     }).catch(function(error) {
       console.log(error);
       res.send('An error occured, please ensure that you request a keyword and source.');
     });
 };
+
+function logger(string, x){
+  console.log(string, JSON.stringify(x));
+  return x;
+} 
 
 module.exports = fetchData;

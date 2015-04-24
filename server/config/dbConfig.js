@@ -45,8 +45,12 @@ db.knex.schema.hasTable('articles').then(function (exists) {
       article.date('published');
       article.string('url', 225);
       article.string('headline', 225);
-      article.string('leadParagraph', 1000);
-      article.float('sentiment', 4, 4);
+      article.string('snippet', 1000);
+      article.string('leadParagraph', 2000);
+      // article.float('sentiment', 4, 4);
+      article.float('sentimentOfHeadline', 4, 4);
+      article.float('sentimentOfSnippet', 4, 4);
+      article.float('sentimentOfLeadParagraph', 4, 4);
       article.timestamps();
     }).then(function (table) {
       console.log('Created Table', table);
