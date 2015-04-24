@@ -5,7 +5,6 @@ var bluebird = require('bluebird');
 var R = require('ramda');
 
 var fetchData = function (req, res){
-  // console.log('fetch has req of', req);
   //Parse url queries for us in table lookup
   var startDate = req.query.startDate || 00000000;
   var endDate = req.query.endDate || new Date();
@@ -32,10 +31,10 @@ var fetchData = function (req, res){
   bluebird.join(keywordId(), sourceId())
     .then(function(array){
       return new Article()
-        .query('where', 'published', '>', startDate )
-        .query('where', 'published', '<', endDate )
-        .query('where', 'word', '=', array[0].get('id') )
-        .query('where', 'source', '=', array[1].get('id') )
+        .query('where', 'word', '=', array[0]['id'],
+         'and', 'where', 'source', '=', array[1]['id'],
+         'and', 'where', 'published', '>', startDate,
+         'and', 'where', 'published', '<', endDate )
         .fetchAll()
     })
     .then(function(articles) {
