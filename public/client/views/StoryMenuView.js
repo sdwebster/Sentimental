@@ -6,7 +6,7 @@ var StoryMenuView = Backbone.View.extend({
     this.render();
   },
 
-  template: _.template('<ul><li>BP + Deepwater Horizon</li><li>Diana\'s Death + The Royals</li><li>Jeb Bush + Bush Family Shadow</li><li>UK General Election</li></ul>'),
+  template: _.template('<ul><li>Diana\'s Death + The Royals</li><li class="highlight">BP + Deepwater Horizon</li><li>Jeb Bush + Bush Family Shadow</li><li>UK General Election</li></ul>'),
 
   render: function(){
     return this.$el.html(this.template());

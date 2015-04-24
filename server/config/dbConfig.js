@@ -4,8 +4,8 @@ var knex = require('knex').initialize({
   client: 'mysql',
   connection: process.env.CUSTOMCONNSTR_MYSQL_CONNURL || {
     host     : 'localhost',
-    user     : /*keys.mysqlUser.username*/"",
-    password : /*keys.mysqlUser.password*/"",
+    // user     : keys.mysqlUser.username,
+    // password : keys.mysqlUser.password,
     database : 'sentimentalDev',
     charset  : 'utf8'
   }

@@ -1,8 +1,8 @@
 var ChartView = Backbone.View.extend({
 
   defaults: {    
-    MARGIN: {top: 20, right: 20, bottom: 25, left: 50},
-    WIDTH: 960,
+    MARGIN: {top: 20, right: 320, bottom: 25, left: 50},
+    WIDTH: 1200,
     HEIGHT: 400,
     START_YEAR: 2000,
     END_YEAR: 2015,
@@ -12,12 +12,12 @@ var ChartView = Backbone.View.extend({
   },
 
   // currently working
-  events: {
-    'click': function() {
-      console.log('clicked me!');
-      this.model.react();
-    }
-  },
+  // events: {
+  //   'click': function() {
+  //     console.log('clicked me!');
+  //     this.model.react();
+  //   }
+  // },
 
   initialize: function(params){
     // TODO: listen for a change to datasets in this.model.collection
@@ -28,31 +28,24 @@ var ChartView = Backbone.View.extend({
   },
 
   render: function(){
-    var 
-    xScale = d3.time.scale()
-        .range(
-        [this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]
-      )
-    .domain([this.model.startDate, this.model.endDate])
-    .rangeRound(
-        [this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]
-      )
-    ,
+    var xScale = d3.time.scale()
+      .range([this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right])
+      .domain([this.model.startDate, this.model.endDate])
+      .rangeRound([this.options.MARGIN.left, this.options.WIDTH - this.options.MARGIN.right]);
 
-    yScale = d3.scale.linear().range(
-      [this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom]
+    var yScale = d3.scale.linear()
+      .range([this.options.HEIGHT - this.options.MARGIN.top, this.options.MARGIN.bottom])
+      .domain([0.0, 1.0]);
 
-      ).domain([0.0, 1.0]),
+    var xAttr = this.options.XATTR;
+    var yAttr = this.options.YATTR;
 
-    xAttr = this.options.XATTR,
-    yAttr = this.options.YATTR,
+    var xMap = function(d) { return xScale(d[xAttr]);}; // data -> display
+    var yMap = function(d) { return yScale(d[yAttr]);}; // data -> display
 
-    xMap = function(d) { return xScale(d[xAttr]);}, // data -> display
-    yMap = function(d) { return yScale(d[yAttr]);}, // data -> display
-
-    xAxis = d3.svg.axis()
-    .scale(xScale),
-    yAxis = d3.svg.axis()
+    var xAxis = d3.svg.axis()
+      .scale(xScale);
+    var yAxis = d3.svg.axis()
       .scale(yScale)
       .orient("left");
 
@@ -63,25 +56,25 @@ var ChartView = Backbone.View.extend({
     this.svg.append("svg:g")
         .attr("transform", "translate(0," + (this.options.HEIGHT - this.options.MARGIN.bottom) + ")")
         .attr('class', 'axis')
-        .call(xAxis)
-      .append("text")
-        .attr("class", "label")
-        .style("text-anchor", "end")
-        .attr("x", 100)
-        .attr("y", -6)
-        .text("Time");
+        .call(xAxis);
+      // .append("text")
+      //   .attr("class", "label")
+      //   .style("text-anchor", "end")
+      //   .attr("x", 100)
+      //   .attr("y", -6);
+        // .text("Time");
 
     this.svg.append("svg:g")
         .attr("transform", "translate(" + (this.options.MARGIN.left) + ",0)")
         .attr('class', 'axis')
-        .call(yAxis)
-      .append('text')
-        .attr("class", "label")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .attr("transform", "rotate(-90)")
-        .style("text-anchor", "end")
-        .text("Sentiment");
+        .call(yAxis);
+      // .append('text')
+      //   .attr("class", "label")
+      //   .attr("y", 6)
+      //   .attr("dy", ".71em")
+      //   .attr("transform", "rotate(-90)")
+      //   .style("text-anchor", "end");
+        // .text("Sentiment");
 
     // TODO: add axis labels
 
@@ -114,7 +107,7 @@ var ChartView = Backbone.View.extend({
     var queryList = this.model.queryList;
 
     var legendRectSize = 18;
-    var legendSpacing = 4;
+    var legendSpacing = 3;
     var legend = this.svg.selectAll('.legend')
       .data(queryList)
       .enter()
@@ -126,22 +119,20 @@ var ChartView = Backbone.View.extend({
         var height = 100;
         // var offset = 0;
         // var horz = -2 * legendRectSize;
-        var horz = 100;
+        var horz = 900;
         var vert = 50;
         return 'translate(' + horz + ',' + vert + ')';
       });
 
     queryList.forEach(function(q, i){
-      legend.append('rect')
-        .attr('width', legendRectSize)
-        .attr('height', legendRectSize)
-        .attr('y', 50 * i)
-        .style('fill', q.color)
-        .style('stroke', 'black');
+      legend.append('circle')
+        .attr('r', 8)
+        .attr('y', 50)
+        .style('fill', q.color);
 
       legend.append('text')
         .attr('x', legendRectSize + legendSpacing)
-        .attr('y', 50 * i)
+        .attr('y', 4)
         .text(function(d) { return '"' + q.keyword + '" in ' + q.source; });
       }
     );

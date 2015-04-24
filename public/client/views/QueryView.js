@@ -21,7 +21,7 @@ var QueryView = Backbone.View.extend({
     
     this.svgPath.attr('d', this.lineGen(this.model.get('summaryDataPoints')))
       .attr('stroke', this.model.get('color'))
-      .attr('stroke-width', 2)
+      .attr('stroke-width', 0)
       .attr('fill', 'none')
       .on("mouseover", function(d){
         d3.select(this).transition()
@@ -33,6 +33,8 @@ var QueryView = Backbone.View.extend({
           .attr("stroke-width", 2)
           .style("opacity", 1);
       });
+
+    this.svgPath.transition().duration(2000).attr('stroke-width', 2);
 
     this.displayDots();
   },
@@ -48,9 +50,9 @@ var QueryView = Backbone.View.extend({
 
     dataPoints.enter().append("circle")
       .attr("class", "dot")
-      .attr("r", 4)
+      .attr("r", 0)
       .attr("cx", this.xMap)
-      .attr("cy", 200)
+      .attr("cy", this.yMap)
       .attr("opacity", .1)
       .style("fill", this.model.get('color'))
       .html(function(d){
@@ -62,12 +64,12 @@ var QueryView = Backbone.View.extend({
       .on("mouseover", function(d, i) {
         tooltip.transition()
           .duration(200)
-          .style("opacity", .9);
+          .style("opacity", .8);
         // Add in popup data for each rendered dot represeting an article.
-        tooltip.html("<div>" + d.displayDate + "</div><div>" + d.headline +"</div><div>" + d.sentiment + "</div>")
+        tooltip.html("<div>" + d.displayDate + "</div><div>" + d.headline +"</div><div>Sentiment score: " + d.sentiment + "</div>")
           .style("text-align", "left")
           .style("left", (d3.event.pageX + 5) + "px")
-          .style("top", (d3.event.pageY - 28) + "px");
+          .style("top", (d3.event.pageY - 58) + "px");
 
         d3.select(this).transition()
           .attr("r", 10)
@@ -84,7 +86,7 @@ var QueryView = Backbone.View.extend({
           .style("opacity", .1);
         });
 
-    dataPoints.transition().duration(1500).attr("cy", this.yMap);
+    dataPoints.transition().duration(1500).attr("r", 4);
 
   }
 

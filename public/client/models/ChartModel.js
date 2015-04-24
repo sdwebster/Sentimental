@@ -40,7 +40,7 @@ var ChartModel = Backbone.Model.extend({
     this.keywords = params.keywords; 
     this.sources = params.sources;  
     this.queryList = [];  
-    this.colors = ['red', 'green', 'blue', 'orange'];
+    this.colors = ['#00C599', '#FF001F', '#F4C900', '#A900D4'];
     this.makeQueryList();
 
     // Later there will be more here for the input field to add keywords,

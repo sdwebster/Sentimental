@@ -113,7 +113,7 @@ function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
     '\"&begin_date=' + beginDate +
     '&end_date=' + endDate +
     '&page=' + page +
-    '&api-key=' + process.env.CUSTOMCONNSTR_NYT_API_KEY/*keys.nyt*/;
+    '&api-key=' + (process.env.CUSTOMCONNSTR_NYT_API_KEY /*|| keys.nyt*/);
 }
 
 ingestData('Gazprom', '20000101', '20150406', 'New York Times')

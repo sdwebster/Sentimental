@@ -1,4 +1,3 @@
-// var keys = require('./keys.js');
 var Article = require('./models/articleModel.js');
 var Keyword = require('./models/keywordModel.js');
 var Source = require('./models/sourceModel.js');
