@@ -10,7 +10,6 @@ console.log('got the app:', app);
 
 // If deployed to production then the port will be assigned from the production environment's PORT environment variable. Otherwise, if run locally the server will listen for requests on port 8000.
 var port = process.env.PORT || 8080;
-console.log("MYSQL conn STR" +process.env.CUSTOMCONNSTR_MYSQL_CONNURL);
 
 // Have the server begin listening for requests on the appropriate port.
 app.listen(port);
