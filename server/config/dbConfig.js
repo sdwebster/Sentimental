@@ -1,4 +1,4 @@
-var keys = require('./keys.js');
+// var keys = require('./keys.js');
 var path = require('path');
 var knex = require('knex').initialize({
   client: 'mysql',
