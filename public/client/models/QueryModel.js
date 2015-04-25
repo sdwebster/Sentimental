@@ -113,7 +113,7 @@ var QueryModel = Backbone.Model.extend({
       dataPoint.tBucket = tBucket;
       var midPeriodDate;
       if (timeBucket === 'year'){
-        midPeriodDate = new Date(timeBucket + "-07-01");
+        midPeriodDate = new Date(tBucket + "-07-01");
       }   
       dataPoint.date = new Date(Math.min(scope.endDate, midPeriodDate));
       dataPoint.sentiment = totalSentiment[ tBucket ] / tally;
