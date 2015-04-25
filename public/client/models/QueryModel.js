@@ -66,8 +66,9 @@ var QueryModel = Backbone.Model.extend({
     var frequencyTally = {};
     var totalSentiment = {};
     var sentiment = {};
+
+    var timeBucket = 'year';
     
-    console.log(this.get('responseData').constructor);
     var articles = this.get('responseData').map(function(obj){
       return _.pick(obj, 'published', 'sentiment', 'url', 'headline');
     });
@@ -77,39 +78,45 @@ var QueryModel = Backbone.Model.extend({
     articles.forEach(function(article){
       var date = new Date(article['published']);
       article['displayDate'] = date.toDateString();
+      if (timeBucket = 'year'){
+        article['timeBucket'] = date.getFullYear();
+      }
       article['year'] = date.getFullYear();
-      article['month'] = date.getMonth();
+      // article['month'] = date.getMonth();
       // article['year'] = year;
       // console.log('date:', date);
       article['date'] = date;
     });
 
     articles.forEach(function(article){
-      var year = article['year'];
-      var month = article['month'];
+      var tBucket = article['timeBucket'];
+      // var month = article['month'];
       var sentiment = article['sentiment'];
       // if (sentiment > maxSentiment){
       //   maxSentiment = sentiment;
       // } else if (sentiment < minSentiment){
       //   minSentiment = sentiment;
       // }
-      if (!frequencyTally.hasOwnProperty(year)){
-        frequencyTally[year] = 0;
-        totalSentiment[year] = 0;
+      if (!frequencyTally.hasOwnProperty(tBucket)){
+        frequencyTally[tBucket] = 0;
+        totalSentiment[tBucket] = 0;
       }
-      frequencyTally[year] = frequencyTally[year] + 1;
-      totalSentiment[year] = totalSentiment[year] + sentiment;
+      frequencyTally[tBucket] = frequencyTally[tBucket] + 1;
+      totalSentiment[tBucket] = totalSentiment[tBucket] + sentiment;
 
     });
 
     // put summary data into array format to graph it
-    var summaryDataPoints = _.reduce(frequencyTally, function(memo, tally, year){
+    var summaryDataPoints = _.reduce(frequencyTally, function(memo, tally, tBucket){
       var dataPoint = {};
       dataPoint.count = tally;
-      dataPoint.year = year;
-      var midPeriodDate = new Date(year + "-07-01");
+      dataPoint.tBucket = tBucket;
+      var midPeriodDate;
+      if (timeBucket === 'year'){
+        midPeriodDate = new Date(timeBucket + "-07-01");
+      }   
       dataPoint.date = new Date(Math.min(scope.endDate, midPeriodDate));
-      dataPoint.sentiment = totalSentiment[ year ] / tally;
+      dataPoint.sentiment = totalSentiment[ tBucket ] / tally;
       return memo.concat( [dataPoint] );
     }, [] );
 
