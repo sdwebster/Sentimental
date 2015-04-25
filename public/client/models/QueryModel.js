@@ -67,22 +67,36 @@ var QueryModel = Backbone.Model.extend({
     var totalSentiment = {};
     var sentiment = {};
 
-    var timeBucket = 'year';
+    var timeBucket = 'quarter';
+
+    console.log('averaging data points by ' + timeBucket)
     
     var articles = this.get('responseData').map(function(obj){
       return _.pick(obj, 'published', 'sentiment', 'url', 'headline');
     });
 
-    // could vary this function if time period is not '1 year'
-    // could use a more generic word like 'timeSpan' insted of 'year'
     articles.forEach(function(article){
       var date = new Date(article['published']);
       article['displayDate'] = date.toDateString();
-      if (timeBucket = 'year'){
-        article['timeBucket'] = date.getFullYear();
+      var year = date.getFullYear();
+      if (timeBucket === 'year'){
+        article['timeBucket'] = year + "-07-01";
+      } else if (timeBucket === 'quarter'){
+        var month = (Math.floor(date.getMonth()/3)) * 3 + 1; 
+        if (month.length === 1){
+          month = '0' + month;
+        }
+        console.log('month:', month);
+        article['timeBucket'] = year + '-' + month + '-' + '15';
+      } else if (timeBucket === 'month'){
+        var month = (date.getMonth() + 1) + '';
+        if (month.length === 1){
+          month = '0' + month;
+        }
+        console.log('month:', month);
+        article['timeBucket'] = year + '-' + month + '-' + '15';
       }
-      article['year'] = date.getFullYear();
-      // article['month'] = date.getMonth();
+      // date.getMonth();
       // article['year'] = year;
       // console.log('date:', date);
       article['date'] = date;
@@ -112,9 +126,9 @@ var QueryModel = Backbone.Model.extend({
       dataPoint.count = tally;
       dataPoint.tBucket = tBucket;
       var midPeriodDate;
-      if (timeBucket === 'year'){
-        midPeriodDate = new Date(tBucket + "-07-01");
-      }   
+      // if (timeBucket === 'year'){
+        midPeriodDate = new Date(tBucket);
+      // } 
       dataPoint.date = new Date(Math.min(scope.endDate, midPeriodDate));
       dataPoint.sentiment = totalSentiment[ tBucket ] / tally;
       return memo.concat( [dataPoint] );
