@@ -3,7 +3,7 @@ var request = bluebird.promisify(require('request'));
 var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
 
-var keys = require('./keys.js').sourceAPIKeys;
+
 
 var Article = require('./models/articleModel.js');
 var Source = require('./models/sourceModel.js');
@@ -12,6 +12,20 @@ var Word = require('./models/keywordModel.js');
 
 var limiter = new RateLimiter(10, 1000);
 
+//  Handle both development and deployment environments without breaking
+var sourceAPIKey;
+if (true /* could check whether the source is the NYT */){
+  if (process.env.CUSTOMCONNSTR_NYT_API_KEY){
+    sourceAPIKey = process.env.CUSTOMCONNSTR_NYT_API_KEY;
+  } else {
+    var keys = require('./keys.js').sourceAPIKeys;
+    console.log('keys: ', JSON.stringify(keys));
+    sourceAPIKey = keys.nyt;
+    // console.log('key: ', JSON);
+  }
+}
+
+console.log ('sourceAPIKey:', sourceAPIKey);
 
 var retrieveRow = R.curry(function (modelConstructor, identifiers) {
   console.log('identifiers:', JSON.stringify(identifiers));
@@ -71,6 +85,7 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
       return request(constructURL(
         searchTerm, beginDate, endDate, sourceName, page
       )).then(function (results) {
+        console.log(results);
         var res = JSON.parse(results[0].body).response;
         if (res.meta.hits > (res.meta.offset + 10)) {
           getResults(page + 1);
@@ -110,12 +125,19 @@ function sliceArgs (context, start, end) {
 }
 
 function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
+  // console.log('http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
+  //   'headline:\"' + searchTerm +
+  //   '\"&begin_date=' + beginDate +
+  //   '&end_date=' + endDate +
+  //   '&page=' + page +
+  //   '&api-key=' + sourceAPIKey);
+
   return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
     'headline:\"' + searchTerm +
     '\"&begin_date=' + beginDate +
     '&end_date=' + endDate +
     '&page=' + page +
-    '&api-key=' + (/*process.env.CUSTOMCONNSTR_NYT_API_KEY || */ keys.nyt);
+    '&api-key=' + sourceAPIKey;
 }
 
 ingestData('Enron', '19950001', '20150306', 'New York Times')
