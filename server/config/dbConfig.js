@@ -1,11 +1,11 @@
-// var keys = require('./keys.js');
+var keys = require('./keys.js');
 var path = require('path');
 var knex = require('knex').initialize({
   client: 'mysql',
   connection: process.env.CUSTOMCONNSTR_MYSQL_CONNURL || {
     host     : 'localhost',
-    // user     : keys.mysqlUser.username,
-    // password : keys.mysqlUser.password,
+    user     : keys.mysqlUser.username,
+    password : keys.mysqlUser.password,
     database : 'sentimentalDev',
     charset  : 'utf8'
   }
@@ -16,6 +16,7 @@ var db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('keywords').then(function (exists) {
   if (!exists) {
+    console.log('keywords table made');
     db.knex.schema.createTable('keywords', function (key) {
       key.increments('id').primary();
       key.string('word', 255);
@@ -27,6 +28,7 @@ db.knex.schema.hasTable('keywords').then(function (exists) {
 
 db.knex.schema.hasTable('sources').then(function (exists) {
   if (!exists) {
+    console.log('sources table made');
     db.knex.schema.createTable('sources', function (source) {
       source.increments('id').primary();
       source.string('name', 255);
@@ -38,6 +40,7 @@ db.knex.schema.hasTable('sources').then(function (exists) {
 
 db.knex.schema.hasTable('articles').then(function (exists) {
   if (!exists) {
+    console.log('articles table made');
     db.knex.schema.createTable('articles', function (article) {
       article.increments('id').primary();
       article.integer('source').unsigned().references('id').inTable('sources');
@@ -61,6 +64,7 @@ db.knex.schema.hasTable('articles').then(function (exists) {
 //we may not need this due to the way relations are set up in the models.
 db.knex.schema.hasTable('keywordSources').then(function (exists) {
   if (!exists) {
+    console.log('keywordSources table made');
     db.knex.schema.createTable('keywordSources', function (wordSource) {
       wordSource.integer('source').unsigned().references('id').inTable('sources');
       wordSource.integer('words').unsigned().references('id').inTable('keywords');

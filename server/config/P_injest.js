@@ -3,7 +3,7 @@ var request = bluebird.promisify(require('request'));
 var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
 
-// var keys = require('./keys.js').sourceAPIKeys;
+var keys = require('./keys.js').sourceAPIKeys;
 
 var Article = require('./models/articleModel.js');
 var Source = require('./models/sourceModel.js');
@@ -116,7 +116,7 @@ function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
     '\"&begin_date=' + beginDate +
     '&end_date=' + endDate +
     '&page=' + page +
-    '&api-key=' + (process.env.CUSTOMCONNSTR_NYT_API_KEY /*|| keys.nyt*/);
+    '&api-key=' + (process.env.CUSTOMCONNSTR_NYT_API_KEY || keys.nyt);
 }
 
 // ingestData('Gazprom', '20000101', '20150406', 'New York Times')

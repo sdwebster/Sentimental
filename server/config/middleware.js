@@ -21,16 +21,16 @@ module.exports = function(app, express){
     app.use(express.static(path.join(__dirname, '/../../public/client/'), {'dotfiles':'allow'}));
     
     app.get('/data', function (req, res){
-        // console.log('in mware, req is', req);
-        fetchData(req, res);
+      fetchData(req, res);
     });
 
     // Manual Initiation for sending data to indico.io to retrive a sentiment analysis 
     app.get('/calc', function (req, res){
-        indico(req, res);
+      indico(req, res);
     });
 
     app.get('/newsapi', function (req, res){
+      console.log(req.query);
       // Send the data to parsed with options to P_injest to start the data gathering process 
       // Below is the minimum format for the request from the client, please note the date format.
       // localhost:8080/newsapi?keyword=microsoft&startDate=20130101&endDate=20150101
