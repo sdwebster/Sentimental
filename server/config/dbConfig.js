@@ -2,7 +2,7 @@ var path = require('path');
 
 //  Handle both development and deployment environments without breaking
 var knex;
-console.log('here is CUSTOMCONNSTR_MYSQL_CONNURL:', JSON.stringify(CUSTOMCONNSTR_MYSQL_CONNURL));
+console.log('here is process.env.CUSTOMCONNSTR_MYSQL_CONNURL:', JSON.stringify(process.env.CUSTOMCONNSTR_MYSQL_CONNURL));
 if (process.env.CUSTOMCONNSTR_MYSQL_CONNURL){
   knex = require('knex').initialize({
     client: 'mysql',
