@@ -3,13 +3,11 @@ var RateLimiter = require('limiter');
 var keys = require('./keys.js');
 var db = require('./dbConfig.js');
 
+
 var Article = require('./models/articleModel.js');
 var Articles = require('./collections/articles.js');
 
-//  Handle both development and deployment environments
-
 indico.apiKey = keys.indicoAPIKey.key;
-
 
 function calcData(req, res){
 	console.log('calcData run ', new Date());
@@ -27,15 +25,18 @@ function calcData(req, res){
 			// Indico.io batch requests allow you to process larger volumes of data more efficiently 
 			// by grouping many examples into a single request. Simply call the batch method 
 			// that corresponds to the API you'd like to use, and ensure your data is wrapped in an array. 
-			
-			indico
-			  .batchSentiment(temp)
-			  .then(function(sentiments){
-					updateDataBase(sentiments, articles);
-			  })
-			  .catch(function(err){
-			    console.log('err: ', err);
-			});
+			if (temp.length>0){
+				indico
+				  .batchSentiment(temp)
+				  .then(function(sentiments){
+				  	console.log("from indico", sentiments);
+				  	var truncSentiments = sentiments.map(function(val){return val.toFixed(4);})
+						updateDataBase(truncSentiments, articles);
+				  })
+				  .catch(function(err){
+				    console.log('err: ', err);
+				});
+			}
 
 	  }).catch(function(error) {
 	    console.log(error);
@@ -60,6 +61,7 @@ function calcData(req, res){
 			sentimentOfSnippet.push(value.headline);
 			console.log(sentimentOfSnippet);
 		});
+		console.log(sentimentOfSnippet);
 		return sentimentOfSnippet;
 	}
 

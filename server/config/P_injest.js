@@ -74,7 +74,7 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
       return request(constructURL(
         searchTerm, beginDate, endDate, sourceName, page
       )).then(function (results) {
-        console.log(results);
+        console.log(results[0].body);
         var res = JSON.parse(results[0].body).response;
         if (res.meta.hits > (res.meta.offset + 10)) {
           getResults(page + 1);
@@ -90,11 +90,11 @@ function logger (item, key) {
     if(key !== undefined) {
       logger(item[key])
     } else if (item === null || item === undefined) {
-      console.log(item);
+      // console.log(item);
     }else if(
       item.constructor === Object ||
       item.constructor === Array) {
-        console.log(JSON.stringify(item));
+        // console.log(JSON.stringify(item));
       }
   return item
 }
@@ -129,6 +129,6 @@ function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
     '&api-key=' + sourceAPIKey;
 }
 
-ingestData('Enron', '19950001', '20150306', 'New York Times')
+// ingestData('Gazprom', '20000101', '20150406', 'New York Times')
 
 module.exports = ingestData;

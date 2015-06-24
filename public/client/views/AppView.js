@@ -5,6 +5,7 @@ var AppView = Backbone.View.extend({
     this.subBarView = new SubBarView();
     this.chartView = new ChartView({model: this.model.get('chart')});
     this.footerView = new FooterView();
+    this.keywordView = new NewKeywordView();
   },
 
   render: function(){
@@ -12,7 +13,8 @@ var AppView = Backbone.View.extend({
       this.topNavView.$el,
       this.subBarView.$el,
       this.chartView.$el,
-      this.footerView.$el
+      this.footerView.$el,
+      this.keywordView.$el
     ]);
   }
 
