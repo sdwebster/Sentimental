@@ -2,20 +2,14 @@ var path = require('path');
 console.log("process.env VARs",process.env);
 //  Handle both development and deployment environments without breaking
 var knex;
-console.log('here is process.env.CUSTOMCONNSTR_MYSQL_CONNURL:', JSON.stringify(process.env.CUSTOMCONNSTR_MYSQL_CONNURL));
 if (process.env.CUSTOMCONNSTR_MYSQL_CONNURL){
   knex = require('knex').initialize({
     client: 'mysql',
     connection: process.env.CUSTOMCONNSTR_MYSQL_CONNURL
   });
 } else {
-  var keys = require('./keys.js') /*|| {
-    mysqlUser: {
-      username: 'n/a',
-      password: 'n/a',
-  //   } */;
-  // };
-  console.log('here are the keys:', JSON.stringify(keys));
+
+  var keys = require('./keys.js');
   knex = require('knex').initialize({
     client: 'mysql',
     connection: {
@@ -27,7 +21,6 @@ if (process.env.CUSTOMCONNSTR_MYSQL_CONNURL){
     }
   });
 }
-
 var db = require('bookshelf')(knex);
 
 db.knex.schema.hasTable('keywords').then(function (exists) {
