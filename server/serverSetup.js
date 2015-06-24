@@ -11,3 +11,4 @@ var db = require('./config/dbConfig.js');
 // export our app, required by server.js
 module.exports.app = app;
 module.exports.db = db;
+

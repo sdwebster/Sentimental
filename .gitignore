@@ -8,7 +8,7 @@ test/bower_components/
 
 .DS_Store
 
-server/config/keys.js
+# server/config/keysDevelop.js
 
 # Floobit
 .flooignore
