@@ -1,5 +1,5 @@
 var path = require('path');
-
+console.log("process.env VARs",process.env);
 //  Handle both development and deployment environments without breaking
 var knex;
 console.log('here is process.env.CUSTOMCONNSTR_MYSQL_CONNURL:', JSON.stringify(process.env.CUSTOMCONNSTR_MYSQL_CONNURL));
