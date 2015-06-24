@@ -45,6 +45,7 @@ var QueryModel = Backbone.Model.extend({
 
   queryServer: function(){
     var scope = this;
+    console.log('querying url:', this.url);
     $.ajax({  
       url: scope.url
     })
