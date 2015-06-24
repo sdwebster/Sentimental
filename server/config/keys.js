@@ -13,3 +13,5 @@ module.exports.sourceAPIKeys = {
 module.exports.indicoAPIKey = {
   key: process.env.CUSTOMCONNSTR_INDICO_API_KEY
 }
+
+module.exports.mysqlUser = {};
