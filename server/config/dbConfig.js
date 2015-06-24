@@ -1,4 +1,3 @@
-var keys = require('./keys.js');
 var path = require('path');
 var keys = require('./keys.js');
 
