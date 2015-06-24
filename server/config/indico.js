@@ -8,10 +8,7 @@ var db = require('./dbConfig.js');
 var Article = require('./models/articleModel.js');
 var Articles = require('./collections/articles.js');
 
-//  Handle both development and deployment environments
-
 indico.apiKey = keys.indicoAPIKey.key;
-
 
 function calcData(req, res){
 	console.log('calcData run ', new Date());
