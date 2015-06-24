@@ -1,3 +1,4 @@
+var keys = require('./keys.js');
 var indico = require('indico.io');
 var RateLimiter = require('limiter');
 var db = require('./dbConfig.js');
@@ -6,12 +7,9 @@ var Article = require('./models/articleModel.js');
 var Articles = require('./collections/articles.js');
 
 //  Handle both development and deployment environments
-if (process.env.CUSTOMCONNSTR_INDICO_API_KEY){
-	indico.apiKey = process.env.CUSTOMCONNSTR_INDICO_API_KEY;
-} else {
-	var keys = require('./keys.js');
-	indico.apiKey = keys.indicoAPIKey.key;
-};
+
+indico.apiKey = process.env.CUSTOMCONNSTR_INDICO_API_KEY || keys.indicoAPIKey.key;
+
 
 function calcData(req, res){
 	console.log('calcData run ', new Date());
