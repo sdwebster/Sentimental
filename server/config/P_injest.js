@@ -1,8 +1,9 @@
+// wait, don't we need to require the db?
 var bluebird = require('bluebird');
 var request = bluebird.promisify(require('request'));
 var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
-var keys = require('./keys.js').sourceAPIKeys;
+var keys = require('./keys.js');
 
 
 var Article = require('./models/articleModel.js');
@@ -13,7 +14,7 @@ var Word = require('./models/keywordModel.js');
 var limiter = new RateLimiter(10, 1000);
 
 //  Handle both development and deployment environments without breaking
-var sourceAPIKey = process.env.CUSTOMCONNSTR_NYT_API_KEY || keys.nyt;
+var sourceAPIKey = keys.sourceAPIKeys.nyt;
 
 var retrieveRow = R.curry(function (modelConstructor, identifiers) {
   console.log('identifiers:', JSON.stringify(identifiers));
