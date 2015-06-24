@@ -2,7 +2,7 @@ var bluebird = require('bluebird');
 var request = bluebird.promisify(require('request'));
 var RateLimiter = require('limiter').RateLimiter;
 var R = require('ramda');
-
+var keys = require('./keys.js').sourceAPIKeys;
 
 
 var Article = require('./models/articleModel.js');
@@ -13,19 +13,7 @@ var Word = require('./models/keywordModel.js');
 var limiter = new RateLimiter(10, 1000);
 
 //  Handle both development and deployment environments without breaking
-var sourceAPIKey;
-if (true /* could check whether the source is the NYT */){
-  if (process.env.CUSTOMCONNSTR_NYT_API_KEY){
-    sourceAPIKey = process.env.CUSTOMCONNSTR_NYT_API_KEY;
-  } else {
-    var keys = require('./keys.js').sourceAPIKeys;
-    console.log('keys: ', JSON.stringify(keys));
-    sourceAPIKey = keys.nyt;
-    // console.log('key: ', JSON);
-  }
-}
-
-console.log ('sourceAPIKey:', sourceAPIKey);
+var sourceAPIKey = process.env.CUSTOMCONNSTR_NYT_API_KEY || keys.nyt;
 
 var retrieveRow = R.curry(function (modelConstructor, identifiers) {
   console.log('identifiers:', JSON.stringify(identifiers));
