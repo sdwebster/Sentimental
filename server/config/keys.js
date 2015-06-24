@@ -1,4 +1,4 @@
-// routes to correct "keys" file, depending on whether we are in probuction or development environment. When cloning, you need to check the environmental variable names in keysDeploy.js, and create a copy of keysDeploy.js .....
+// routes to correct "keys" file, depending on whether we are in probuction or development environment. When cloning, you need to check the environmental variable names in keysDeploy.js, and create a copy of keysDeploy.js called keysDevelop.js, which you can fill out with the actual keys
 
 // to make yourself an authorized user in Mysql:
 
