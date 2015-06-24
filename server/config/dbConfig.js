@@ -13,8 +13,8 @@ if (process.env.CUSTOMCONNSTR_MYSQL_CONNURL){
     mysqlUser: {
       username: 'n/a',
       password: 'n/a',
-    } */;
-  };
+  //   } */;
+  // };
   console.log('here are the keys:', JSON.stringify(keys));
   knex = require('knex').initialize({
     client: 'mysql',
