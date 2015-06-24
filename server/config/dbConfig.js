@@ -8,13 +8,16 @@ if (process.env.CUSTOMCONNSTR_MYSQL_CONNURL){
     connection: process.env.CUSTOMCONNSTR_MYSQL_CONNURL
   });
 } else {
-  var keys = require('./keys.js');
+  var localUser = require('./keys.js').mysqlUser || {
+    username: "n/a"
+    password: "n/a"
+  };
   knex = require('knex').initialize({
     client: 'mysql',
     connection: {
       host     : 'localhost',
-      user     : keys.mysqlUser.username,
-      password : keys.mysqlUser.password,
+      user     : localUser.username,
+      password : localUser.password,
       database : 'sentimentalDev',
       charset  : 'utf8'
     }
