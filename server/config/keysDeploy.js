@@ -11,7 +11,8 @@ module.exports.sourceAPIKeys = {
   'NYT': {
     username: '',
     password: ''
-  } 
+  }, 
+  'guardian': process.env.CUSTOMCONNSTR_GUARDIAN_API_KEY
 }
 
 module.exports.indicoAPIKey = {

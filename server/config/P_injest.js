@@ -13,9 +13,6 @@ var Word = require('./models/keywordModel.js');
 
 var limiter = new RateLimiter(10, 1000);
 
-//  Handle both development and deployment environments without breaking
-var sourceAPIKey = keys.sourceAPIKeys.nyt;
-
 var retrieveRow = R.curry(function (modelConstructor, identifiers) {
   console.log('identifiers:', JSON.stringify(identifiers));
   return modelConstructor
@@ -71,6 +68,7 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
     getResults (0);
 
     function getResults (page) {
+
       return request(constructURL(
         searchTerm, beginDate, endDate, sourceName, page
       )).then(function (results) {
@@ -81,6 +79,35 @@ function ingestData (searchTerm, beginDate, endDate, sourceName, page) {
         }
         res.docs.forEach(makeArticle(sourceModel, wordModel));
       });
+
+      // if (sourceName === 'New York Times'){
+        // return request(constructURL(
+        //   searchTerm, beginDate, endDate, sourceName, page
+        // )).then(function (results) {
+        //   console.log(results);
+        //   var res = JSON.parse(results[0].body).response;
+        //   if (res.meta.hits > (res.meta.offset + 10)) {
+        //     getResults(page + 1);
+        //   }
+        //   res.docs.forEach(makeArticle(sourceModel, wordModel));
+        // });    
+
+        // Thought there was a shortcut for Guardian, but there may not be    
+  
+      // } else if (sourceName === "Guardian"){
+      //   return request(constructURL(
+      //     searchTerm, beginDate, endDate, sourceName, page
+      //   )).then(function (results) {
+      //     console.log ("results of first query:", results); 
+      //     var res = JSON.parse(results[0].body).response;
+      //     var pageCount = res.pages;
+      //     console.log("This Guardian request has " + pageCount + " pages.");
+
+      //     var res = JSON.parse(results[0].body).response;
+      //     res.results.forEach(makeArticle(sourceModel, wordModel));
+      //   });   
+      // }
+
     }
   }
 }
@@ -114,21 +141,47 @@ function sliceArgs (context, start, end) {
 }
 
 function constructURL (searchTerm, beginDate, endDate, sourceName, page) {
-  // console.log('http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
-  //   'headline:\"' + searchTerm +
-  //   '\"&begin_date=' + beginDate +
-  //   '&end_date=' + endDate +
-  //   '&page=' + page +
-  //   '&api-key=' + sourceAPIKey);
+  if (sourceName === "Guardian"){
+    // Reformat dates for Guardian. They are "on or after" / "on or before" (as with NYT?)
+    var fromDate = beginDate.substr(0, 4) + '-' + beginDate.substr(4, 2) + '-' + beginDate.substr(6, 2);
+    var toDate   = endDate.substr(0, 4) + '-' + endDate.substr(4, 2) + '-' + endDate.substr(6, 2);
+    console.log("begin date: ", fromDate);
+    console.log("pinging url at: ",
+          // Guardian 'q' may be broader than nyt 'headline'. We may need to find a way to sort by Guardian's 'relevance',
+          // e.g. we could orderBy relevance, and then only grab the first 10% of pages, a rough approximation
+    'http://content.guardianapis.com/search/q=\"' +   searchTerm +
+          '\"&orderBy' + 'relevance' + 
+          '&from_date=' + fromDate +
+          '&to_date=' + endDate +
+          '&page-size' + 10 +
+          '&current_page=' + page +
+          '&show-fields=headline,body' +
+          '&api-key=' + keys.sourceAPIKeys.guardian);
 
-  return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
-    'headline:\"' + searchTerm +
-    '\"&begin_date=' + beginDate +
-    '&end_date=' + endDate +
-    '&page=' + page +
-    '&api-key=' + sourceAPIKey;
+            // Guardian 'q' may be broader than nyt 'headline'. We may need to find a way to sort by Guardian's 'relevance',
+            // e.g. we could orderBy relevance, and then only grab the first 10% of pages, a rough approximation
+    return 'http://content.guardianapis.com/search/q=\"' + encodeURIComponent(searchTerm) +
+            '\"&orderBy=' + 'relevance' + 
+            '&from_date=' + fromDate +
+            '&to_date=' + endDate +
+            '&page-size=' + 10 +
+            '&current_page=' + page +
+            '&show-fields=headline,body' +
+            '&api-key=' + keys.sourceAPIKeys.guardian;
+    
+  } else if (sourceName === "New York Times") {
+    return 'http://api.nytimes.com/svc/search/v2/articlesearch.json?sort=oldest&fq=' + 
+      'headline:\"' + searchTerm +
+      '\"&begin_date=' + beginDate +
+      '&end_date=' + endDate +
+      '&page=' + page +
+      '&api-key=' + keys.sourceAPIKeys.nyt;
+  }
 }
 
-// ingestData('Gazprom', '20000101', '20150406', 'New York Times')
+
+console.log('******************************** calling P_injest ********************************' );
+ingestData('Hornblower', '20000001', '20150306', 'New York Times');
+
 
 module.exports = ingestData;
